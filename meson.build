@@ -21,6 +21,8 @@ ansi      = get_option('ansi')
 ################################################################################
 # Projects infos
 
+# TODO post-merge : simplify the whole version number handling
+
 prettyname = 'GIMP'
 full_name  = 'GNU Image Manipulation Program'
 
@@ -54,13 +56,11 @@ sysconf_version    = '2.0'
 tool_version       = '2.0'
 user_version       = '2.9'
 
-unstable = (minor_version % 2 == 1)
-stable = not unstable
-
-conf.set10('GIMP_UNSTABLE', unstable)
+stable = (minor_version % 2 == 0)
+conf.set10('GIMP_UNSTABLE', not stable)
 
 ################################################################################
-# Host system
+# Host system detection
 
 host_cpu = host_machine.cpu()
 message('Architecture: ' + host_cpu)
@@ -91,8 +91,6 @@ platform_win32 = (host_os.startswith('mingw') or host_os.startswith('cygwin'))
 # Is this native win32
 os_win32 = host_os.startswith('mingw')
 
-pathsep = os_win32 ? ';' : ':'
-
 platform_osx = host_os.startswith('darwin')
 
 conf.set10('PLATFORM_OSX',  platform_osx)
@@ -101,41 +99,50 @@ conf.set10('PLATFORM_OSX',  platform_osx)
 ################################################################################
 # Dependencies
 
-babl              = dependency('babl',               version: '>=0.1.31')
-gegl_minver = '0.3.21'
-gegl              = dependency('gegl-0.3',           version: '>='+gegl_minver)
-glib              = dependency('glib-2.0',           version: '>=2.43.0')
+atk               = dependency('atk',                version: '>=2.2.0')
+
+# babl_minver       = '>=0.1.31'
+babl_minver       = '>=0.1.30'
+babl              = dependency('babl',               version: babl_minver)
+
+cairo_minver      = '>=1.12.2'
+cairo             = dependency('cairo',              version: cairo_minver)
+
+fontconfig_minver = os_win32 ? '>=2.11.1' : '>=2.2.0'
+fontconfig_name   = 'fontconfig' + (os_win32 ? '_win32' : '')
+fontconfig        = dependency(fontconfig_name,      version: fontconfig_minver)
+
+freetype2         = dependency('freetype2',          version: '>=2.1.7')
+
+gdk_pixbuf_minver = '>=2.30.8'
+gdk_pixbuf        = dependency('gdk-pixbuf-2.0',     version: gdk_pixbuf_minver)
+
+gegl_minver       = '>=0.2.0'
+gegl              = dependency('gegl-0.2',           version: gegl_minver)
+# gegl_minver       = '>=0.3.21'
+# gegl              = dependency('gegl-0.3',           version: gegl_minver)
+
+gexiv2            = dependency('gexiv2',             version: '>=0.10.6')
+
 gio               = dependency('gio-2.0')
 gio_specific_name = 'gio-' + (os_win32 ? 'windows-2.0' : 'unix-2.0')
 gio_specific      = dependency(gio_specific_name)
 
-atk               = dependency('atk',                version: '>=2.2.0')
+glib              = dependency('glib-2.0',           version: '>=2.43.0')
 gmodule           = dependency('gmodule-no-export-2.0')
 
-gtk2_minver = '2.24.10'
-gtk2              = dependency('gtk+-2.0',           version: '>='+gtk2_minver)
-gdk_pixbuf_minver = '2.30.8'
-gdk_pixbuf        = dependency('gdk-pixbuf-2.0',     version: '>='+gdk_pixbuf_minver)
-cairo_minver = '1.12.2'
-cairo             = dependency('cairo',              version: '>='+cairo_minver)
-pangocairo        = dependency('pangocairo',         version: '>=1.29.4')
-fontconfig_name   = 'fontconfig' + (os_win32 ? '_win32' : '')
-fontconfig_vers   = os_win32 ? '>=2.11.1' : '>=2.2.0'
-fontconfig        = dependency(fontconfig_name,      version: fontconfig_vers)
-harfbuzz          = dependency('harfbuzz',           version: '>=0.9.19')
-gexiv2            = dependency('gexiv2',             version: '>=0.10.6')
+gtk2_minver       = '>=2.24.10'
+gtk2              = dependency('gtk+-2.0',           version: gtk2_minver)
 
-libmypaint        = dependency('libmypaint-1.3',     version: '>=1.3.0')
-rsvg              = dependency('librsvg-2.0',        version: '>=2.40.6')
+harfbuzz          = dependency('harfbuzz',           version: '>=0.9.19')
 lcms              = dependency('lcms2',              version: '>=2.8')
-# alsa               = dependency('alsa',               version: '>=1.0.0')
-# freetype2          = dependency('freetype2',          version: '>=2.1.7')
-# gtk_mac_integration= dependency('gtk_mac_integration',version: '>=2.0.0')
-# gtk_win32          = dependency('gtk_win32',          version: '>=2.24.32')
-# gtkdoc             = dependency('gtkdoc',             version: '>=1.0')
-# intltool           = dependency('intltool',           version: '>=0.40.1')
+libmypaint        = dependency('libmypaint-1.3',     version: '>=1.3.0')
+pangocairo        = dependency('pangocairo',         version: '>=1.29.4')
+rsvg              = dependency('librsvg-2.0',        version: '>=2.40.6')
+
 # xgettext           = dependency('xgettext',           version: '>=0.19')
 
+################################################################################
 # Check for GLib Networking
 
 have_glib_networking_run = cc.run(
@@ -153,6 +160,7 @@ if not have_glib_networking
 # TODO check if cross-compiling
 endif
 
+################################################################################
 # Check if Pango is built with a recent fontconfig
 
 pango_check_run = cc.run(
@@ -459,7 +467,7 @@ endif
 have_alsa = false
 if get_option('with-alsa')
   have_alsa = true
-  alsa = dependency('alsa')
+  alsa = dependency('alsa', version: '>=1.0.0')
 endif
 
 # Linux-input
@@ -727,14 +735,14 @@ has_nl_measurement = cc.has_function(
 
 
 
-# subdir('cursors')
-# subdir('themes')
-# subdir('po')
-# subdir('po-libgimp')
-# subdir('po-plug-ins')
-# subdir('po-python')
-# subdir('po-script-fu')
-# subdir('po-tips')
+subdir('cursors')
+subdir('themes')
+subdir('po')
+subdir('po-libgimp')
+subdir('po-plug-ins')
+subdir('po-python')
+subdir('po-script-fu')
+subdir('po-tips')
 # subdir('data')
 # subdir('desktop')
 # subdir('menus')
@@ -780,9 +788,9 @@ pkgconfig.generate(filebase: 'gimp-' + pkgconfig_version,
   description: 'GIMP Library',
   version: meson.project_version(),
   requires: [
-    'gdk-pixbuf-2.0 >= ' + gdk_pixbuf_minver,
-    'cairo >= '          + cairo_minver,
-    'gegl-0.3 >= '       + gegl_minver,
+    'gdk-pixbuf-2.0 ' + gdk_pixbuf_minver,
+    'cairo '          + cairo_minver,
+    'gegl-0.3 '       + gegl_minver,
   ],
   libraries: [
     '-L${libdir}',
@@ -807,7 +815,7 @@ pkgconfig.generate(filebase: 'gimpthumb-' + pkgconfig_version,
   description: 'GIMP Thumbnail Library',
   version: meson.project_version(),
   requires: [
-    'gdk-pixbuf-2.0 >= ' + gdk_pixbuf_minver,
+    'gdk-pixbuf-2.0 ' + gdk_pixbuf_minver,
   ],
   libraries: [
     '-L${libdir}',
@@ -823,7 +831,7 @@ pkgconfig.generate(filebase: 'gimpui-' + pkgconfig_version,
   version: meson.project_version(),
   requires: [
     'gimp-' + pkgconfig_version + ' >= ' + app_version,
-    'gtk+-2.0 >= ' + gtk2_minver,
+    'gtk+-2.0 ' + gtk2_minver,
   ],
   libraries: [
     '-L${libdir}',
