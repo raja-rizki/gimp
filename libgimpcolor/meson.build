@@ -1,0 +1,16 @@
+libgimpcolor_sources = [
+  'gimpadaptivesupersample.c',
+  'gimpbilinear.c',
+  'gimpcairo.c',
+  'gimpcmyk.c',
+  'gimpcolormanaged.c',
+  'gimpcolorprofile.c',
+  'gimpcolorspace.c',
+  'gimpcolortransform.c',
+  'gimphsl.c',
+  'gimphsv.c',
+  'gimppixbuf.c',
+  'gimprgb-parse.c',
+  'gimprgb.c',
+  'test-color-parser.c',
+]

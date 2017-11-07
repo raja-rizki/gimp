@@ -92,8 +92,9 @@ platform_win32 = (host_os.startswith('mingw') or host_os.startswith('cygwin'))
 os_win32 = host_os.startswith('mingw')
 
 platform_osx = host_os.startswith('darwin')
-
-conf.set10('PLATFORM_OSX',  platform_osx)
+if platform_osx
+  conf.set10('PLATFORM_OSX',  platform_osx)
+endif
 
 
 ################################################################################
@@ -715,8 +716,8 @@ add_project_arguments(
   '-Wstrict-prototypes',
   '-Wtype-limits',
 
-  '--omg-optimized',
-  '--disable-instructions',
+  # '--omg-optimized',
+  # '--disable-instructions',
   language: 'c'
 )
 
@@ -733,38 +734,47 @@ has_nl_measurement = cc.has_function(
   prefix: '#include<langinfo.h>',
 )
 
+rootInclude = include_directories('.')
 
-
+# Data / Desktop / xml files
 subdir('cursors')
-subdir('themes')
-# subdir('po')
-# subdir('po-libgimp')
-# subdir('po-plug-ins')
-# subdir('po-python')
-# subdir('po-script-fu')
-# subdir('po-tips')
 subdir('data')
-subdir('desktop')
-# subdir('menus')
-# subdir('libgimpbase')
-# subdir('tools')
-# subdir('icons')
-# subdir('libgimpcolor')
-# subdir('libgimpconfig')
-# subdir('libgimpmath')
-# subdir('libgimpmodule')
-# subdir('libgimpthumb')
-# subdir('libgimpwidgets')
-# subdir('libgimp')
-# subdir('app')
-# subdir('modules')
-# subdir('plug-ins')
+# subdir('desktop')
 # subdir('etc')
+# subdir('icons')
+# subdir('menus')
+subdir('themes')
+
+# Docs
 # subdir('devel-docs')
 # subdir('docs')
+
+# Translations
+subdir('po')
+subdir('po-libgimp')
+subdir('po-plug-ins')
+subdir('po-python')
+subdir('po-script-fu')
+subdir('po-tips')
+
+# Libraries
+subdir('libgimpbase')
+subdir('libgimpcolor')
+subdir('libgimpconfig')
+subdir('libgimpmath')
+subdir('libgimpmodule')
+subdir('libgimpthumb')
+subdir('libgimpwidgets')
+subdir('libgimp')
+
+# Executables, plugins
+# subdir('modules')
+# subdir('plug-ins')
+# subdir('tools')
+# subdir('app')
+
+
 # subdir('build')
-
-
 # build/windows/gimp-plug-ins.rc
 # build/windows/gimp.rc
 
