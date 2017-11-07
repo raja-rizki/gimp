@@ -1,4 +1,42 @@
 
+global_cflags = []
+global_lflags = []
+
+global_cflags += [
+  '-DPREFIX="'+ prefix + '"',
+  '-DGIMPDIR="'+ gimpdir + '"',
+  '-DDATADIR="'+ datadir + '"',
+  '-DLOCALEDIR="'+ localedir + '"',
+  '-DPLUGINDIR="'+ plugindir + '"',
+  '-DSYSCONFDIR="'+ sysconfdir + '"',
+  '-DGIMP_PACKAGE="'+ gettext_package + '"',
+  '-DGIMP_DATA_VERSION="'+ data_version + '"',
+  '-DGIMP_USER_VERSION="'+ user_version + '"',
+  '-DGIMP_SYSCONF_VERSION="'+ sysconf_version + '"',
+  '-DGIMP_PLUGIN_VERSION="'+ plugin_version + '"',
+]
+
+if platform_win32
+  global_cflags += '-no-undefined'
+endif
+
+if platform_osx
+  global_cflags += '-xobjective-c'
+  global_lflags += ['-framework', 'Cocoa']
+endif
+
+if os_win32
+  global_lflags += '-lexchndl'
+  # global_lflags += ['-export-symbols', 'gimp.def']
+  # global_lflags += ['-export-symbols', 'gimpui.def']
+endif
+
+
+global_cflags += [
+  '-DG_LOG_DOMAIN="'+ 'LibGimp' + '"',
+  '-DGIMP_COMPILATION',
+]
+
 libgimp_sources = [
   'gimp_pdb.c',
   'gimp.c',
@@ -109,3 +147,4 @@ libgimp_sources = [
   'gimpvectors.c',
   'gimpzoompreview.c',
 ]
+

@@ -99,6 +99,7 @@ endif
 
 ################################################################################
 # Dependencies
+math              = cc.find_library('m')
 
 atk               = dependency('atk',                version: '>=2.2.0')
 
@@ -118,10 +119,10 @@ freetype2         = dependency('freetype2',          version: '>=2.1.7')
 gdk_pixbuf_minver = '>=2.30.8'
 gdk_pixbuf        = dependency('gdk-pixbuf-2.0',     version: gdk_pixbuf_minver)
 
-gegl_minver       = '>=0.2.0'
-gegl              = dependency('gegl-0.2',           version: gegl_minver)
-# gegl_minver       = '>=0.3.21'
-# gegl              = dependency('gegl-0.3',           version: gegl_minver)
+# gegl_minver       = '>=0.2.0'
+# gegl              = dependency('gegl-0.2',           version: gegl_minver)
+gegl_minver       = '>=0.3.21'
+gegl              = dependency('gegl-0.3',           version: gegl_minver)
 
 gexiv2            = dependency('gexiv2',             version: '>=0.10.6')
 
@@ -130,6 +131,7 @@ gio_specific_name = 'gio-' + (os_win32 ? 'windows-2.0' : 'unix-2.0')
 gio_specific      = dependency(gio_specific_name)
 
 glib              = dependency('glib-2.0',           version: '>=2.43.0')
+gobject           = dependency('gobject-2.0',        version: '>=2.43.0')
 gmodule           = dependency('gmodule-no-export-2.0')
 
 gtk2_minver       = '>=2.24.10'
@@ -757,11 +759,11 @@ subdir('po-python')
 subdir('po-script-fu')
 subdir('po-tips')
 
-# Libraries
+# Libraries (order here is important!)
 subdir('libgimpbase')
 subdir('libgimpcolor')
-subdir('libgimpconfig')
 subdir('libgimpmath')
+subdir('libgimpconfig')
 subdir('libgimpmodule')
 subdir('libgimpthumb')
 subdir('libgimpwidgets')
