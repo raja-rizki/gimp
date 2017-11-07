@@ -204,6 +204,11 @@ if platform_win32
   endif
 endif
 
+# Check for finite or isfinite
+has_finite  = cc.has_function('finite',   prefix: '#include <math.h>')
+has_isfinite= cc.has_function('isfinite', prefix: '#include <math.h>')
+conf.set('HAVE_FINITE',   has_finite)
+conf.set('HAVE_ISFINITE', has_isfinite)
 
 # Check for compiler CPU extensions
 
@@ -770,10 +775,10 @@ subdir('libgimpwidgets')
 subdir('libgimp')
 
 # Executables, plugins
-# subdir('modules')
+subdir('modules')
 # subdir('plug-ins')
-# subdir('tools')
-# subdir('app')
+subdir('tools')
+subdir('app')
 
 
 # subdir('build')
