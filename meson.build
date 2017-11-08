@@ -56,6 +56,8 @@ sysconf_version    = '2.0'
 tool_version       = '2.0'
 user_version       = '2.9'
 
+gimp_command = 'gimp-' + app_version
+
 stable = (minor_version % 2 == 0)
 conf.set10('GIMP_UNSTABLE', not stable)
 
@@ -109,6 +111,8 @@ babl              = dependency('babl',               version: babl_minver)
 
 cairo_minver      = '>=1.12.2'
 cairo             = dependency('cairo',              version: cairo_minver)
+
+dbus_glib         = dependency('dbus-glib-1')
 
 fontconfig_minver = os_win32 ? '>=2.11.1' : '>=2.2.0'
 fontconfig_name   = 'fontconfig' + (os_win32 ? '_win32' : '')

@@ -49,9 +49,23 @@ executable('test-config',
     libgimpconfig,
     libgimpcolor,
     libgimpmath,
-    libappconfig,
+    libgimpmodule,
+    libgimpthumb,
+
     libappcore,
-  ]
-
-
+    libappconfig,
+    libappfile,
+    libappgegl,
+    libappinternalprocs,
+    libapplayermodes,
+    libapplayermodeslegacy,
+    libappoperations,
+    libapppaint,
+    libapppdb,
+    libappplugin,
+    libapptext,
+    libappvectors,
+    libappxcf,
+  ],
 )
+
