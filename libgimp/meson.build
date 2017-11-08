@@ -1,150 +1,354 @@
 
-global_cflags = []
-global_lflags = []
+gimpenums_notail = custom_target('gimpenums.c_notail',
+  input : [ 'gimpenums.h', ],
+  output: [ 'gimpenums.c_notail', ],
+  command: [
+    gimp_mkenums,
+    '--fhead','#include "config.h"\n'+
+              '#include <gio/gio.h>\n'+
+              '#undef GIMP_DISABLE_DEPRECATED\n'+
+              '#include "libgimpbase/gimpbase.h"\n'+
+              '#include "libgimpbase/gimpbase-private.h"\n'+
+              '#include "libgimpconfig/gimpconfigenums.h"\n'+
+              '#include "gimpenums.h"\n',
+    '--fprod','/* enumerations from "@filename@" */',
+    '--vhead','GType\n'+
+              '@enum_name@_get_type (void)\n'+
+              '{\n'+
+              '  static const G@Type@Value values[] =\n'+
+              '  {',
+    '--vprod','    { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
+    '--vtail','    { 0, NULL, NULL }\n'+
+              '  };\n',
+    '--dhead','  static const Gimp@Type@Desc descs[] =\n'+
+              '  {',
+    '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },',
+    '--dtail','    { 0, NULL, NULL }\n'+
+              '  };\n'+
+              '\n'+
+              '  static GType type = 0;\n'+
+              '\n'+
+              '  if (G_UNLIKELY (! type))\n'+
+              '    {\n'+
+              '      type = g_@type@_register_static ("@EnumName@", values);\n'+
+              '      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");\n'+
+              '      gimp_type_set_translation_context (type, "@enumnick@");\n'+
+              '      gimp_@type@_set_value_descriptions (type, descs);\n'+
+              '    }\n'+
+              '\n'+
+              '  return type;\n'+
+              '}\n',
+    '@INPUT@',
+  ],
+  capture: true,
+)
 
-global_cflags += [
-  '-DPREFIX="'+ prefix + '"',
-  '-DGIMPDIR="'+ gimpdir + '"',
-  '-DDATADIR="'+ datadir + '"',
-  '-DLOCALEDIR="'+ localedir + '"',
-  '-DPLUGINDIR="'+ plugindir + '"',
-  '-DSYSCONFDIR="'+ sysconfdir + '"',
-  '-DGIMP_PACKAGE="'+ gettext_package + '"',
-  '-DGIMP_DATA_VERSION="'+ data_version + '"',
-  '-DGIMP_USER_VERSION="'+ user_version + '"',
-  '-DGIMP_SYSCONF_VERSION="'+ sysconf_version + '"',
-  '-DGIMP_PLUGIN_VERSION="'+ plugin_version + '"',
-]
+gimpenums = custom_target('gimpenums.c',
+  input : [ gimpenums_notail, 'gimpenums.c.tail', ],
+  output: [ 'gimpenums.c', ],
+  command: [ 'cat', '@INPUT@' ],
+  capture: true,
+)
 
-if platform_win32
-  global_cflags += '-no-undefined'
-endif
+gimpuimarshal = gnome.genmarshal('gimpuimarshal',
+  prefix: '_gimpui_marshal',
+  sources: 'gimpuimarshal.list',
+  install_header: false,
+)
 
-if platform_osx
-  global_cflags += '-xobjective-c'
-  global_lflags += ['-framework', 'Cocoa']
-endif
-
-if os_win32
-  global_lflags += '-lexchndl'
-  # global_lflags += ['-export-symbols', 'gimp.def']
-  # global_lflags += ['-export-symbols', 'gimpui.def']
-endif
-
-
-global_cflags += [
-  '-DG_LOG_DOMAIN="'+ 'LibGimp' + '"',
-  '-DGIMP_COMPILATION',
-]
-
-libgimp_sources = [
+libgimp_top_pdbwrappers = [
   'gimp_pdb.c',
-  'gimp.c',
-  'gimpaspectpreview.c',
   'gimpbrush_pdb.c',
   'gimpbrushes_pdb.c',
-  'gimpbrushes.c',
-  'gimpbrushmenu.c',
   'gimpbrushselect_pdb.c',
-  'gimpbrushselect.c',
-  'gimpbrushselectbutton.c',
   'gimpbuffer_pdb.c',
   'gimpchannel_pdb.c',
-  'gimpchannel.c',
   'gimpcolor_pdb.c',
   'gimpcontext_pdb.c',
   'gimpdebug_pdb.c',
   'gimpdisplay_pdb.c',
   'gimpdrawable_pdb.c',
-  'gimpdrawable.c',
   'gimpdrawablecolor_pdb.c',
-  'gimpdrawablepreview.c',
   'gimpdrawabletransform_pdb.c',
   'gimpdynamics_pdb.c',
   'gimpedit_pdb.c',
-  'gimpedit.c',
-  'gimpexport.c',
   'gimpfileops_pdb.c',
   'gimpfloatingsel_pdb.c',
-  'gimpfontmenu.c',
   'gimpfonts_pdb.c',
   'gimpfontselect_pdb.c',
-  'gimpfontselect.c',
-  'gimpfontselectbutton.c',
   'gimpgimprc_pdb.c',
-  'gimpgimprc.c',
   'gimpgradient_pdb.c',
-  'gimpgradientmenu.c',
   'gimpgradients_pdb.c',
-  'gimpgradients.c',
   'gimpgradientselect_pdb.c',
-  'gimpgradientselect.c',
-  'gimpgradientselectbutton.c',
   'gimphelp_pdb.c',
   'gimpimage_pdb.c',
-  'gimpimage.c',
   'gimpimagecolorprofile_pdb.c',
-  'gimpimagecolorprofile.c',
-  'gimpimagecombobox.c',
   'gimpimageconvert_pdb.c',
   'gimpimagegrid_pdb.c',
   'gimpimageguides_pdb.c',
-  'gimpimagemetadata.c',
   'gimpimagesamplepoints_pdb.c',
   'gimpimageselect_pdb.c',
   'gimpimagetransform_pdb.c',
   'gimpimageundo_pdb.c',
   'gimpitem_pdb.c',
-  'gimpitemcombobox.c',
   'gimpitemtransform_pdb.c',
   'gimplayer_pdb.c',
-  'gimplayer.c',
-  'gimpmenu.c',
   'gimpmessage_pdb.c',
   'gimppainttools_pdb.c',
   'gimppalette_pdb.c',
-  'gimppalette.c',
-  'gimppalettemenu.c',
   'gimppalettes_pdb.c',
-  'gimppalettes.c',
   'gimppaletteselect_pdb.c',
-  'gimppaletteselect.c',
-  'gimppaletteselectbutton.c',
   'gimppaths_pdb.c',
   'gimppattern_pdb.c',
-  'gimppatternmenu.c',
   'gimppatterns_pdb.c',
-  'gimppatterns.c',
   'gimppatternselect_pdb.c',
-  'gimppatternselect.c',
-  'gimppatternselectbutton.c',
-  'gimppixbuf.c',
-  'gimppixelfetcher.c',
-  'gimppixelrgn.c',
   'gimpplugin_pdb.c',
-  'gimpplugin.c',
-  'gimpprocbrowserdialog.c',
   'gimpproceduraldb_pdb.c',
-  'gimpproceduraldb.c',
-  'gimpprocview.c',
   'gimpprogress_pdb.c',
-  'gimpprogress.c',
-  'gimpprogressbar.c',
-  'gimpregioniterator.c',
-  'gimpselectbutton.c',
   'gimpselection_pdb.c',
-  'gimpselection.c',
   'gimpselectiontools_pdb.c',
   'gimptextlayer_pdb.c',
   'gimptexttool_pdb.c',
-  'gimptile.c',
-  'gimptilebackendplugin.c',
   'gimptransformtools_pdb.c',
-  'gimpui.c',
   'gimpunit_pdb.c',
-  'gimpunitcache.c',
   'gimpvectors_pdb.c',
-  'gimpvectors.c',
-  'gimpzoompreview.c',
 ]
 
+libgimp_top_pdbheaders = [
+  'gimp_pdb_headers.h',
+  'gimp_pdb.h',
+  'gimpbrush_pdb.h',
+  'gimpbrushes_pdb.h',
+  'gimpbrushselect_pdb.h',
+  'gimpbuffer_pdb.h',
+  'gimpchannel_pdb.h',
+  'gimpcolor_pdb.h',
+  'gimpcontext_pdb.h',
+  'gimpdebug_pdb.h',
+  'gimpdisplay_pdb.h',
+  'gimpdrawable_pdb.h',
+  'gimpdrawablecolor_pdb.h',
+  'gimpdrawabletransform_pdb.h',
+  'gimpdynamics_pdb.h',
+  'gimpedit_pdb.h',
+  'gimpfileops_pdb.h',
+  'gimpfloatingsel_pdb.h',
+  'gimpfonts_pdb.h',
+  'gimpfontselect_pdb.h',
+  'gimpgimprc_pdb.h',
+  'gimpgradient_pdb.h',
+  'gimpgradients_pdb.h',
+  'gimpgradientselect_pdb.h',
+  'gimphelp_pdb.h',
+  'gimpimage_pdb.h',
+  'gimpimagecolorprofile_pdb.h',
+  'gimpimageconvert_pdb.h',
+  'gimpimagegrid_pdb.h',
+  'gimpimageguides_pdb.h',
+  'gimpimagesamplepoints_pdb.h',
+  'gimpimageselect_pdb.h',
+  'gimpimagetransform_pdb.h',
+  'gimpimageundo_pdb.h',
+  'gimpitem_pdb.h',
+  'gimpitemtransform_pdb.h',
+  'gimplayer_pdb.h',
+  'gimpmessage_pdb.h',
+  'gimppainttools_pdb.h',
+  'gimppalette_pdb.h',
+  'gimppalettes_pdb.h',
+  'gimppaletteselect_pdb.h',
+  'gimppaths_pdb.h',
+  'gimppattern_pdb.h',
+  'gimppatterns_pdb.h',
+  'gimppatternselect_pdb.h',
+  'gimpplugin_pdb.h',
+  'gimpproceduraldb_pdb.h',
+  'gimpprogress_pdb.h',
+  'gimpselection_pdb.h',
+  'gimpselectiontools_pdb.h',
+  'gimptextlayer_pdb.h',
+  'gimptexttool_pdb.h',
+  'gimptransformtools_pdb.h',
+  'gimpunit_pdb.h',
+  'gimpvectors_pdb.h',
+]
+
+libgimp_top_sources = [
+  'gimp.c',
+  'gimpbrushes.c',
+  'gimpbrushselect.c',
+  'gimpchannel.c',
+  'gimpdrawable.c',
+  'gimpedit.c',
+  'gimpfontselect.c',
+  'gimpgimprc.c',
+  'gimpgradients.c',
+  'gimpgradientselect.c',
+  'gimpimage.c',
+  'gimpimagecolorprofile.c',
+  'gimplayer.c',
+  'gimppalette.c',
+  'gimppalettes.c',
+  'gimppaletteselect.c',
+  'gimppatterns.c',
+  'gimppatternselect.c',
+  'gimppixbuf.c',
+  'gimppixelfetcher.c',
+  'gimppixelrgn.c',
+  'gimpplugin.c',
+  'gimpproceduraldb.c',
+  'gimpprogress.c',
+  'gimpregioniterator.c',
+  'gimpselection.c',
+  'gimptile.c',
+  'gimptilebackendplugin.c',
+  'gimpunitcache.c',
+  'gimpvectors.c',
+  gimpenums,
+  libgimp_top_pdbwrappers,
+]
+
+libgimpui_sources = [
+  'gimpaspectpreview.c',
+  'gimpbrushmenu.c',
+  'gimpbrushselectbutton.c',
+  'gimpdrawablepreview.c',
+  'gimpexport.c',
+  'gimpfontmenu.c',
+  'gimpfontselectbutton.c',
+  'gimpgradientmenu.c',
+  'gimpgradientselectbutton.c',
+  'gimpimagecombobox.c',
+  'gimpimagemetadata.c',
+  'gimpitemcombobox.c',
+  'gimpmenu.c',
+  'gimppalettemenu.c',
+  'gimppaletteselectbutton.c',
+  'gimppatternmenu.c',
+  'gimppatternselectbutton.c',
+  'gimpprocbrowserdialog.c',
+  'gimpprocview.c',
+  'gimpprogressbar.c',
+  'gimpselectbutton.c',
+  'gimpui.c',
+  'gimpzoompreview.c',
+  gimpuimarshal,
+]
+
+libgimp_top_headers = [
+  'gimp.h',
+  'gimpaspectpreview.h',
+  'gimpbrushes.h',
+  'gimpbrushmenu.h',
+  'gimpbrushselect.h',
+  'gimpbrushselectbutton.h',
+  'gimpchannel.h',
+  'gimpdrawable.h',
+  'gimpdrawablepreview.h',
+  'gimpedit.h',
+  'gimpenums.h',
+  'gimpexport.h',
+  'gimpfontmenu.h',
+  'gimpfontselect.h',
+  'gimpfontselectbutton.h',
+  'gimpgimprc.h',
+  'gimpgradientmenu.h',
+  'gimpgradients.h',
+  'gimpgradientselect.h',
+  'gimpgradientselectbutton.h',
+  'gimpimage.h',
+  'gimpimagecolorprofile.h',
+  'gimpimagecombobox.h',
+  'gimpimagemetadata.h',
+  'gimpitemcombobox.h',
+  'gimplayer.h',
+  'gimpmenu.h',
+  'gimppalette.h',
+  'gimppalettemenu.h',
+  'gimppalettes.h',
+  'gimppaletteselect.h',
+  'gimppaletteselectbutton.h',
+  'gimppatternmenu.h',
+  'gimppatterns.h',
+  'gimppatternselect.h',
+  'gimppatternselectbutton.h',
+  'gimppixbuf.h',
+  'gimppixelfetcher.h',
+  'gimppixelrgn.h',
+  'gimpplugin.h',
+  'gimpprocbrowserdialog.h',
+  'gimpproceduraldb.h',
+  'gimpprocview.h',
+  'gimpprogress.h',
+  'gimpprogressbar.h',
+  'gimpregioniterator.h',
+  'gimpselectbutton.h',
+  'gimpselection.h',
+  'gimptile.h',
+  'gimptypes.h',
+  'gimpui.h',
+  'gimpuitypes.h',
+  'gimpvectors.h',
+  'gimpzoompreview.h',
+  libgimp_top_pdbheaders,
+]
+
+
+libgimp_top_cflags = [
+  '-DG_LOG_DOMAIN="LibGimp"',
+  '-DGIMP_COMPILATION',
+]
+
+libgimp_top_lflags = [
+  libgimpbase,
+  libgimpcolor,
+  libgimpconfig,
+]
+
+if os_win32
+  libgimp_top_lflags += ['-export-symbols', 'gimp.def']
+  libgimp_top_lflags += '-lexchndl'
+endif
+
+
+libgimp = library('gimp-'+ api_version,
+  libgimp_top_sources,
+  include_directories: rootInclude,
+  dependencies: [
+    gegl, gexiv2, gtk2,
+  ],
+  c_args:     [ libgimp_cflags, libgimp_top_cflags, ],
+  link_with:  [ libgimp_lflags, libgimp_top_lflags, ],
+)
+
+
+
+libgimpui_cflags = libgimp_top_cflags
+libgimpui_lflags = [
+  libgimp,
+  libgimpbase,
+  libgimpcolor,
+  libgimpmodule,
+  libgimpwidgets,
+]
+
+if os_win32
+  libgimpui_lflags += ['-export-symbols', 'gimpui.def']
+  libgimpui_lflags += '-lexchndl'
+endif
+
+libgimpui = library('gimpui-'+ api_version,
+  libgimpui_sources,
+  include_directories: rootInclude,
+  dependencies: [
+    gegl, gexiv2, gtk2,
+  ],
+  c_args:     [ libgimp_cflags, libgimpui_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpui_lflags, ],
+)
+
+
+install_headers(
+  libgimp_top_headers,
+  install_dir: join_paths(gimp_api_name, 'libgimp'),
+)

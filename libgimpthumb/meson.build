@@ -1,42 +1,40 @@
 
-global_cflags = []
-global_lflags = []
-
-global_cflags += [
-]
-
-if platform_win32
-  global_cflags += '-no-undefined'
-endif
-
-if platform_osx
-  global_cflags += '-xobjective-c'
-  global_lflags += ['-framework', 'Cocoa']
-endif
-
-if os_win32
-  # global_lflags += ['-export-symbols', 'gimpmath.def']
-endif
-
-
-global_cflags += [
-  '-DG_LOG_DOMAIN="'+ 'LibGimpThumb' + '"',
-  '-DGIMP_THUMB_COMPILATION',
-]
-
-
+gimpthumbenums = custom_target('gimpthumb-enums.c',
+  input : [ 'gimpthumb-enums.h', ],
+  output: [ 'gimpthumb-enums.c', ],
+  command: [
+    gimp_mkenums,
+    '--fhead','#include "config.h"\n'+
+              '#include <glib-object.h>\n'+
+              '#include "gimpthumb-enums.h"\n',
+    '--fprod','/* enumerations from "@filename@" */\n',
+    '--vhead','GType\n'+
+              '@enum_name@_get_type (void)\n'+
+              '{\n'+
+              '  static const G@Type@Value values[] =\n'+
+              '  {',
+    '--vprod','    { @VALUENAME@, @valuedesc@, "@valuenick@" },',
+    '--vtail','    { 0, NULL, NULL }\n'+
+              '  };\n'+
+              '\n'+
+              '  static GType type = 0;\n'+
+              '\n'+
+              '  if (G_UNLIKELY (! type))\n'+
+              '    type = g_@type@_register_static ("@EnumName@", values);\n'+
+              '\n'+
+              '  return type;\n'+
+              '}\n',
+    '@INPUT@',
+  ],
+  capture: true,
+)
 
 libgimpthumb_sources = [
   'gimpthumb-error.c',
   'gimpthumb-utils.c',
   'gimpthumbnail.c',
+  gimpthumbenums,
 ]
-
-# TODO mkenums
-libgimpthumb_sources += [
-  'gimpthumb-enums.c',
-]
-
 
 libgimpthumb_headers = [
   'gimpthumb-enums.h',
@@ -48,30 +46,45 @@ libgimpthumb_headers = [
 ]
 
 
+libgimpthumb_cflags = [
+  '-DG_LOG_DOMAIN="LibGimpThumb"',
+  '-DGIMP_THUMB_COMPILATION',
+]
+
+libgimpthumb_lflags = [
+  libgimpbase,
+]
+
+if os_win32
+  libgimpthumb_lflags += ['-export-symbols', 'gimpthumb.def']
+endif
+
+
+
 libgimpthumb = library('gimpthumb-'+ api_version,
   libgimpthumb_sources,
   include_directories: rootInclude,
   dependencies: [
     gdk_pixbuf, glib, gio, gobject,
   ],
-  c_args: global_cflags,
-  link_with: [ global_lflags, libgimpbase, ],
+  c_args:     [ libgimp_cflags, libgimpthumb_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpthumb_lflags, ],
 )
 
 install_headers(
   libgimpthumb_headers,
-  install_dir: join_paths('gimp-' + api_version, 'libgimpthumb'),
+  install_dir: join_paths(gimp_api_name, 'libgimpthumb'),
 )
 
 
-# test programs, not to be built by default and never installed
+# Test program, not installed
 gimp_thumbnail_list = executable('gimp-thumbnail-list',
   'gimp-thumbnail-list.c',
   include_directories: rootInclude,
   dependencies: [
-    gdk_pixbuf, glib, gio, gobject,
+    gdk_pixbuf,
   ],
-  c_args: global_cflags,
-  link_with: libgimpthumb,
+  c_args:     [ libgimp_cflags, libgimpthumb_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpthumb_lflags, libgimpthumb, ],
   install: false,
 )

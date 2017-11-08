@@ -1,33 +1,3 @@
-
-global_cflags = []
-global_lflags = []
-
-global_cflags += [
-]
-
-if platform_win32
-  global_cflags += '-no-undefined'
-endif
-
-if platform_osx
-  global_cflags += '-xobjective-c'
-  global_lflags += ['-framework', 'Cocoa']
-endif
-
-if os_win32
-  # global_lflags += '-lole32'
-  # global_lflags += ['-export-symbols', 'gimpbase.def']
-endif
-
-
-global_cflags += [
-  '-DG_LOG_DOMAIN="'+ 'LibGimpColor' + '"',
-  '-DGIMP_COLOR_COMPILATION',
-]
-
-
-
-
 libgimpcolor_sources = [
   'gimpadaptivesupersample.c',
   'gimpbilinear.c',
@@ -61,31 +31,46 @@ libgimpcolor_headers = [
   'gimprgb.h',
 ]
 
+libgimpcolor_cflags = [
+  '-DG_LOG_DOMAIN="LibGimpColor"',
+  '-DGIMP_COLOR_COMPILATION',
+]
+libgimpcolor_lflags = [
+  libgimpbase,
+]
 
-libgimpcolor = library('gimpcolor-'+ api_version,
+if os_win32
+  libgimpcolor_lflags += '-lole32'
+  libgimpcolor_lflags += ['-export-symbols', 'gimpcolor.def']
+endif
+
+
+libgimpcolor = library('gimpcolor-' + api_version,
   libgimpcolor_sources,
   include_directories: rootInclude,
   dependencies: [
     cairo, gdk_pixbuf, gegl, lcms, math,
   ],
-  c_args: global_cflags,
-  link_with: [ global_lflags, libgimpbase, ],
+  c_args:     [ libgimp_cflags, libgimpcolor_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpcolor_lflags, ],
 )
 
 install_headers(
   libgimpcolor_headers,
-  install_dir: join_paths('gimp-' + api_version, 'libgimpcolor'),
+  install_dir: join_paths(gimp_api_name, 'libgimpcolor'),
 )
 
 
-# test programs, not to be built by default and never installed
-test_color_parser = executable('test-color-parser',
+# Test program, not installed
+executable('test-color-parser',
   'test-color-parser.c',
   include_directories: rootInclude,
   dependencies: [
-    babl, cairo, gdk_pixbuf, gegl, glib,
+    cairo, gdk_pixbuf, gegl, lcms, math,
+    babl,
+    # glib,
   ],
-  c_args: global_cflags,
-  link_with: libgimpcolor,
+  c_args:     [ libgimp_cflags, libgimpcolor_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpcolor_lflags, libgimpcolor, ],
   install: false,
 )

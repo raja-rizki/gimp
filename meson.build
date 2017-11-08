@@ -57,6 +57,8 @@ tool_version       = '2.0'
 user_version       = '2.9'
 
 gimp_command = 'gimp-' + app_version
+gimp_api_name = 'gimp-' + api_version
+package_string = prettyname + ' ' + meson.project_version()
 
 stable = (minor_version % 2 == 0)
 conf.set10('GIMP_UNSTABLE', not stable)
@@ -256,6 +258,11 @@ conf.set10('USE_SSE', has_sse)
 has_altivec = cc.has_argument('-faltivec')
 cc.has_argument('-maltivec')
 cc.has_argument('-mabi=altivec')
+
+
+if os_win32
+  ole32 = cc.find_library('ole32')
+endif
 
 
 # TODO shared memory handling
@@ -675,6 +682,14 @@ add_project_arguments([
 )
 
 
+# Check for internal tools
+defcheck            = find_program(join_paths('tools', 'defcheck.py'))
+extract_vector_icon = find_program(join_paths('tools', 'extract-vector-icon.sh'))
+generate_changelog  = find_program(join_paths('tools', 'generate_changelog.sh'))
+generate_news       = find_program(join_paths('tools', 'generate-news'))
+gimp_mkenums        = find_program(join_paths('tools', 'gimp-mkenums'))
+gimppath2svg        = find_program(join_paths('tools', 'gimppath2svg.py'))
+module_dependencies = find_program(join_paths('tools', 'module-dependencies.py'))
 
 
 ################################################################################
@@ -745,7 +760,38 @@ has_nl_measurement = cc.has_function(
   prefix: '#include<langinfo.h>',
 )
 
+################################################################################
+# Set/regroup common CFlags for subdirs
+
+libgimp_cflags = [
+  '-DPREFIX="'+ prefix + '"',
+  '-DGIMPDIR="'+ gimpdir + '"',
+  '-DPACKAGE_STRING="'+ package_string + '"',
+  '-DDATADIR="'+ datadir + '"',
+  '-DLOCALEDIR="'+ localedir + '"',
+  '-DPLUGINDIR="'+ plugindir + '"',
+  '-DSYSCONFDIR="'+ sysconfdir + '"',
+  '-DGIMP_PACKAGE="'+ meson.project_name() + '"',
+  '-DGIMP_DATA_VERSION="'+ data_version + '"',
+  '-DGIMP_USER_VERSION="'+ user_version + '"',
+  '-DGIMP_SYSCONF_VERSION="'+ sysconf_version + '"',
+  '-DGIMP_PLUGIN_VERSION="'+ plugin_version + '"',
+]
+libgimp_lflags = []
+
+if platform_win32
+  libgimp_cflags += '-no-undefined'
+endif
+
+if platform_osx
+  libgimp_cflags += '-xobjective-c'
+  libgimp_lflags += ['-framework', 'Cocoa']
+endif
+
 rootInclude = include_directories('.')
+
+################################################################################
+# Subdirs
 
 # Data / Desktop / xml files
 subdir('cursors')
@@ -822,7 +868,7 @@ pkgconfig.generate(filebase: 'gimp-' + pkgconfig_version,
     '-lgimpbase-'   + api_version,
   ],
   subdirs: [
-    'gimp-' + api_version,
+    gimp_api_name,
   ],
   variables: [
     'gimpdatadir=' + datadir,
@@ -843,7 +889,7 @@ pkgconfig.generate(filebase: 'gimpthumb-' + pkgconfig_version,
     '-lgimpthumb-'  + api_version,
   ],
   subdirs: [
-    'gimp-' + api_version,
+    gimp_api_name,
   ],
 )
 pkgconfig.generate(filebase: 'gimpui-' + pkgconfig_version,
@@ -861,7 +907,7 @@ pkgconfig.generate(filebase: 'gimpui-' + pkgconfig_version,
     '-lgimpmodule-'  + api_version,
   ],
   subdirs: [
-    'gimp-' + api_version,
+    gimp_api_name,
   ],
 )
 

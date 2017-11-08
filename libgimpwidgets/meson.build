@@ -1,32 +1,57 @@
 
-global_cflags = []
-global_lflags = []
+gimpwidgetsenums = custom_target('gimpwidgetsenums.c',
+  input : [ 'gimpwidgetsenums.h', ],
+  output: [ 'gimpwidgetsenums.c', ],
+  command: [
+    gimp_mkenums,
+    '--fhead','#include "config.h"\n'+
+              '#include <gio/gio.h>\n'+
+              '#include "libgimpbase/gimpbase.h"\n'+
+              '#include "gimpwidgetsenums.h"\n'+
+              '#include "libgimp/libgimp-intl.h"\n',
+    '--fprod','/* enumerations from "@basename@" */\n',
+    '--vhead','GType\n'+
+              '@enum_name@_get_type (void)\n'+
+              '{\n'+
+              '  static const G@Type@Value values[] =\n'+
+              '  {',
+    '--vprod','    { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
+    '--vtail','    { 0, NULL, NULL }\n'+
+              '  };\n',
+    '--dhead','  static const Gimp@Type@Desc descs[] =\n'+
+              '  {',
+    '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },',
+    '--dtail','    { 0, NULL, NULL }\n'+
+              '  };\n'+
+              '\n'+
+              '  static GType type = 0;\n'+
+              '\n'+
+              '  if (G_UNLIKELY (! type))\n'+
+              '    {\n'+
+              '      type = g_@type@_register_static ("@EnumName@", values);\n'+
+              '      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");\n'+
+              '      gimp_type_set_translation_context (type, "@enumnick@");\n'+
+              '      gimp_@type@_set_value_descriptions (type, descs);\n'+
+              '    }\n'+
+              '\n'+
+              '  return type;\n'+
+              '}\n',
+    '@INPUT@',
+  ],
+  capture: true,
+)
 
-global_cflags += [
-]
+gimpwidgetsmarshal = gnome.genmarshal('gimpwidgetsmarshal',
+  prefix: '_gimp_widgets_marshal',
+  sources: 'gimpwidgetsmarshal.list',
+  install_header: false,
+)
 
-if platform_win32
-  global_cflags += '-no-undefined'
-  global_lflags += '-lgdi32'
+if gtk_mac_integration_ok
+  gimppickbutton = 'gimppickbutton-quartz.c'
+else
+  gimppickbutton = 'gimppickbutton-default.c'
 endif
-
-if platform_osx
-  global_cflags += '-xobjective-c'
-  global_lflags += ['-framework', 'Cocoa']
-endif
-
-if os_win32
-  # global_lflags += '-lole32'
-  # global_lflags += ['-export-symbols', 'gimpwidgets.def']
-endif
-
-
-global_cflags += [
-  '-DG_LOG_DOMAIN="'+ 'LibGimpWidgets' + '"',
-  '-DGIMP_WIDGETS_COMPILATION',
-]
-
-
 
 
 libgimpwidgets_sources = [
@@ -91,20 +116,9 @@ libgimpwidgets_sources = [
   'gimpwidgets.c',
   'gimpwidgetsutils.c',
   'gimpzoommodel.c',
-]
-
-if gtk_mac_integration_ok
-  libgimpwidgets_sources += 'gimppickbutton-quartz.c'
-  global_cflags += '-xobjective-c'
-else
-  libgimpwidgets_sources += 'gimppickbutton-default.c'
-endif
-
-# TODO mkenums
-libgimpwidgets_sources += [
-  'gimpwidgetsenums.c',
-  'gimpwidgetsmarshal.c',
-  'gimpwidgetsmarshal.h',
+  gimpwidgetsenums,
+  gimpwidgetsmarshal,
+  gimppickbutton,
 ]
 
 libgimpwidgets_headers = [
@@ -172,34 +186,52 @@ libgimpwidgets_headers = [
 ]
 
 
+libgimpwidgets_cflags = [
+  '-DG_LOG_DOMAIN="LibGimpWidgets"',
+  '-DGIMP_WIDGETS_COMPILATION',
+]
+
+libgimpwidgets_lflags = [
+  libgimpbase,
+  libgimpcolor,
+  libgimpconfig,
+]
+
+if os_win32
+  libgimpwidgets_lflags += ['-export-symbols', 'gimpwidgets.def']
+  libgimpwidgets_lflags += '-lgdi32'
+endif
+
+
 libgimpwidgets = library('gimpwidgets-'+ api_version,
   libgimpwidgets_sources,
   include_directories: rootInclude,
   dependencies: [
     gegl, gtk2, lcms, math
   ],
-  c_args: global_cflags,
-  link_with: [ global_lflags, libgimpbase, libgimpcolor, libgimpconfig, ],
+  c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpwidgets_lflags, ],
 )
 
 install_headers(
   libgimpwidgets_headers,
-  install_dir: join_paths('gimp-' + api_version, 'libgimpwidgets'),
+  install_dir: join_paths(gimp_api_name, 'libgimpwidgets'),
 )
 
 
-# test programs, not installed
+# Test programs, not installed
 
-# test_preview_area = executable('test-preview-area',
-#   'test-preview-area.c',
-#   include_directories: rootInclude,
-#   dependencies: [
-#     gtk2,
-#   ],
-#   c_args: global_cflags,
-#   link_with: libgimpbase,
-#   install: false,
-# )
+test_preview_area = executable('test-preview-area',
+  'test-preview-area.c',
+  include_directories: rootInclude,
+  dependencies: [
+    gtk2,
+  ],
+  c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpwidgets_lflags, libgimpwidgets, ],
+  install: false,
+  build_by_default: false,
+)
 
 test_eevl = executable('test-eevl',
   'test-eevl.c',
@@ -207,7 +239,7 @@ test_eevl = executable('test-eevl',
   dependencies: [
     glib, gtk2,
   ],
-  c_args: global_cflags,
-  link_with: [ libgimpcolor, libgimpwidgets, ],
+  c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpwidgets_lflags, libgimpwidgets, ],
   install: false,
 )

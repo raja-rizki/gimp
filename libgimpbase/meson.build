@@ -1,48 +1,91 @@
 
-global_cflags = []
-global_lflags = []
-
-global_cflags += [
-  '-DPREFIX="'+ prefix + '"',
-  '-DGIMPDIR="'+ gimpdir + '"',
-  '-DDATADIR="'+ datadir + '"',
-  '-DLOCALEDIR="'+ localedir + '"',
-  '-DPLUGINDIR="'+ plugindir + '"',
-  '-DSYSCONFDIR="'+ sysconfdir + '"',
-  '-DGIMP_PACKAGE="'+ gettext_package + '"',
-  '-DGIMP_DATA_VERSION="'+ data_version + '"',
-  '-DGIMP_USER_VERSION="'+ user_version + '"',
-  '-DGIMP_SYSCONF_VERSION="'+ sysconf_version + '"',
-  '-DGIMP_PLUGIN_VERSION="'+ plugin_version + '"',
-]
-
-
-if platform_win32
-  global_cflags += '-no-undefined'
-endif
-
-if platform_osx
-  global_cflags += '-xobjective-c'
-  global_lflags += ['-framework', 'Cocoa']
-endif
-
-if os_win32
-  global_lflags += '-lole32'
-  # global_lflags += ['-export-symbols', 'gimpbase.def']
-endif
-
-
-global_cflags += [
-  '-DG_LOG_DOMAIN="'+ 'LibGimpBase' + '"',
-  '-DGIMP_BASE_COMPILATION',
-]
+gimpbaseenums = custom_target('gimpbaseenums.c',
+  input : [ 'gimpbaseenums.h', ],
+  output: [ 'gimpbaseenums.c', ],
+  command: [
+    gimp_mkenums,
+    '--fhead','#include "config.h"\n'+
+              '#include <glib-object.h>\n'+
+              '#undef GIMP_DISABLE_DEPRECATED\n'+
+              '#include "gimpbasetypes.h"\n'+
+              '#include "libgimp/libgimp-intl.h"\n',
+    '--fprod','/* enumerations from "@basename@" */\n',
+    '--vhead','GType\n'+
+              '@enum_name@_get_type (void)\n'+
+              '{\n'+
+              '  static const G@Type@Value values[] =\n'+
+              '  {',
+    '--vprod','    { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
+    '--vtail','    { 0, NULL, NULL }\n'+
+              '  };\n',
+    '--dhead','  static const Gimp@Type@Desc descs[] =\n'+
+              '  {',
+    '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },',
+    '--dtail','    { 0, NULL, NULL }\n'+
+              '  };\n'+
+              '\n'+
+              '  static GType type = 0;\n'+
+              '\n'+
+              '  if (G_UNLIKELY (! type))\n'+
+              '    {\n'+
+              '      type = g_@type@_register_static ("@EnumName@", values);\n'+
+              '      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");\n'+
+              '      gimp_type_set_translation_context (type, "@enumnick@");\n'+
+              '      gimp_@type@_set_value_descriptions (type, descs);\n'+
+              '    }\n'+
+              '\n'+
+              '  return type;\n'+
+              '}\n',
+    '@INPUT@',
+  ],
+  capture: true,
+)
+gimpcompatenums = custom_target('gimpcompatenums.c',
+  input : [ 'gimpcompatenums.h', ],
+  output: [ 'gimpcompatenums.c', ],
+  command: [
+    gimp_mkenums,
+    '--fhead','#include "config.h"\n'+
+              '#include <glib-object.h>\n'+
+              '#include "gimpbasetypes.h"\n'+
+              '#include "gimpcompatenums.h"\n'+
+              '#include "libgimp/libgimp-intl.h"\n',
+    '--fprod','/* enumerations from "@basename@" */\n',
+    '--vhead','GType\n'+
+              '@enum_name@_get_type (void)\n'+
+              '{\n'+
+              '  static const G@Type@Value values[] =\n'+
+              '  {',
+    '--vprod','    { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
+    '--vtail','    { 0, NULL, NULL }\n'+
+              '  };\n',
+    '--dhead','  static const Gimp@Type@Desc descs[] =\n'+
+              '  {',
+    '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },',
+    '--dtail','    { 0, NULL, NULL }\n'+
+              '  };\n'+
+              '\n'+
+              '  static GType type = 0;\n'+
+              '\n'+
+              '  if (G_UNLIKELY (! type))\n'+
+              '    {\n'+
+              '      type = g_@type@_register_static ("@EnumName@", values);\n'+
+              '      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");\n'+
+              '      gimp_type_set_translation_context (type, "@enumnick@");\n'+
+              '      gimp_@type@_set_value_descriptions (type, descs);\n'+
+              '    }\n'+
+              '\n'+
+              '  return type;\n'+
+              '}\n',
+    '@INPUT@',
+  ],
+  capture: true,
+)
 
 libgimpbase_sources = [
   'gimpbase-private.c',
-  'gimpbaseenums.c',
   'gimpbasetypes.c',
   'gimpchecks.c',
-  'gimpcompatenums.c',
   'gimpcpuaccel.c',
   'gimpdatafiles.c',
   'gimpenv.c',
@@ -58,12 +101,8 @@ libgimpbase_sources = [
   'gimputils.c',
   'gimpvaluearray.c',
   'gimpwire.c',
-]
-
-# TODO add auto-generation targets for those files
-libgimpbase_sources += [
-  'gimpbaseenums.c',
-  'gimpcompatenums.c',
+  gimpbaseenums,
+  gimpcompatenums,
 ]
 
 libgimpbase_headers = [
@@ -88,33 +127,42 @@ libgimpbase_headers = [
   'gimpvaluearray.h',
 ]
 
+libgimpbase_cflags = [
+  '-DG_LOG_DOMAIN="LibGimpBase"',
+  '-DGIMP_BASE_COMPILATION',
+]
+libgimpbase_lflags = [ ]
 
+if os_win32
+  libgimpbase_lflags += '-lole32'
+  libgimpbase_lflags += ['-export-symbols', 'gimpbase.def']
+endif
 
 
 libgimpbase = library('gimpbase-' + api_version,
   libgimpbase_sources,
   include_directories: rootInclude,
   dependencies: [
-    gio, gexiv2, math,
+    gexiv2, gio, math,
   ],
-  c_args: global_cflags,
-  link_with: global_lflags,
+  c_args:     [ libgimp_cflags, libgimpbase_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpbase_lflags, ],
 )
 
 install_headers(
   libgimpbase_headers,
-  install_dir: join_paths('gimp-' + api_version, 'libgimpbase'),
+  install_dir: join_paths(gimp_api_name, 'libgimpbase'),
 )
 
 
-# test programs, not to be built by default and never installed
-test_cpu_accel = executable('test-cpu-accel',
+# Test program, not installed
+executable('test-cpu-accel',
   'test-cpu-accel.c',
   include_directories: rootInclude,
   dependencies: [
     glib,
   ],
-  c_args: global_cflags,
-  link_with: libgimpbase,
+  c_args:     [ libgimp_cflags, libgimpbase_cflags, ],
+  link_with:  [ libgimp_lflags, libgimpbase_lflags, libgimpbase, ],
   install: false,
 )
