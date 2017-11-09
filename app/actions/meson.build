@@ -103,5 +103,3 @@ libappactions = static_library('appactions',
     gegl, gdk_pixbuf, gtk2,
   ],
 )
-
-

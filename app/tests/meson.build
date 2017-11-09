@@ -6,7 +6,7 @@ apptests_deps = [
   pangocairo, gtk2, dbus_glib, gegl,
 ]
 apptests_links = [
-  # libapp,
+  libapp,
   libappactions,
   libappconfig,
   libappcore,
@@ -30,6 +30,13 @@ apptests_links = [
   libappvectors,
   libappwidgets,
   libappxcf,
+  libgimpbase,
+  libgimpcolor,
+  libgimpconfig,
+  libgimpmath,
+  libgimpmodule,
+  libgimpthumb,
+  libgimpwidgets,
 ]
 
 
