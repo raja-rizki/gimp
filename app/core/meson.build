@@ -245,6 +245,8 @@ libappcore_sources = [
   'gimpviewable.c',
   appcoreenums,
   appcoremarshal,
+  cursors_sources,
+  pickers_sources,
 ]
 
 libappcore = static_library('appcore',

@@ -735,7 +735,7 @@ add_project_arguments(
   '-Wold-style-definition',
   '-Wpointer-arith',
   '-Wreturn-type',
-  '-Wstrict-prototypes',
+  # '-Wstrict-prototypes',
   '-Wtype-limits',
 
   # '--omg-optimized',
