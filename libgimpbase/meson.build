@@ -1,4 +1,17 @@
 
+versionconfig = configuration_data()
+versionconfig.set('GIMP_MAJOR_VERSION', major_version)
+versionconfig.set('GIMP_MINOR_VERSION', minor_version)
+versionconfig.set('GIMP_MICRO_VERSION', micro_version)
+versionconfig.set('GIMP_VERSION',       meson.project_version())
+versionconfig.set('GIMP_API_VERSION',   api_version)
+gimpversion = configure_file(
+  input : 'gimpversion.h.in',
+  output: 'gimpversion.h',
+  configuration: versionconfig,
+)
+
+
 gimpbaseenums = custom_target('gimpbaseenums.c',
   input : [ 'gimpbaseenums.h', ],
   output: [ 'gimpbaseenums.c', ],
@@ -103,6 +116,7 @@ libgimpbase_sources = [
   'gimpwire.c',
   gimpbaseenums,
   gimpcompatenums,
+  gimpversion,
 ]
 
 libgimpbase_headers = [
@@ -112,7 +126,6 @@ libgimpbase_headers = [
   'gimpcpuaccel.h',
   'gimplimits.h',
   'gimpparam.h',
-  'gimpversion.h',
   'gimpchecks.h',
   'gimpdatafiles.h',
   'gimpenv.h',
@@ -125,6 +138,7 @@ libgimpbase_headers = [
   'gimpunit.h',
   'gimputils.h',
   'gimpvaluearray.h',
+  gimpversion,
 ]
 
 libgimpbase_cflags = [
