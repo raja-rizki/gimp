@@ -96,9 +96,7 @@ platform_win32 = (host_os.startswith('mingw') or host_os.startswith('cygwin'))
 os_win32 = host_os.startswith('mingw')
 
 platform_osx = host_os.startswith('darwin')
-if platform_osx
-  conf.set10('PLATFORM_OSX',  platform_osx)
-endif
+conf.set('PLATFORM_OSX',  platform_osx)
 
 
 ################################################################################
@@ -125,8 +123,6 @@ freetype2         = dependency('freetype2',          version: '>=2.1.7')
 gdk_pixbuf_minver = '>=2.30.8'
 gdk_pixbuf        = dependency('gdk-pixbuf-2.0',     version: gdk_pixbuf_minver)
 
-# gegl_minver       = '>=0.2.0'
-# gegl              = dependency('gegl-0.2',           version: gegl_minver)
 gegl_minver       = '>=0.3.21'
 gegl              = dependency('gegl-0.3',           version: gegl_minver)
 
