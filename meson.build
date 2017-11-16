@@ -461,6 +461,7 @@ if get_option('with-wmf')
   if not wmf_version.version_compare('>=0.2.8')
     error('libwmf version is too old (' + wmf_version + ', 0.2.8 required)')
   endif
+  MimeTypes += [ 'image/x-wmf', ]
 endif
 
 # libjasper
@@ -476,6 +477,7 @@ have_xmc = false
 if get_option('with-xmc')
   have_xmc = true
   xmc = dependency('xcursor')
+  MimeTypes += [ 'image/x-xcursor', ]
 endif
 
 # alsa
