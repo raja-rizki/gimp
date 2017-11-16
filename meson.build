@@ -789,6 +789,15 @@ rootInclude = include_directories('.')
 ################################################################################
 # Subdirs
 
+# Translations
+subdir('po')
+subdir('po-libgimp')
+subdir('po-plug-ins')
+subdir('po-python')
+subdir('po-script-fu')
+subdir('po-tags')
+subdir('po-tips')
+
 # Data / Desktop / xml files
 subdir('cursors')
 subdir('data')
@@ -802,14 +811,6 @@ subdir('themes')
 # Docs
 # subdir('devel-docs')
 # subdir('docs')
-
-# Translations
-subdir('po')
-subdir('po-libgimp')
-subdir('po-plug-ins')
-subdir('po-python')
-subdir('po-script-fu')
-subdir('po-tips')
 
 # Libraries (order here is important!)
 subdir('libgimpbase')

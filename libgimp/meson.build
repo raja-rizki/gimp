@@ -1,7 +1,7 @@
 
-gimpenums_notail = custom_target('gimpenums.c_notail',
+gimpenums_notail = custom_target('gimpenums.c.notail',
   input : [ 'gimpenums.h', ],
-  output: [ 'gimpenums.c_notail', ],
+  output: [ 'gimpenums.c.notail', ],
   command: [
     gimp_mkenums,
     '--fhead','#include "config.h"\n'+
