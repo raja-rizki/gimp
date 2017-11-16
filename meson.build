@@ -578,6 +578,7 @@ endif
 xmllint = find_program('xmllint', required: false)
 xsltproc= find_program('xsltproc',required: false)
 intltool_merge = find_program('intltool-merge')
+desktop_validate = find_program('desktop-file-validate')
 
 
 # Check for vector icons
@@ -804,7 +805,7 @@ subdir('po-tips')
 # Data / Desktop / xml files
 subdir('cursors')
 subdir('data')
-# subdir('desktop')
+subdir('desktop')
 subdir('etc')
 # subdir('icons')
 subdir('m4macros')
