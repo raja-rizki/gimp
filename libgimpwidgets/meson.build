@@ -190,6 +190,7 @@ libgimpwidgets_headers = [
 libgimpwidgets_cflags = [
   '-DG_LOG_DOMAIN="LibGimpWidgets"',
   '-DGIMP_WIDGETS_COMPILATION',
+  '-DMESON_BUILD',
 ]
 
 libgimpwidgets_lflags = [

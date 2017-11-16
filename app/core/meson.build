@@ -258,6 +258,7 @@ libappcore = static_library('appcore',
     '-DGIMPDIR="'+ gimpdir +'"',
     '-DGIMP_APP_VERSION="'+ app_version +'"',
     '-DGIMP_USER_VERSION="'+ user_version +'"',
+    '-DMESON_BUILD',
   ],
   dependencies: [
     cairo, gegl, gdk_pixbuf, libmypaint, gexiv2,
