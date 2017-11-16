@@ -575,6 +575,7 @@ endif
 # Check for XML tools
 xmllint = find_program('xmllint', required: false)
 xsltproc= find_program('xsltproc',required: false)
+intltool_merge = find_program('intltool-merge')
 
 
 # Check for vector icons

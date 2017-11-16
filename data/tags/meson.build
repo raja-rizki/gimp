@@ -1,17 +1,15 @@
 
-intltool_merge = find_program('intltool-merge')
-
 xmlfilename = 'gimp-tags-default.xml'
 
 gimp_tags_default = custom_target(xmlfilename,
-  input : xmlfilename+'.in',
-  output: xmlfilename,
+  input : [ xmlfilename+'.in', ],
+  output: [ xmlfilename, ],
 
   command: [
     intltool_merge,
     '--xml-style',
     '--utf8',
-    '--cache=intltool-merge-cache',
+    '--cache='+join_paths('@OUTDIR@', 'intltool-merge-cache'),
     potags_dir,
     '@INPUT@',
     '@OUTPUT@',
@@ -21,9 +19,9 @@ gimp_tags_default = custom_target(xmlfilename,
 )
 
 
-custom_target('validate',
-  input : gimp_tags_default,
-  output: [ 'validate' ],
+custom_target('validate-tags',
+  input : [ gimp_tags_default, ],
+  output: [ 'validate-tags' ],
   command: [
     xmllint,
     '--noout',

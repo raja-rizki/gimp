@@ -1,30 +1,48 @@
 
-xmlfile = 'gimp-tips.xml'
+xmlfilename = 'gimp-tips.xml'
 
-# i18n.merge_file(xmlfile,
-#   input : xmlfile + '.in',
-#   output: xmlfile,
-#
-#   po_dir: join_paths(meson.source_root(), 'po-tips'),
-#
-#   install: true,
-#   install_dir: join_paths(datadir, 'tips'),
-# )
-#
-#
-# if xsltproc.found()
-#   custom_target('fortunes',
-#     input : [ xmlfile, 'fortunes.xsl', ],
-#     output: 'fortunes',
-#     command: [
-#       xsltproc.path(),
-#       '--stringparam',
-#       'lang', 'en',
-#       '-o', '@OUTPUT@',
-#       '@INPUT1@',
-#     ],
-#     build_by_default: false,
-#   )
-# endif
+gimp_tips = custom_target(xmlfilename,
+  input : [ xmlfilename+'.in', ],
+  output: [ xmlfilename, ],
 
-# TODO
+  command: [
+    intltool_merge,
+    '--xml-style',
+    '--utf8',
+    '--cache='+join_paths('@OUTDIR@', 'intltool-merge-cache'),
+    potags_dir,
+    '@INPUT@',
+    '@OUTPUT@',
+  ],
+  install: true,
+  install_dir: join_paths(datadir, 'tips'),
+)
+
+
+custom_target('validate-tips',
+  input : [ gimp_tips, ],
+  output: [ 'validate-tips' ],
+  command: [
+    xmllint,
+    '--noout',
+    '--path', join_paths(meson.source_root(), meson.current_source_dir()),
+    '--valid', '@INPUT@',
+  ],
+  build_always: true,
+  build_by_default: false,
+)
+
+custom_target('fortunes-tips',
+  input : [ gimp_tips, 'fortunes.xsl', ],
+  output: [ 'fortunes-tips' ],
+  command: [
+    xsltproc,
+    '--stringparam', 'lang', 'en',
+    '--path', join_paths(meson.source_root(), meson.current_source_dir()),
+    '--output', '@OUTPUT@',
+    '@INPUT1@',
+    '@INPUT0@',
+  ],
+  build_always: true,
+  build_by_default: false,
+)
