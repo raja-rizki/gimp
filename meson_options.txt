@@ -1,4 +1,4 @@
-option('ansi',              type: 'boolean', value: true)
+option('ansi',              type: 'boolean', value: false)
 option('enable-mmx',        type: 'boolean', value: true)
 option('enable-mp',         type: 'boolean', value: true)
 option('enable-sse',        type: 'boolean', value: true)
