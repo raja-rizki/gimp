@@ -793,6 +793,10 @@ rootInclude = include_directories('.')
 ################################################################################
 # Subdirs
 
+# Tools (need libgimpbase now)
+subdir('libgimpbase')
+subdir('tools')
+
 # Translations
 subdir('po')
 subdir('po-libgimp')
@@ -807,7 +811,7 @@ subdir('cursors')
 subdir('data')
 subdir('desktop')
 subdir('etc')
-# subdir('icons')
+subdir('icons')
 subdir('m4macros')
 # subdir('menus')
 subdir('themes')
@@ -817,7 +821,6 @@ subdir('themes')
 # subdir('docs')
 
 # Libraries (order here is important!)
-subdir('libgimpbase')
 subdir('libgimpcolor')
 subdir('libgimpmath')
 subdir('libgimpconfig')
@@ -829,7 +832,6 @@ subdir('libgimp')
 # Executables, plugins
 subdir('modules')
 # subdir('plug-ins')
-subdir('tools')
 subdir('app')
 
 

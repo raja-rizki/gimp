@@ -247,6 +247,7 @@ libappcore_sources = [
   appcoremarshal,
   cursors_sources,
   pickers_sources,
+  icons_core_sources,
 ]
 
 libappcore = static_library('appcore',

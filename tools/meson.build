@@ -63,8 +63,13 @@ executable('test-clipboard',
 )
 
 if have_vector_icons
-  executable('invert-svg',
+  invert_svg_exe = executable('invert-svg',
     'invert-svg.c',
     dependencies: gio,
+  )
+  invert_svg = generator(
+    invert_svg_exe,
+    output: '@BASENAME@',
+    arguments: [ '@INPUT@', '@OUTPUT@' ],
   )
 endif

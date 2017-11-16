@@ -88,7 +88,7 @@ libgimpwidgets_sources = [
   'gimpframe.c',
   'gimphelpui.c',
   'gimphintbox.c',
-  # 'gimpicons.c',
+  'gimpicons.c',
   'gimpintcombobox.c',
   'gimpintstore.c',
   'gimpmemsizeentry.c',
@@ -119,6 +119,7 @@ libgimpwidgets_sources = [
   gimpwidgetsenums,
   gimpwidgetsmarshal,
   gimppickbutton,
+  icons_imgs_sources,
 ]
 
 libgimpwidgets_headers = [
