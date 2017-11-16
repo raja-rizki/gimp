@@ -81,6 +81,7 @@ libappdisplay_sources = [
   'gimptoolsheargrid.c',
   'gimptooltransformgrid.c',
   'gimptoolwidget.c',
+  gitversion_h,
 ]
 
 # TODO mkenums

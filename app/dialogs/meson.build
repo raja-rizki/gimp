@@ -43,6 +43,7 @@ libappdialogs_sources = [
   'vectors-export-dialog.c',
   'vectors-import-dialog.c',
   'vectors-options-dialog.c',
+  gitversion_h,
 ]
 
 # Auto-generated sources
