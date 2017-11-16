@@ -1,0 +1,82 @@
+Meson Port
+-----------
+
+* app
+  * display
+  * gegl
+  * operations
+  * paint
+  * plug-in
+  * text
+  * tools
+  * widgets
+* devel-docs
+  * app
+  * libgimp
+  * libgimpbase
+  * libgimpcolor
+  * libgimpconfig
+  * libgimpmath
+  * libgimpmodule
+  * libgimpthumb
+  * libgimpwidgets
+    * images
+    * tmpl
+  * tools
+* docs
+* icons
+  * Legacy
+  * Symbolic-Inverted
+* menus
+* modules
+* plug-ins
+  * common
+  * file-bmp
+  * file-exr
+  * file-faxg3
+  * file-fits
+  * file-fli
+  * file-ico
+  * file-jpeg
+  * file-psd
+  * file-raw
+  * file-sgi
+  * file-tiff
+  * file-webp
+  * flame
+  * fractal-explorer
+    * examples
+  * gfig
+    * gfig-examples
+    * images
+  * gimpressionist
+    * Brushes
+    * Paper
+    * Presets
+  * gradient-flare
+    * flares
+  * help
+  * help-browser
+  * ifs-compose
+  * imagemap
+    * images
+  * lighting
+    * images
+  * map-object
+  * metadata
+  * pagecurl
+  * print
+  * pygimp
+    * doc
+    * plug-ins
+  * screenshot
+  * script-fu
+    * ftx
+    * scripts
+      * images
+    * tinyscheme
+  * selection-to-path
+  * twain
+  * ui
+* *po-tags*
+* tools/pdbgen
