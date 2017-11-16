@@ -27,7 +27,6 @@ Meson Port
 * icons
   * Legacy
   * Symbolic-Inverted
-* menus
 * modules
 * plug-ins
   * common

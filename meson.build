@@ -813,7 +813,7 @@ subdir('desktop')
 subdir('etc')
 subdir('icons')
 subdir('m4macros')
-# subdir('menus')
+subdir('menus')
 subdir('themes')
 
 # Docs
