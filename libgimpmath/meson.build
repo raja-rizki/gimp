@@ -36,9 +36,11 @@ libgimpmath = library('gimpmath-' + api_version,
   ],
   c_args:     [ libgimp_cflags, libgimpmath_cflags, ],
   link_with:  [ libgimp_lflags, libgimpmath_lflags, ],
+  install: true,
+  version: so_version,
 )
 
 install_headers(
   libgimpmath_headers,
-  install_dir: join_paths(gimp_api_name, 'libgimpmath'),
+  subdir: join_paths(gimp_api_name, 'libgimpmath'),
 )

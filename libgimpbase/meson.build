@@ -161,11 +161,13 @@ libgimpbase = library('gimpbase-' + api_version,
   ],
   c_args:     [ libgimp_cflags, libgimpbase_cflags, ],
   link_with:  [ libgimp_lflags, libgimpbase_lflags, ],
+  install: true,
+  version: so_version,
 )
 
 install_headers(
   libgimpbase_headers,
-  install_dir: join_paths(gimp_api_name, 'libgimpbase'),
+  subdir: join_paths(gimp_api_name, 'libgimpbase'),
 )
 
 

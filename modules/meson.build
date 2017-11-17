@@ -45,6 +45,8 @@ libcolor_selector_cmyk = library('color-selector-cmyk',
   include_directories: rootInclude,
   dependencies: modules_deps,
   link_with: color_selector_libs,
+  install: true,
+  install_dir: join_paths(gimpplugindir, 'modules'),
 )
 
 libcolor_selector_water = library('color-selector-water',
@@ -52,6 +54,8 @@ libcolor_selector_water = library('color-selector-water',
   include_directories: rootInclude,
   dependencies: modules_deps,
   link_with: color_selector_libs,
+  install: true,
+  install_dir: join_paths(gimpplugindir, 'modules'),
 )
 
 libcolor_selector_wheel = library('color-selector-wheel',
@@ -62,6 +66,8 @@ libcolor_selector_wheel = library('color-selector-wheel',
   include_directories: rootInclude,
   dependencies: modules_deps,
   link_with: color_selector_libs,
+  install: true,
+  install_dir: join_paths(gimpplugindir, 'modules'),
 )
 
 if have_linuxinput
@@ -73,6 +79,8 @@ libcontroller_linux_input = library('controller-linux-input',
   include_directories: rootInclude,
   dependencies: modules_deps,
   link_with: controller_libs,
+  install: true,
+  install_dir: join_paths(gimpplugindir, 'modules'),
 )
 endif
 if have_directXinput
@@ -84,6 +92,8 @@ libcontroller_dx_input = library('controller-dx-input',
   include_directories: rootInclude,
   dependencies: [modules_deps, directx],
   link_with: [controller_libs, '-lrpcrt4'],
+  install: true,
+  install_dir: join_paths(gimpplugindir, 'modules'),
 )
 
 endif
@@ -93,6 +103,8 @@ libcontroller_midi = library('controller-midi',
   include_directories: rootInclude,
   dependencies:modules_deps,
   link_with: controller_libs,
+  install: true,
+  install_dir: join_paths(gimpplugindir, 'modules'),
 )
 endif
 
@@ -101,6 +113,8 @@ libdisplay_filter_color_blind = library('display-filter-color-blind',
   include_directories: rootInclude,
   dependencies: modules_deps,
   link_with: display_filter_libs,
+  install: true,
+  install_dir: join_paths(gimpplugindir, 'modules'),
 )
 
 libdisplay_filter_gamma = library('display-filter-gamma',
@@ -108,6 +122,8 @@ libdisplay_filter_gamma = library('display-filter-gamma',
   include_directories: rootInclude,
   dependencies: modules_deps,
   link_with: display_filter_libs,
+  install: true,
+  install_dir: join_paths(gimpplugindir, 'modules'),
 )
 
 libdisplay_filter_high_contrast = library('display-filter-high-contrast',
@@ -115,4 +131,6 @@ libdisplay_filter_high_contrast = library('display-filter-high-contrast',
   include_directories: rootInclude,
   dependencies: modules_deps,
   link_with: display_filter_libs,
+  install: true,
+  install_dir: join_paths(gimpplugindir, 'modules'),
 )

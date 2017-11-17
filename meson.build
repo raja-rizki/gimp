@@ -43,6 +43,7 @@ major_version = version[0].to_int()
 minor_version = version[1].to_int()
 micro_version = version[2].to_int()
 
+# TODO cleanup all this versions mess
 interface_age = 0
 binary_age = 100 * minor_version + micro_version
 
@@ -51,6 +52,8 @@ lt_revision = interface_age
 lt_age = binary_age - interface_age
 lt_version_info = '@0@:@1@:@2@'.format(lt_current, lt_revision, lt_age)
 lt_current_minus_age = lt_current - lt_age
+
+so_version = '@0@.@1@.@2@'.format(lt_revision, lt_current, lt_current_minus_age)
 
 api_version        = '2.0'
 app_version        = '2.9'

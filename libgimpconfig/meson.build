@@ -97,9 +97,11 @@ libgimpconfig = library('gimpconfig-' + api_version,
   ],
   c_args:     [ libgimp_cflags, libgimpconfig_cflags, ],
   link_with:  [ libgimp_lflags, libgimpconfig_lflags, ],
+  install: true,
+  version: so_version,
 )
 
 install_headers(
   libgimpconfig_headers,
-  install_dir: join_paths(gimp_api_name, 'libgimpconfig'),
+  subdir: join_paths(gimp_api_name, 'libgimpconfig'),
 )

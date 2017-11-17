@@ -33,11 +33,13 @@ libgimpmodule = library('gimpmodule-' + api_version,
   ],
   c_args:     [ libgimp_cflags, libgimpmodule_cflags, ],
   link_with:  [ libgimp_lflags, libgimpmodule_lflags, ],
+  install: true,
+  version: so_version,
 )
 
 install_headers(
   libgimpmodule_headers,
-  install_dir: join_paths(gimp_api_name, 'libgimpmodule'),
+  subdir: join_paths(gimp_api_name, 'libgimpmodule'),
 )
 
 

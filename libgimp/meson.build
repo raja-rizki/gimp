@@ -319,6 +319,8 @@ libgimp = library('gimp-'+ api_version,
   ],
   c_args:     [ libgimp_cflags, libgimp_top_cflags, ],
   link_with:  [ libgimp_lflags, libgimp_top_lflags, ],
+  install: true,
+  version: so_version,
 )
 
 
@@ -345,10 +347,12 @@ libgimpui = library('gimpui-'+ api_version,
   ],
   c_args:     [ libgimp_cflags, libgimpui_cflags, ],
   link_with:  [ libgimp_lflags, libgimpui_lflags, ],
+  install: true,
+  version: so_version,
 )
 
 
 install_headers(
   libgimp_top_headers,
-  install_dir: join_paths(gimp_api_name, 'libgimp'),
+  subdir: join_paths(gimp_api_name, 'libgimp'),
 )
