@@ -834,7 +834,7 @@ subdir('libgimp')
 
 # Executables, plugins
 subdir('modules')
-# subdir('plug-ins')
+subdir('plug-ins')
 subdir('app')
 
 
