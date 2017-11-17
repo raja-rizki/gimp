@@ -825,8 +825,8 @@ subdir('menus')
 subdir('themes')
 
 # Docs
-# subdir('devel-docs')
-# subdir('docs')
+subdir('devel-docs')
+subdir('docs')
 
 # Libraries (order here is important!)
 subdir('libgimpcolor')
