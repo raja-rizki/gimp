@@ -1094,7 +1094,7 @@ gimpiconsdir = join_paths(gimpdatadir, 'icons')
 
 themes = [
   'Color',
-  # 'Legacy',
+  'Legacy',
   'Symbolic',
   'Symbolic-Inverted',
 ]
