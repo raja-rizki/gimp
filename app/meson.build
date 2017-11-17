@@ -48,10 +48,9 @@ app_debug_files = files(
 )
 
 # Top-level library
-global_cflags = []
-global_lflags = []
-
-global_cflags += [
+app_lflags = [
+]
+app_cflags = [
   '-DGIMPDIR="'+ gimpdir + '"',
   '-DGIMP_USER_VERSION="'+ user_version +'"',
   '-DG_LOG_DOMAIN="Gimp"',
@@ -60,18 +59,18 @@ global_cflags += [
 ]
 
 if platform_win32
-  global_cflags += '-no-undefined'
-  global_lflags += '-lgdi32'
+  app_cflags += '-no-undefined'
+  app_lflags += '-lgdi32'
 endif
 
 if platform_osx
-  global_cflags += '-xobjective-c'
-  global_lflags += ['-framework', 'Cocoa']
+  app_cflags += '-xobjective-c'
+  app_lflags += ['-framework', 'Cocoa']
 endif
 
 if os_win32
-  global_lflags += [ '-mwindows', '-mexchndl', ]
-  # global_lflags += ['-export-symbols', 'gimpwidgets.def']
+  app_lflags += [ '-mwindows', '-mexchndl', ]
+  # app_lflags += ['-export-symbols', 'gimpwidgets.def']
 endif
 
 libapp_sources = [
@@ -91,13 +90,11 @@ libapp_sources = [
 libapp = static_library('app',
   libapp_sources,
   include_directories: [ rootInclude, rootAppInclude, configInclude, ],
-  c_args: global_cflags,
+  c_args: app_cflags,
   dependencies: [
     gegl, gdk_pixbuf, gtk2,
   ],
-  link_with: global_lflags,
-
-
+  link_with: app_lflags,
 )
 
 
@@ -140,27 +137,26 @@ app_links = [
   libgimpthumb,
   libgimpwidgets,
 ]
-
+app_deps = [
+  gio, gtk2, pangocairo, gegl, lcms, gexiv2,
+]
 
 # Executables
 
-# xcf/libappxcf.a						\
-# pdb/libappinternal-procs.a				\
-# pdb/libapppdb.a						\
-# plug-in/libappplug-in.a					\
-# vectors/libappvectors.a					\
-# core/libappcore.a					\
-# file/libappfile.a					\
-# text/libapptext.a					\
-# paint/libapppaint.a					\
-# operations/libappoperations.a				\
-# operations/layer-modes/libapplayermodes.a		\
-# operations/layer-modes-legacy/libapplayermodeslegacy.a	\
-# gegl/libappgegl.a					\
-# config/libappconfig.a					\
-# $(libgimpconfig)					\
-# $(libgimpmath)						\
-# $(libgimpthumb)						\
-# $(libgimpcolor)						\
-# $(libgimpmodule)					\
-# $(libgimpbase)						\
+gimpconsole_exe = executable('gimp-console-'+app_version,
+  'main.c',
+  c_args: app_cflags + [ '-DGIMP_CONSOLE_COMPILATION', ],
+  include_directories: [ rootInclude, ],
+  dependencies: app_deps,
+  link_with: app_links,
+  install: true,
+)
+
+gimpmain_exe = executable('gimp-'+app_version,
+  'main.c',
+  c_args: app_cflags + [ ],
+  include_directories: [ rootInclude, ],
+  dependencies: app_deps,
+  link_with: app_links,
+  install: true,
+)
