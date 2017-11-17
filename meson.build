@@ -619,14 +619,9 @@ endif
 
 # Check for gtk-doc and docbook-tools
 have_gtk_doc = false
-have_gtk_doc_app = false
 if get_option('with-gtk-doc')
   gtk_doc_scan = find_program('gtkdoc-scan', required : true)
   have_gtk_doc = true
-endif
-if get_option('with-gtk-doc-app')
-  gtk_doc_scan = find_program('gtkdoc-scan', required : true)
-  have_gtk_doc_app  = true
 endif
 
 enable_default_bin = get_option('enable-default-bin')
