@@ -637,10 +637,10 @@ if gimpdir == ''
   gimpdir = meson.project_name()
 endif
 
-datadir    = join_paths(get_option('datadir'),    meson.project_name(), data_version)
-plugindir  = join_paths(get_option('libdir'),     meson.project_name(), plugin_version)
-sysconfdir = join_paths(get_option('sysconfdir'), meson.project_name(), sysconf_version)
-manpagedir = gimpdir
+gimpdatadir    = join_paths(get_option('datadir'),    meson.project_name(), data_version)
+gimpplugindir  = join_paths(get_option('libdir'),     meson.project_name(), plugin_version)
+gimpsysconfdir = join_paths(get_option('sysconfdir'), meson.project_name(), sysconf_version)
+gimpmanpagedir = gimpdir
 localedir  = join_paths(get_option('datadir'), 'locale')
 
 
@@ -772,10 +772,10 @@ libgimp_cflags = [
   '-DPREFIX="'+ prefix + '"',
   '-DGIMPDIR="'+ gimpdir + '"',
   '-DPACKAGE_STRING="'+ package_string + '"',
-  '-DDATADIR="'+ datadir + '"',
+  '-DDATADIR="'+ gimpdatadir + '"',
   '-DLOCALEDIR="'+ localedir + '"',
-  '-DPLUGINDIR="'+ plugindir + '"',
-  '-DSYSCONFDIR="'+ sysconfdir + '"',
+  '-DPLUGINDIR="'+ gimpplugindir + '"',
+  '-DSYSCONFDIR="'+ gimpsysconfdir + '"',
   '-DGIMP_PACKAGE="'+ meson.project_name() + '"',
   '-DGIMP_DATA_VERSION="'+ data_version + '"',
   '-DGIMP_USER_VERSION="'+ user_version + '"',
@@ -880,9 +880,9 @@ pkgconfig.generate(filebase: 'gimp-' + pkgconfig_version,
     gimp_api_name,
   ],
   variables: [
-    'gimpdatadir=' + datadir,
-    'gimplibdir=' + plugindir,
-    'gimpsysconfdir=' + sysconfdir,
+    'gimpdatadir=' + gimpdatadir,
+    'gimplibdir=' + gimpplugindir,
+    'gimpsysconfdir=' + gimpsysconfdir,
     'gimplocaledir=' + localedir,
   ],
 )
