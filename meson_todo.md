@@ -2,14 +2,6 @@ Meson Port
 -----------
 
 * app
-  * display
-  * gegl
-  * operations
-  * paint
-  * plug-in
-  * text
-  * tools
-  * widgets
 * devel-docs
   * app
   * libgimp
@@ -23,7 +15,6 @@ Meson Port
     * images
     * tmpl
   * tools
-* docs
 * icons
   * Legacy
   * Symbolic-Inverted
