@@ -1,6 +1,12 @@
 
 # Configure_file is just here to rename the files
 manconf = configuration_data()
+manconf.set('GIMP_VERSION',   app_version)
+manconf.set('gimpdatadir',    gimpdatadir)
+manconf.set('gimplocaledir',  localedir)
+manconf.set('gimpplugindir',  gimpplugindir)
+manconf.set('gimpsysconfdir', gimpsysconfdir)
+manconf.set('manpage_gimpdir',gimpmanpagedir)
 
 man_files = [
   configure_file(

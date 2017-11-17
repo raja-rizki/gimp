@@ -68,5 +68,4 @@ Meson Port
   * selection-to-path
   * twain
   * ui
-* *po-tags*
 * tools/pdbgen
