@@ -8,7 +8,7 @@ install_data([
     'Track-Direction.gdyn',
     'Velocity-Tapering.gdyn',
   ],
-  install_dir: join_paths(datadir, 'dynamics', 'FX')
+  install_dir: join_paths(gimpdatadir, 'dynamics', 'FX')
 )
 
 subdir('Basic')

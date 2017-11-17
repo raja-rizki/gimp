@@ -22,6 +22,6 @@ foreach brush : brushes
 
 
   install_data(files,
-    install_dir: join_paths(datadir, 'brushes', brush)
+    install_dir: join_paths(gimpdatadir, 'brushes', brush)
   )
 endforeach

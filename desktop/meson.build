@@ -12,7 +12,7 @@ foreach size : sizes
   sizedir = size+'x'+size
   install_data(join_paths(sizedir, 'gimp.png'),
     install_dir: join_paths(
-      datadir, 'icons', 'hicolor', sizedir, 'apps'
+      get_option('datadir'), 'icons', 'hicolor', sizedir, 'apps'
     )
   )
 endforeach
@@ -45,7 +45,7 @@ desktopfile = custom_target(desktopfilename,
     '@OUTPUT@',
   ],
   install: true,
-  install_dir: join_paths(datadir, 'applications'),
+  install_dir: join_paths(get_option('datadir'), 'applications'),
 )
 
 

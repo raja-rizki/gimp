@@ -10,14 +10,14 @@ endif
 tools_cflags = [
   '-DBINDIR="'+ get_option('bindir') +'"',
   '-DCC="'+ cc.get_id() +'"',
-  '-DDATADIR="'+ datadir +'"',
-  '-DDATAROOTDIR="'+ datadir +'"',
+  '-DDATADIR="'+ get_option('datadir') +'"',
+  '-DDATAROOTDIR="'+ get_option('datadir') +'"',
   '-DEXEC_PREFIX="'+ prefix +'"',
   '-DGIMP_APP_VERSION="'+ app_version +'"',
   '-DGIMP_PLUGIN_VERSION="'+ plugin_version +'"',
-  '-DGIMPDATADIR="'+ datadir +'"',
+  '-DGIMPDATADIR="'+ gimpdatadir +'"',
   '-DGIMPDIR="'+ gimpdir +'"',
-  '-DGIMPPLUGINDIR="'+ plugindir +'"',
+  '-DGIMPPLUGINDIR="'+ gimpplugindir +'"',
   '-DINFODIR="'+ get_option('infodir') +'"',
   '-DLIBDIR="'+ get_option('libdir') +'"',
   '-DLIBEXECDIR="'+ get_option('libexecdir') +'"',
@@ -27,7 +27,7 @@ tools_cflags = [
   '-DPREFIX="'+ prefix +'"',
   '-DSBINDIR="'+ get_option('sbindir') +'"',
   '-DSHAREDSTATEDIR="'+ get_option('sharedstatedir') +'"',
-  '-DSYSCONFDIR="'+ sysconfdir +'"',
+  '-DSYSCONFDIR="'+ gimpsysconfdir +'"',
 ]
 
 

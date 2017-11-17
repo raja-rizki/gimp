@@ -3,5 +3,5 @@ install_data([
     'Perspective.gdyn',
     'Speed_Size_Opacity.gdyn',
   ],
-  install_dir: join_paths(datadir, 'dynamics', 'FX')
+  install_dir: join_paths(gimpdatadir, 'dynamics', 'FX')
 )

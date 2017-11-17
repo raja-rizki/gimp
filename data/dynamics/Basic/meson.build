@@ -8,5 +8,5 @@ install_data([
     'Pressure-Opacity.gdyn',
     'Pressure-Size.gdyn',
   ],
-  install_dir: join_paths(datadir, 'dynamics', 'Basic')
+  install_dir: join_paths(gimpdatadir, 'dynamics', 'Basic')
 )

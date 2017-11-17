@@ -43,5 +43,5 @@ palettes = [
 ]
 
 install_data(palettes,
-  install_dir: join_paths(datadir, 'palettes'),
+  install_dir: join_paths(gimpdatadir, 'palettes'),
 )

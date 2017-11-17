@@ -15,7 +15,7 @@ gimp_tags_default = custom_target(xmlfilename,
     '@OUTPUT@',
   ],
   install: true,
-  install_dir: join_paths(datadir, 'tags'),
+  install_dir: join_paths(gimpdatadir, 'tags'),
 )
 
 

@@ -8,5 +8,5 @@ install_data(
     'templaterc',
     'unitrc',
   ],
-  install_dir: sysconfdir
+  install_dir: gimpsysconfdir,
 )

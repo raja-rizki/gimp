@@ -15,7 +15,7 @@ gimp_tips = custom_target(xmlfilename,
     '@OUTPUT@',
   ],
   install: true,
-  install_dir: join_paths(datadir, 'tips'),
+  install_dir: join_paths(gimpdatadir, 'tips'),
 )
 
 

@@ -16,6 +16,6 @@ foreach pattern : patterns
 
 
   install_data(files,
-    install_dir: join_paths(datadir, 'patterns', pattern)
+    install_dir: join_paths(gimpdatadir, 'patterns', pattern)
   )
 endforeach

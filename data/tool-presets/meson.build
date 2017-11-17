@@ -16,6 +16,6 @@ foreach preset : presets
 
 
   install_data(files,
-    install_dir: join_paths(datadir, 'tool-presets', preset)
+    install_dir: join_paths(gimpdatadir, 'tool-presets', preset)
   )
 endforeach

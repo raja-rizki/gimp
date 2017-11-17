@@ -1090,7 +1090,7 @@ else
 endif
 
 
-gimpiconsdir = join_paths(datadir, 'icons')
+gimpiconsdir = join_paths(gimpdatadir, 'icons')
 
 themes = [
   'Color',

@@ -40,11 +40,13 @@ apptests_links = [
 ]
 
 
+libapptestutils_sources = [
+  'gimp-app-test-utils.c',
+  'gimp-test-session-utils.c',
+]
+
 libapptestutils = static_library('apptestutils',
-  [
-    'gimp-app-test-utils.c',
-    'gimp-test-session-utils.c',
-  ],
+  libapptestutils_sources,
   include_directories: apptests_includes,
   dependencies: apptests_deps,
   link_with: apptests_links,
@@ -52,63 +54,36 @@ libapptestutils = static_library('apptestutils',
 
 apptests_links += libapptestutils
 
-executable('test-core',
-  'test-core.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
-executable('test-gimpidtable',
-  'test-gimpidtable.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
-executable('test-save-and-export',
-  'test-save-and-export.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
-executable('test-session-2-6-compatibility',
-  'test-session-2-6-compatibility.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
-executable('test-session-2-8-compatibility-multi-window',
-  'test-session-2-8-compatibility-multi-window.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
-executable('test-session-2-8-compatibility-single-window',
-  'test-session-2-8-compatibility-single-window.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
-executable('test-single-window-mode',
-  'test-single-window-mode.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
-executable('test-tools',
-  'test-tools.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
-executable('test-ui',
-  'test-ui.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
-executable('test-xcf',
-  'test-xcf.c',
-  include_directories: apptests_includes,
-  dependencies: apptests_deps,
-  link_with: apptests_links,
-)
+
+app_tests = [
+  'test-core',
+  'test-gimpidtable',
+  'test-save-and-export',
+  'test-session-2-6-compatibility',
+  'test-session-2-8-compatibility-multi-window',
+  'test-session-2-8-compatibility-single-window',
+  'test-single-window-mode',
+  'test-tools',
+  'test-ui',
+  'test-xcf',
+]
+
+foreach test_name : app_tests
+  test_exe = executable(test_name,
+    test_name + '.c',
+    include_directories: apptests_includes,
+    dependencies: apptests_deps,
+    link_with: apptests_links,
+  )
+
+  test('App test ' + test_name,
+    test_exe,
+    env: [
+      'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.source_root(),
+      'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.build_root(),
+      'GIMP_TESTING_PLUGINDIRS=' + join_paths(meson.build_root(), 'plug-ins', 'common'),
+      'GIMP_TESTING_PLUGINDIRS_BASENAME_IGNORES=mkgen.pl',
+    ]
+  )
+
+endforeach
