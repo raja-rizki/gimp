@@ -16,9 +16,7 @@ Meson Port
     * tmpl
   * tools
 * icons
-  * Legacy
   * Symbolic-Inverted
-* modules
 * plug-ins
   * common
   * file-bmp
@@ -67,5 +65,7 @@ Meson Port
     * tinyscheme
   * selection-to-path
   * twain
-  * ui
 * tools/pdbgen
+
+
+Windres generator for plugins *.rc

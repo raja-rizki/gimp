@@ -274,6 +274,7 @@ endif
 # OpenMP
 conf.set10('ENABLE_MP', get_option('enable-mp'))
 
+screenshot_deps = []
 
 # Check if X11
 enable_doc_shooter = false
@@ -284,9 +285,6 @@ if gtk2.get_pkgconfig_variable('target') == 'x11'
   enable_doc_shooter = true
 
   x11 = dependency('x11')
-
-  # screenshot_deps += x11
-
 
   # Test for Xmu
   xmu = dependency('xmu')
@@ -305,7 +303,6 @@ if gtk2.get_pkgconfig_variable('target') == 'x11'
   if xext.found()
     if cc.has_header('X11/extensions/shape.h', dependencies: xext)
       if cc.has_function('XShapeGetRectangles', dependencies: xext)
-        # screenshot_deps += x11
         have_libxext = true
         xext = [ x11, xext ]
       endif
