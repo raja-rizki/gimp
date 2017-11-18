@@ -1,4 +1,5 @@
 # TODO lighting.rc.o
+subdir('images')
 
 lighting = executable('lighting',
   [
