@@ -1,7 +1,7 @@
 # Meson build file
 
 # http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
-project('gimp', 'c', version : '2.9.7',
+project('gimp', ['c', 'cpp'], version : '2.9.7',
   meson_version : '>=0.40.0',
   default_options : [
     'sysconfdir=/etc',
@@ -584,6 +584,7 @@ xmllint = find_program('xmllint', required: false)
 xsltproc= find_program('xsltproc',required: false)
 intltool_merge = find_program('intltool-merge')
 desktop_validate = find_program('desktop-file-validate')
+gdk_pixbuf_csource = find_program('gdk-pixbuf-csource')
 
 
 # Check for vector icons

@@ -21,10 +21,6 @@ foreach name : stock_icons
   )
 endforeach
 
-message(stock_icons_list)
-
-gdk_pixbuf_csource = find_program('gdk-pixbuf-csource')
-
 stock_pixbufs_h = custom_target('stock-pixbufs.h',
   input : [ ],
   output: [ 'stock-pixbufs.h', ],
@@ -36,14 +32,3 @@ stock_pixbufs_h = custom_target('stock-pixbufs.h',
   ],
   capture: true,
 )
-
-# stock-icons.list: $(STOCK_IMAGES) Makefile.am
-# 	( rm -f $@; \
-#           for image in $(STOCK_IMAGES); do \
-#             echo $$image | \
-#               sed -e 's|.*/||' -e 's|-|_|g' -e 's|\.png$$||' >> $@; \
-# 	    echo "  $(srcdir)/$$image" >> $@; \
-# 	  done )
-#
-# $(srcdir)/stock-pixbufs.h: stock-icons.list
-# 	$(GDK_PIXBUF_CSOURCE) --raw --build-list `cat stock-icons.list` > $(@F)
