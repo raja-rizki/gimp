@@ -113,7 +113,7 @@ math              = cc.find_library('m')
 
 atk               = dependency('atk',                version: '>=2.2.0')
 
-# babl_minver       = '>=0.1.31'
+# babl_minver       = '>=0.1.38'
 babl_minver       = '>=0.1.30'
 babl              = dependency('babl',               version: babl_minver)
 
@@ -131,7 +131,8 @@ freetype2         = dependency('freetype2',          version: '>=2.1.7')
 gdk_pixbuf_minver = '>=2.30.8'
 gdk_pixbuf        = dependency('gdk-pixbuf-2.0',     version: gdk_pixbuf_minver)
 
-gegl_minver       = '>=0.3.21'
+# gegl_minver       = '>=0.3.22'
+gegl_minver       = '>=0.3.20'
 gegl              = dependency('gegl-0.3',           version: gegl_minver)
 
 gexiv2            = dependency('gexiv2',             version: '>=0.10.6')
