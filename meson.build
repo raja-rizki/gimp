@@ -832,9 +832,10 @@ subdir('libgimp')
 
 # Executables, plugins
 subdir('modules')
-subdir('plug-ins')
+# subdir('plug-ins')
 subdir('app')
 
+subdir('tools/pdbgen')
 
 # subdir('build')
 # build/windows/gimp-plug-ins.rc

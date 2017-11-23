@@ -1,6 +1,4 @@
 
-
-
 if os_win32
   gimp_debug_resume = executable('gimp-debug-resume', 'gimp-debug-resume.c')
 endif
