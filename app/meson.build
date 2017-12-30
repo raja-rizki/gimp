@@ -22,6 +22,17 @@ gitversion_h = vcs_tag(
   fallback: '',
 )
 
+app_mkenums_custom_target_command = [
+  gimp_mkenums,
+  '--fhead','#include "config.h"\n'
+          + '#include <gio/gio.h>\n'
+          + '#include "libgimpbase/gimpbase.h"\n'
+          + '#include "core/core-enums.h"\n'
+          + '#include "@INPUT@"\n'
+          + '#include "gimp-intl.h"\n',
+  gimp_mkenums_custom_target_commonargs,
+]
+
 subdir('actions')
 subdir('core')
 subdir('dialogs')

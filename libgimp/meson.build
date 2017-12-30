@@ -4,41 +4,14 @@ gimpenums_notail = custom_target('gimpenums.c.notail',
   output: [ 'gimpenums.c.notail', ],
   command: [
     gimp_mkenums,
-    '--fhead','#include "config.h"\n'+
-              '#include <gio/gio.h>\n'+
-              '#undef GIMP_DISABLE_DEPRECATED\n'+
-              '#include "libgimpbase/gimpbase.h"\n'+
-              '#include "libgimpbase/gimpbase-private.h"\n'+
-              '#include "libgimpconfig/gimpconfigenums.h"\n'+
-              '#include "gimpenums.h"\n',
-    '--fprod','/* enumerations from "@filename@" */',
-    '--vhead','GType\n'+
-              '@enum_name@_get_type (void)\n'+
-              '{\n'+
-              '  static const G@Type@Value values[] =\n'+
-              '  {',
-    '--vprod','    { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
-    '--vtail','    { 0, NULL, NULL }\n'+
-              '  };\n',
-    '--dhead','  static const Gimp@Type@Desc descs[] =\n'+
-              '  {',
-    '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },',
-    '--dtail','    { 0, NULL, NULL }\n'+
-              '  };\n'+
-              '\n'+
-              '  static GType type = 0;\n'+
-              '\n'+
-              '  if (G_UNLIKELY (! type))\n'+
-              '    {\n'+
-              '      type = g_@type@_register_static ("@EnumName@", values);\n'+
-              '      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");\n'+
-              '      gimp_type_set_translation_context (type, "@enumnick@");\n'+
-              '      gimp_@type@_set_value_descriptions (type, descs);\n'+
-              '    }\n'+
-              '\n'+
-              '  return type;\n'+
-              '}\n',
-    '@INPUT@',
+    '--fhead','#include "config.h"\n'
+            + '#include <gio/gio.h>\n'
+            + '#undef GIMP_DISABLE_DEPRECATED\n'
+            + '#include "libgimpbase/gimpbase.h"\n'
+            + '#include "libgimpbase/gimpbase-private.h"\n'
+            + '#include "libgimpconfig/gimpconfigenums.h"\n'
+            + '#include "gimpenums.h"\n',
+    gimp_mkenums_custom_target_commonargs,
   ],
   capture: true,
 )

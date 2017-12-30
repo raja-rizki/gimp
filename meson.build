@@ -689,9 +689,39 @@ defcheck            = find_program(join_paths('tools', 'defcheck.py'))
 extract_vector_icon = find_program(join_paths('tools', 'extract-vector-icon.sh'))
 generate_changelog  = find_program(join_paths('tools', 'generate_changelog.sh'))
 generate_news       = find_program(join_paths('tools', 'generate-news'))
-gimp_mkenums        = find_program(join_paths('tools', 'gimp-mkenums'))
 gimppath2svg        = find_program(join_paths('tools', 'gimppath2svg.py'))
 module_dependencies = find_program(join_paths('tools', 'module-dependencies.py'))
+
+gimp_mkenums        = find_program(join_paths('tools', 'gimp-mkenums'))
+gimp_mkenums_custom_target_commonargs = [
+  '--fprod','/* enumerations from "@basename@" */\n',
+  '--vhead','GType\n'+
+            '@enum_name@_get_type (void)\n'+
+            '{\n'+
+            '  static const G@Type@Value values[] =\n'+
+            '  {',
+  '--vprod','    { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
+  '--vtail','    { 0, NULL, NULL }\n'+
+            '  };\n',
+  '--dhead','  static const Gimp@Type@Desc descs[] =\n'+
+            '  {',
+  '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },',
+  '--dtail','    { 0, NULL, NULL }\n'+
+            '  };\n'+
+            '\n'+
+            '  static GType type = 0;\n'+
+            '\n'+
+            '  if (G_UNLIKELY (! type))\n'+
+            '    {\n'+
+            '      type = g_@type@_register_static ("@EnumName@", values);\n'+
+            '      gimp_type_set_translation_context (type, "@enumnick@");\n'+
+            '      gimp_@type@_set_value_descriptions (type, descs);\n'+
+            '    }\n'+
+            '\n'+
+            '  return type;\n'+
+            '}\n',
+  '@INPUT@',
+]
 
 
 ################################################################################

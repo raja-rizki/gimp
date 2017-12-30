@@ -17,39 +17,12 @@ gimpbaseenums = custom_target('gimpbaseenums.c',
   output: [ 'gimpbaseenums.c', ],
   command: [
     gimp_mkenums,
-    '--fhead','#include "config.h"\n'+
-              '#include <glib-object.h>\n'+
-              '#undef GIMP_DISABLE_DEPRECATED\n'+
-              '#include "gimpbasetypes.h"\n'+
-              '#include "libgimp/libgimp-intl.h"\n',
-    '--fprod','/* enumerations from "@basename@" */\n',
-    '--vhead','GType\n'+
-              '@enum_name@_get_type (void)\n'+
-              '{\n'+
-              '  static const G@Type@Value values[] =\n'+
-              '  {',
-    '--vprod','    { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
-    '--vtail','    { 0, NULL, NULL }\n'+
-              '  };\n',
-    '--dhead','  static const Gimp@Type@Desc descs[] =\n'+
-              '  {',
-    '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },',
-    '--dtail','    { 0, NULL, NULL }\n'+
-              '  };\n'+
-              '\n'+
-              '  static GType type = 0;\n'+
-              '\n'+
-              '  if (G_UNLIKELY (! type))\n'+
-              '    {\n'+
-              '      type = g_@type@_register_static ("@EnumName@", values);\n'+
-              '      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");\n'+
-              '      gimp_type_set_translation_context (type, "@enumnick@");\n'+
-              '      gimp_@type@_set_value_descriptions (type, descs);\n'+
-              '    }\n'+
-              '\n'+
-              '  return type;\n'+
-              '}\n',
-    '@INPUT@',
+    '--fhead','#include "config.h"\n'
+            + '#include <glib-object.h>\n'
+            + '#undef GIMP_DISABLE_DEPRECATED\n'
+            + '#include "gimpbasetypes.h"\n'
+            + '#include "libgimp/libgimp-intl.h"\n',
+    gimp_mkenums_custom_target_commonargs,
   ],
   capture: true,
 )
@@ -58,39 +31,12 @@ gimpcompatenums = custom_target('gimpcompatenums.c',
   output: [ 'gimpcompatenums.c', ],
   command: [
     gimp_mkenums,
-    '--fhead','#include "config.h"\n'+
-              '#include <glib-object.h>\n'+
-              '#include "gimpbasetypes.h"\n'+
-              '#include "gimpcompatenums.h"\n'+
-              '#include "libgimp/libgimp-intl.h"\n',
-    '--fprod','/* enumerations from "@basename@" */\n',
-    '--vhead','GType\n'+
-              '@enum_name@_get_type (void)\n'+
-              '{\n'+
-              '  static const G@Type@Value values[] =\n'+
-              '  {',
-    '--vprod','    { @VALUENAME@, "@VALUENAME@", "@valuenick@" },',
-    '--vtail','    { 0, NULL, NULL }\n'+
-              '  };\n',
-    '--dhead','  static const Gimp@Type@Desc descs[] =\n'+
-              '  {',
-    '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },',
-    '--dtail','    { 0, NULL, NULL }\n'+
-              '  };\n'+
-              '\n'+
-              '  static GType type = 0;\n'+
-              '\n'+
-              '  if (G_UNLIKELY (! type))\n'+
-              '    {\n'+
-              '      type = g_@type@_register_static ("@EnumName@", values);\n'+
-              '      gimp_type_set_translation_domain (type, GETTEXT_PACKAGE "-libgimp");\n'+
-              '      gimp_type_set_translation_context (type, "@enumnick@");\n'+
-              '      gimp_@type@_set_value_descriptions (type, descs);\n'+
-              '    }\n'+
-              '\n'+
-              '  return type;\n'+
-              '}\n',
-    '@INPUT@',
+    '--fhead','#include "config.h"\n'
+            + '#include <glib-object.h>\n'
+            + '#include "gimpbasetypes.h"\n'
+            + '#include "@INPUT@"\n'
+            + '#include "libgimp/libgimp-intl.h"\n',
+    gimp_mkenums_custom_target_commonargs,
   ],
   capture: true,
 )
