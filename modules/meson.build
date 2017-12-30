@@ -56,7 +56,7 @@ modules = [
   ],
   [ 'display-filter-clip-warning',
     [ 'display-filter-clip-warning.c', ],
-    [], [ display_filter_libs, '-avoid-version', '-module', ],
+    [], [ display_filter_libs, ],
   ],
   [ 'display-filter-color-blind',
     [ 'display-filter-color-blind.c', ],
@@ -101,11 +101,16 @@ endif
 
 
 foreach module : modules
-  library(module[0],
-    module[1],
+  name = module[0]
+  srcs = module[1]
+  deps = module[2]
+  link = module[3]
+
+  library(name,
+    srcs,
     include_directories: rootInclude,
-    dependencies: modules_deps + module[2],
-    link_with: module[3],
+    dependencies: modules_deps + deps,
+    link_with: link,
     install: true,
     install_dir: join_paths(gimpplugindir, 'modules'),
   )
