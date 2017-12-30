@@ -11,7 +11,7 @@ manconf.set('manpage_gimpdir',gimpmanpagedir)
 man_files = [
   configure_file(
     input : 'gimptool.1.in',
-    output: 'gimptool-' + tool_version + '.1',
+    output: 'gimptool-' + api_version + '.1',
     configuration: manconf,
   ),
   configure_file(

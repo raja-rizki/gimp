@@ -55,14 +55,9 @@ lt_current_minus_age = lt_current - lt_age
 
 so_version = '@0@.@1@.@2@'.format(lt_revision, lt_current, lt_current_minus_age)
 
-api_version        = '2.0'
-app_version        = '2.9'
-data_version       = '2.0'
-pkgconfig_version  = '2.0'
-plugin_version     = '2.0'
-sysconf_version    = '2.0'
-tool_version       = '2.0'
-user_version       = '2.9'
+api_version = '2.0'
+app_version = '2.9'
+user_version= '2.9'
 
 gimp_command = 'gimp-' + app_version
 gimp_api_name = 'gimp-' + api_version
@@ -634,9 +629,9 @@ if gimpdir == ''
   gimpdir = meson.project_name()
 endif
 
-gimpdatadir    = join_paths(get_option('datadir'),    meson.project_name(), data_version)
-gimpplugindir  = join_paths(get_option('libdir'),     meson.project_name(), plugin_version)
-gimpsysconfdir = join_paths(get_option('sysconfdir'), meson.project_name(), sysconf_version)
+gimpdatadir    = join_paths(get_option('datadir'),    meson.project_name(), api_version)
+gimpplugindir  = join_paths(get_option('libdir'),     meson.project_name(), api_version)
+gimpsysconfdir = join_paths(get_option('sysconfdir'), meson.project_name(), api_version)
 gimpmanpagedir = gimpdir
 localedir  = join_paths(get_option('datadir'), 'locale')
 
@@ -804,10 +799,10 @@ libgimp_cflags = [
   '-DPLUGINDIR="'+ gimpplugindir + '"',
   '-DSYSCONFDIR="'+ gimpsysconfdir + '"',
   '-DGIMP_PACKAGE="'+ meson.project_name() + '"',
-  '-DGIMP_DATA_VERSION="'+ data_version + '"',
+  '-DGIMP_DATA_VERSION="'+ api_version + '"',
   '-DGIMP_USER_VERSION="'+ user_version + '"',
-  '-DGIMP_SYSCONF_VERSION="'+ sysconf_version + '"',
-  '-DGIMP_PLUGIN_VERSION="'+ plugin_version + '"',
+  '-DGIMP_SYSCONF_VERSION="'+ api_version + '"',
+  '-DGIMP_PLUGIN_VERSION="'+ api_version + '"',
 ]
 libgimp_lflags = []
 
@@ -887,7 +882,7 @@ configure_file(
 
 
 # TODO sysconfdir seems not correctly set
-pkgconfig.generate(filebase: 'gimp-' + pkgconfig_version,
+pkgconfig.generate(filebase: 'gimp-' + api_version,
   name: prettyname,
   description: 'GIMP Library',
   version: meson.project_version(),
@@ -914,7 +909,7 @@ pkgconfig.generate(filebase: 'gimp-' + pkgconfig_version,
     'gimplocaledir=' + localedir,
   ],
 )
-pkgconfig.generate(filebase: 'gimpthumb-' + pkgconfig_version,
+pkgconfig.generate(filebase: 'gimpthumb-' + api_version,
   name: 'GIMP Thumb',
   description: 'GIMP Thumbnail Library',
   version: meson.project_version(),
@@ -929,12 +924,12 @@ pkgconfig.generate(filebase: 'gimpthumb-' + pkgconfig_version,
     gimp_api_name,
   ],
 )
-pkgconfig.generate(filebase: 'gimpui-' + pkgconfig_version,
+pkgconfig.generate(filebase: 'gimpui-' + api_version,
   name: 'GIMP UI',
   description: 'GIMP User Interface Library',
   version: meson.project_version(),
   requires: [
-    'gimp-' + pkgconfig_version + ' >= ' + app_version,
+    'gimp-' + api_version + ' >= ' + app_version,
     'gtk+-2.0 ' + gtk2_minver,
   ],
   libraries: [
