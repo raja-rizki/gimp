@@ -93,9 +93,11 @@ endforeach
 cursors_xml_content += '  </gresource>\n'
 cursors_xml_content += '</gresources>\n'
 
-run_command('bash', '-c',
-  'cat <<EOS > '+ join_paths(meson.current_source_dir(), cursors_xml) +'\n'
-  + cursors_xml_content + '\nEOS',
+custom_target(cursors_xml,
+  input : [],
+  output: cursors_xml,
+  command: [ 'echo', cursors_xml_content + '\n' ],
+  capture: true,
 )
 
 
@@ -115,9 +117,11 @@ endforeach
 pickers_xml_content += '  </gresource>\n'
 pickers_xml_content += '</gresources>\n'
 
-run_command('bash', '-c',
-  'cat <<EOS >'+ join_paths(meson.current_source_dir(), pickers_xml) +'\n'
-  + pickers_xml_content + '\nEOS',
+custom_target(pickers_xml,
+  input : [],
+  output: pickers_xml,
+  command: [ 'echo', pickers_xml_content + '\n' ],
+  capture: true,
 )
 
 
