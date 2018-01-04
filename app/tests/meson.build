@@ -76,14 +76,15 @@ foreach test_name : app_tests
     link_with: apptests_links,
   )
 
-  test('App test ' + test_name,
+  test('app_' + test_name,
     test_exe,
     env: [
       'GIMP_TESTING_ABS_TOP_SRCDIR=' + meson.source_root(),
       'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.build_root(),
       'GIMP_TESTING_PLUGINDIRS=' + join_paths(meson.build_root(), 'plug-ins', 'common'),
       'GIMP_TESTING_PLUGINDIRS_BASENAME_IGNORES=mkgen.pl',
-    ]
+    ],
+    suite: 'app',
   )
 
 endforeach
