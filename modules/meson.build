@@ -19,7 +19,7 @@ if os_win32
 endif
 
 modules_deps = [
-  gtk2, babl, gegl,
+  gtk2, babl, gegl, math,
 ]
 
 color_selector_libs = [
@@ -48,11 +48,11 @@ modules = [
   ],
   [ 'color-selector-water',
     [ 'color-selector-water.c', ],
-    [ math, ], [ color_selector_libs, ],
+    [ ], [ color_selector_libs, ],
   ],
   [ 'color-selector-wheel',
     [ 'color-selector-wheel.c', 'gimpcolorwheel.c', ],
-    [ math, ], [ color_selector_libs, ],
+    [ ], [ color_selector_libs, ],
   ],
   [ 'display-filter-clip-warning',
     [ 'display-filter-clip-warning.c', ],
@@ -64,11 +64,11 @@ modules = [
   ],
   [ 'display-filter-gamma',
     [ 'display-filter-gamma.c', ],
-    [ math, ], [ display_filter_libs, ],
+    [ ], [ display_filter_libs, ],
   ],
   [ 'display-filter-high-contrast',
     [ 'display-filter-high-contrast.c', ],
-    [], [ display_filter_libs, ],
+    [ ], [ display_filter_libs, ],
   ],
 ]
 
