@@ -48,6 +48,14 @@ desktopfile = custom_target(desktopfilename,
   install_dir: join_paths(get_option('datadir'), 'applications'),
 )
 
+appdatafilename = 'gimp.appdata.xml'
+appdatafile = configure_file(
+  input : appdatafilename+'.in',
+  output: appdatafilename,
+  configuration: desktop_conf,
+  install: true,
+  install_dir: join_paths(get_option('datadir'), 'appdata'),
+)
 
 custom_target('validate-desktop',
   input : [ desktopfile, ],
