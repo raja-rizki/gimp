@@ -227,6 +227,6 @@ libappcore = static_library('appcore',
     '-DMESON_BUILD',
   ],
   dependencies: [
-    cairo, gegl, gdk_pixbuf, libmypaint, gexiv2,
+    cairo, gegl, gdk_pixbuf, libmypaint, gexiv2, math
   ],
 )
