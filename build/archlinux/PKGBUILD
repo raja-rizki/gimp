@@ -32,7 +32,7 @@ makedepends=(
   'alsa-lib>=1.0.0'
   'git'
   'glib-networking'
-  'gnome-python>=2.16.2'
+  # 'gnome-python>=2.16.2'
   'gutenprint>=5.0.0'
   'intltool>=0.40.1'
   'libxslt'
@@ -107,5 +107,6 @@ package() {
   install -D -m644 "${srcdir}/linux.gpl" "${pkgdir}/usr/share/gimp/2.0/palettes/Linux.gpl"
 
   ln -s gimp-2.9          "${pkgdir}/usr/bin/gimp"
+  ln -s gimptool-2.0      "${pkgdir}/usr/bin/gimptool"
   ln -s gimp-console-2.9  "${pkgdir}/usr/bin/gimp-console"
 }
