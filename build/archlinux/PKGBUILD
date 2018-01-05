@@ -48,16 +48,18 @@ optdepends=(
 options=('!libtool')
 provides=('gimp')
 conflicts=('gimp')
+
+_gitname='gimp_mesonport'
 source=(
   # 'git://git.gnome.org/gimp'
+  git+https://github.com/salamandar/${_gitname}#branch=meson
   'linux.gpl'
 )
 md5sums=(
-  # 'SKIP'
+  'SKIP'
   'bb27bc214261d36484093e857f015f38'
 )
 
-_gitname='gimp'
 
 pkgver() {
     cd $_gitname
