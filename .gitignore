@@ -50,3 +50,7 @@
 /stamp-h.in
 /stamp-h1
 /test-driver
+/build/archlinux/build
+/build/archlinux/gimp*
+/build/archlinux/src
+/build_m
