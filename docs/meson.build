@@ -15,8 +15,19 @@ man_files = [
     configuration: manconf,
   ),
   configure_file(
+    input : 'gimptool.1.in',
+    output: 'gimptool.1',
+    configuration: manconf,
+  ),
+
+  configure_file(
     input : 'gimprc.5.in',
     output: 'gimprc-' + app_version + '.5',
+    configuration: manconf,
+  ),
+  configure_file(
+    input : 'gimprc.5.in',
+    output: 'gimprc.5',
     configuration: manconf,
   ),
 ]
@@ -24,7 +35,12 @@ man_files = [
 if enable_console_bin
   man_files += configure_file(
     input : 'gimp.1.in',
-    output: 'gimp-console' + app_version + '.1',
+    output: 'gimp-console-' + app_version + '.1',
+    configuration: manconf,
+  )
+  man_files += configure_file(
+    input : 'gimp.1.in',
+    output: 'gimp-console.1',
     configuration: manconf,
   )
 endif
@@ -33,6 +49,11 @@ if enable_default_bin
   man_files +=  configure_file(
     input : 'gimp.1.in',
     output: 'gimp-' + app_version + '.1',
+    configuration: manconf,
+  )
+  man_files +=  configure_file(
+    input : 'gimp.1.in',
+    output: 'gimp.1',
     configuration: manconf,
   )
 endif
