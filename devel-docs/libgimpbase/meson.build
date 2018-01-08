@@ -1,4 +1,4 @@
-module_name = 'libgimp'
+module_name = 'libgimpbase'
 
 version_data = configuration_data()
 version_data.set('GIMP_VERSION', meson.project_version())
@@ -6,20 +6,6 @@ configure_file(
   input : 'version.in',
   output: 'version',
   configuration: version_data,
-)
-
-gimp_dep = declare_dependency(
-  include_directories: rootInclude,
-  link_with: [
-    libgimp,
-    libgimpui,
-    libgimpbase,
-    libgimpcolor,
-    libgimpconfig,
-    libgimpmath,
-    libgimpui,
-    libgimpwidgets,
-  ]
 )
 
 gnome.gtkdoc(module_name,
@@ -30,16 +16,17 @@ gnome.gtkdoc(module_name,
   content_files: [
   ],
   ignore_headers: [
-    'gimptilebackendplugin.h',
-    'gimpunit_pdb.h',
-    'gimpunitcache.h',
-    'libgimp-intl.h',
-    'stdplugins-intl.h',
+    'gimpbase-private.h',
+    'gimpbase.h',
+    'gimpcompatenums.h',
+    'gimpprotocol.h',
+    'gimpreloc.h',
+    'gimpwin32-io.h',
+    'gimpwire.h',
   ],
 
   dependencies: [
     fontconfig, freetype2, gtk2, harfbuzz, pangocairo,
-    gimp_dep,
   ],
   scanobjs_args: [
   ],

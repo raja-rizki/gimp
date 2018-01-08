@@ -843,10 +843,6 @@ subdir('m4macros')
 subdir('menus')
 subdir('themes')
 
-# Docs
-subdir('devel-docs')
-subdir('docs')
-
 # Libraries (order here is important!)
 subdir('libgimpcolor')
 subdir('libgimpmath')
@@ -867,6 +863,9 @@ subdir('tools/pdbgen')
 # build/windows/gimp-plug-ins.rc
 # build/windows/gimp.rc
 
+# Docs
+subdir('devel-docs')
+subdir('docs')
 
 
 # configure_file(
