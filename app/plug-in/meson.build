@@ -36,6 +36,7 @@ libappplugin_sources = [
   'plug-in-params.c',
   'plug-in-rc.c',
   apppluginenums,
+  appcoremarshal,
 ]
 
 libappplugin = static_library('appplug-in',

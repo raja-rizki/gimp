@@ -6,6 +6,7 @@ libapppdb_sources = [
   'gimppdbcontext.c',
   'gimppdberror.c',
   'gimpprocedure.c',
+  appcoremarshal,
 ]
 libappinternalprocs_sources = [
   'brush-cmds.c',

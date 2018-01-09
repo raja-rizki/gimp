@@ -220,6 +220,7 @@ libappwidgets_sources = [
   'gtkhwrapbox.c',
   'gtkwrapbox.c',
   appwidgetsenums,
+  appcoremarshal,
 ]
 
 

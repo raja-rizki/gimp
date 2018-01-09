@@ -108,7 +108,8 @@ libapptools_sources = [
   'gimpwarpoptions.c',
   'gimpwarptool.c',
   'tool_manager.c',
-  apptoolsenums
+  apptoolsenums,
+  appcoremarshal,
 ]
 
 libapptools = static_library('apptools',
@@ -121,4 +122,3 @@ libapptools = static_library('apptools',
     gegl, gtk2,
   ],
 )
-

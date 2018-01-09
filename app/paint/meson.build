@@ -42,7 +42,8 @@ libapppaint_sources = [
   'gimpsmudgeoptions.c',
   'gimpsourcecore.c',
   'gimpsourceoptions.c',
-  apppaintenums
+  apppaintenums,
+  appcoremarshal,
 ]
 
 libapppaint = static_library('apppaint',
