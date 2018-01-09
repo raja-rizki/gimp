@@ -633,7 +633,7 @@ gimpdatadir    = join_paths(get_option('datadir'),    meson.project_name(), api_
 gimpplugindir  = join_paths(get_option('libdir'),     meson.project_name(), api_version)
 gimpsysconfdir = join_paths(get_option('sysconfdir'), meson.project_name(), api_version)
 gimpmanpagedir = gimpdir
-localedir  = join_paths(get_option('datadir'), 'locale')
+localedir      = join_paths(get_option('datadir'), 'locale')
 
 
 
@@ -791,18 +791,20 @@ has_nl_measurement = cc.has_function(
 # Set/regroup common CFlags for subdirs
 
 libgimp_cflags = [
-  '-DPREFIX="'+ prefix + '"',
-  '-DGIMPDIR="'+ gimpdir + '"',
-  '-DPACKAGE_STRING="'+ package_string + '"',
-  '-DDATADIR="'+ gimpdatadir + '"',
-  '-DLOCALEDIR="'+ localedir + '"',
-  '-DPLUGINDIR="'+ gimpplugindir + '"',
-  '-DSYSCONFDIR="'+ gimpsysconfdir + '"',
-  '-DGIMP_PACKAGE="'+ meson.project_name() + '"',
-  '-DGIMP_DATA_VERSION="'+ api_version + '"',
-  '-DGIMP_USER_VERSION="'+ user_version + '"',
-  '-DGIMP_SYSCONF_VERSION="'+ api_version + '"',
-  '-DGIMP_PLUGIN_VERSION="'+ api_version + '"',
+  '-DGIMP_PACKAGE='         +'"'+ meson.project_name()  +'"',
+  '-DPACKAGE_STRING='       +'"'+ package_string        +'"',
+
+  '-DGIMP_DATA_VERSION='    +'"'+ api_version           +'"',
+  '-DGIMP_USER_VERSION='    +'"'+ user_version          +'"',
+  '-DGIMP_SYSCONF_VERSION=' +'"'+ api_version           +'"',
+  '-DGIMP_PLUGIN_VERSION='  +'"'+ api_version           +'"',
+
+  '-DPREFIX='               +'"'+ prefix                +'"',
+  '-DGIMPDIR='              +'"'+ gimpdir               +'"',
+  '-DDATADIR='              +'"'+ join_paths(prefix, gimpdatadir)    +'"',
+  '-DLOCALEDIR='            +'"'+ join_paths(prefix, localedir)      +'"',
+  '-DPLUGINDIR='            +'"'+ join_paths(prefix, gimpplugindir)  +'"',
+  '-DSYSCONFDIR='           +'"'+ gimpsysconfdir        +'"',
 ]
 libgimp_lflags = []
 
@@ -902,10 +904,10 @@ pkgconfig.generate(filebase: 'gimp-' + api_version,
     gimp_api_name,
   ],
   variables: [
-    'gimpdatadir=' + gimpdatadir,
-    'gimplibdir=' + gimpplugindir,
+    'gimpdatadir='    +'${prefix}/'+ gimpdatadir,
+    'gimplibdir='     +'${prefix}/'+ gimpplugindir,
     'gimpsysconfdir=' + gimpsysconfdir,
-    'gimplocaledir=' + localedir,
+    'gimplocaledir='  +'${prefix}/'+ localedir,
   ],
 )
 pkgconfig.generate(filebase: 'gimpthumb-' + api_version,

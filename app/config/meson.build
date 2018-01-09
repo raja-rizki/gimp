@@ -32,7 +32,7 @@ libappconfig = static_library('appconfig',
   c_args: [
     '-DG_LOG_DOMAIN="Gimp-Config"',
     '-DGIMP_APP_VERSION_STRING="'+ app_version +'"',
-    '-DDATADIR="'+ gimpdatadir +'"',
+    '-DDATADIR="'+ join_paths(prefix, gimpdatadir) +'"',
   ],
   dependencies: [
     cairo, gegl, gdk_pixbuf, gio, gio_specific, gtk2,

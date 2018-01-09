@@ -35,8 +35,8 @@ gimpressionist = executable('gimpressionist',
     libgimpwidgets,
   ],
   c_args: [
-    '-DDEFAULTPATH="' + join_paths('~/', gimpdir, 'gimpressionist')
-                + ':' + join_paths(gimpdatadir,   'gimpressionist')
+    '-DDEFAULTPATH="' + join_paths('~/',  gimpdir,    'gimpressionist')
+                + ':' + join_paths(prefix,gimpdatadir,'gimpressionist')
                 + '"',
   ],
   install: true,
