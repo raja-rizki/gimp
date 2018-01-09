@@ -1,5 +1,6 @@
+menus_dir = join_paths(prefix, gimpdatadir, 'menus')
 
-menu_files = [
+menus_files = [
   'brush-editor-menu.xml',
   'brushes-menu.xml',
   'buffers-menu.xml',
@@ -32,27 +33,32 @@ menu_files = [
   'vectors-menu.xml',
 ]
 
-unstable_menu_args = stable ? [] : [ '--stringparam', 'unstable-menus', 'yes' ]
+install_data(menus_files,
+  install_dir: menus_dir,
+)
+
+unstable_menus_args = stable ? [] : [ '--stringparam', 'unstable-menus', 'yes' ]
 
 foreach menu_filegen : [ 'dockable-menu.xml', 'image-menu.xml', ]
-  menu_files += custom_target(menu_filegen,
+  menus_files += custom_target(menu_filegen,
     input : [ menu_filegen +'.in', 'menus.xsl', ],
     output: [ menu_filegen ],
     command: [
       xsltproc,
       '--xinclude',
-      unstable_menu_args,
+      unstable_menus_args,
       '--output', '@OUTPUT@',
       '@INPUT1@',
       '@INPUT0@',
     ],
-    build_always: true,
-    build_by_default: false,
+    install: true,
+    install_dir: menus_dir,
   )
 endforeach
 
+
 custom_target('validate_menus',
-  input : [ menu_files, ],
+  input : [ menus_files, ],
   output: [ 'validate_menus', ],
   command: [
     xmllint,
