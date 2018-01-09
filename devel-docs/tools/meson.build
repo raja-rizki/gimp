@@ -9,7 +9,7 @@ doc_shooter = executable('doc-shooter',
   doc_shooter_sources,
   include_directories: [ rootInclude, ],
   dependencies: [
-    gtk2, gdk_pixbuf, gegl, x11, xext,
+    gtk2, gdk_pixbuf, gegl, math, x11, xext,
   ],
   c_args: [
     '-DTOP_SRCDIR="' + meson.source_root() + '"',
