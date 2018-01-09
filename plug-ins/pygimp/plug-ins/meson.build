@@ -13,6 +13,7 @@ install_data([
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )
 install_data([
+    'pyconsole.py',
     'python-console.py',
   ],
   install_dir: join_paths(gimpplugindir, 'plug-ins', 'python-console'),
