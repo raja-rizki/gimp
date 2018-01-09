@@ -126,8 +126,7 @@ freetype2         = dependency('freetype2',          version: '>=2.1.7')
 gdk_pixbuf_minver = '>=2.30.8'
 gdk_pixbuf        = dependency('gdk-pixbuf-2.0',     version: gdk_pixbuf_minver)
 
-# gegl_minver       = '>=0.3.27'
-gegl_minver       = '>=0.3.20'
+gegl_minver       = '>=0.3.27'
 gegl              = dependency('gegl-0.3',           version: gegl_minver)
 
 gexiv2            = dependency('gexiv2',             version: '>=0.10.6')
@@ -145,8 +144,8 @@ gtk2              = dependency('gtk+-2.0',           version: gtk2_minver)
 
 harfbuzz          = dependency('harfbuzz',           version: '>=0.9.19')
 lcms              = dependency('lcms2',              version: '>=2.8')
-libmypaint        = dependency('libmypaint-1.3',     version: '>=1.3.0')
-libmypaint_brushes= dependency('mypaint-brushes-1.0')
+libmypaint      = [ dependency('libmypaint-1.3',     version: '>=1.3.0'),
+                    dependency('mypaint-brushes-1.0') ]
 pangocairo        = dependency('pangocairo',         version: '>=1.29.4')
 rsvg              = dependency('librsvg-2.0',        version: '>=2.40.6')
 
@@ -827,7 +826,6 @@ rootInclude = include_directories('.')
 # Tools (need libgimpbase now)
 subdir('libgimpbase')
 subdir('tools')
-subdir('pdb')
 
 # Translations
 subdir('po')
@@ -837,7 +835,7 @@ subdir('po-python')
 subdir('po-script-fu')
 subdir('po-tags')
 subdir('po-tips')
-subdir('po-windows-installer')
+# subdir('po-windows-installer')
 
 # Data / Desktop / xml files
 subdir('cursors')
@@ -862,6 +860,8 @@ subdir('libgimp')
 subdir('modules')
 subdir('plug-ins')
 subdir('app')
+
+subdir('pdb')
 
 # subdir('build/windows/installer')
 # subdir('build/windows/installer/lang')
