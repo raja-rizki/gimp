@@ -66,9 +66,6 @@ pkgver() {
     git describe --always | sed -e 's/GIMP_//' -e 's/[_-]/./g'
 }
 
-builddir="${startdir}/build"
-
-
 prepare() {
   cd "${srcdir}/${_gitname}"
 
@@ -102,13 +99,12 @@ build() {
     '-Dwith-xvfb-run=false'
   )
 
-  rm -rf   "${builddir}"
-  meson    "${builddir}" "${srcdir}/${_gitname}" "${mesonOptions[@]}"
-  ninja -C "${builddir}"
+  meson    "${srcdir}/build" "${srcdir}/${_gitname}" "${mesonOptions[@]}"
+  ninja -C "${srcdir}/build"
 }
 
 package() {
-  DESTDIR="${pkgdir}" ninja -C "${builddir}" install
+  DESTDIR="${pkgdir}" ninja -C "${srcdir}/build" install
 
   install -D -m644 "${srcdir}/linux.gpl" "${pkgdir}/usr/share/gimp/2.0/palettes/Linux.gpl"
 
