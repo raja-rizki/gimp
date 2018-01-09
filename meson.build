@@ -626,7 +626,7 @@ enable_console_bin = get_option('enable-console-bin')
 gimpdir = get_option('gimpdir')
 if gimpdir == ''
   # Default value
-  gimpdir = meson.project_name()
+  gimpdir = meson.project_name().to_upper()
 endif
 
 gimpdatadir    = join_paths(get_option('datadir'),    meson.project_name(), api_version)
