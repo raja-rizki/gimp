@@ -57,6 +57,16 @@ appdatafile = configure_file(
   install_dir: join_paths(get_option('datadir'), 'appdata'),
 )
 
+appdatafilename = 'gimp-data-extras.metainfo.xml'
+appdatafile = configure_file(
+  input : appdatafilename+'.in',
+  output: appdatafilename,
+  configuration: desktop_conf,
+  install: true,
+  install_dir: join_paths(get_option('datadir'), 'appdata'),
+)
+
+
 custom_target('validate-desktop',
   input : [ desktopfile, ],
   output: [ 'validate-desktop' ],

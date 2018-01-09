@@ -1,6 +1,6 @@
 # TODO ifs-compose.rc.o
 
-ifs_compose = executable('if-compose',
+ifs_compose = executable('ifs-compose',
   [
     'ifs-compose-storage.c',
     'ifs-compose-utils.c',
