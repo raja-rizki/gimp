@@ -761,7 +761,7 @@ add_project_arguments(
   '-Wdeclaration-after-statement',
   '-Wformat-security',
   '-Winit-self',
-  '-Wlogical-op',
+  # '-Wlogical-op',
   '-Wmissing-declarations',
   '-Wmissing-format-attribute',
   '-Wold-style-definition',
