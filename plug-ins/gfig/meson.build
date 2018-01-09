@@ -23,7 +23,7 @@ gfig = executable('gfig',
   ],
   include_directories: [ rootInclude, ],
   dependencies: [
-    gtk2, gegl,
+    gtk2, gegl, math,
   ],
   link_with: [
     libgimp,

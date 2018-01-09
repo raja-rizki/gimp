@@ -8,7 +8,7 @@ ifs_compose = executable('if-compose',
   ],
   include_directories: [ rootInclude, ],
   dependencies: [
-    gtk2, gegl,
+    gtk2, gegl, math,
   ],
   link_with: [
     libgimp,

@@ -9,7 +9,7 @@ file_tiff = executable('file-tiff',
   ],
   include_directories: [ rootInclude, ],
   dependencies: [
-    gtk2, gegl, gexiv2, webp,
+    gtk2, gegl, gexiv2, webp, libtiff,
   ],
   link_with: [
     libgimp,

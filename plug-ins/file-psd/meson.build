@@ -12,7 +12,7 @@ file_psd = executable('file-psd',
   ],
   include_directories: [ rootInclude, ],
   dependencies: [
-    gtk2, gegl
+    gtk2, gegl, libjpeg, math, zlib,
   ],
   link_with: [
     libgimp,

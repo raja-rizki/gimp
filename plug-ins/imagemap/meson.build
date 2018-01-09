@@ -1,3 +1,4 @@
+subdir('images')
 # TODO imagemap.rc.o
 
 imagemap = executable('imagemap',
@@ -65,10 +66,11 @@ imagemap = executable('imagemap',
     'imap_string.c',
     'imap_table.c',
     'imap_taglist.c',
+    imap_stock_pixbuf_h,
   ],
   include_directories: [ rootInclude, ],
   dependencies: [
-    gtk2, gegl,
+    gtk2, gegl, math,
   ],
   link_with: [
     libgimp,

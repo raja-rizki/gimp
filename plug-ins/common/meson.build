@@ -134,7 +134,7 @@ common_exes_list = [
   [
     'file-compressor',
     [ 'file-compressor.c', ],
-    [ gdk_pixbuf, cairo, gio, liblzma, bz2, zlib, ],
+    [ gegl, gdk_pixbuf, cairo, gio, liblzma, bz2, zlib, ],
   ],
   [
     'file-csource',
@@ -194,12 +194,12 @@ common_exes_list = [
   [
     'file-jp2-load',
     [ 'file-jp2-load.c', ],
-    [ gtk2, gegl, gdk_pixbuf, jp2, ],
+    [ gtk2, gegl, gdk_pixbuf, jasper, ],
   ],
   [
     'file-mng',
     [ 'file-mng.c', ],
-    [ gtk2, gegl, libmng, ],
+    [ gtk2, gegl, libmng, libpng, ],
   ],
   [
     'file-pat',
@@ -239,7 +239,7 @@ common_exes_list = [
   [
     'file-ps',
     [ 'file-ps.c', ],
-    [ gtk2, gegl, gdk_pixbuf, ],
+    [ gtk2, gegl, gdk_pixbuf, ghostscript, ],
   ],
   [
     'file-psp',
@@ -259,7 +259,7 @@ common_exes_list = [
   [
     'file-svg',
     [ 'file-svg.c', ],
-    [ gtk2, rsvg, ],
+    [ gtk2, gegl, rsvg, ],
   ],
   [
     'file-tga',
@@ -284,7 +284,7 @@ common_exes_list = [
   [
     'file-xpm',
     [ 'file-xpm.c', ],
-    [ gtk2, gegl, xpm, ],
+    [ gtk2, gegl, libxpm, ],
   ],
   [
     'file-xwd',
@@ -456,13 +456,17 @@ common_exes_list = [
     [ 'web-browser.c', ],
     [ gtk2, gegl, gdk_pixbuf, ],
   ],
-  [
-    'web-page',
-    [ 'web-page.c', ],
-    [ gtk2, gegl, gdk_pixbuf, ],
-  ]
 ]
 
+if have_webkit
+  common_exes_list += [
+    [
+      'web-page',
+      [ 'web-page.c', ],
+      [ gtk2, gegl, gdk_pixbuf, webkit, ],
+    ]
+  ]
+endif
 foreach exe : common_exes_list
   exe_name = exe[0]
   exe_sources = exe[1]
@@ -480,7 +484,7 @@ foreach exe : common_exes_list
       libgimpui,
       libgimpwidgets,
     ],
-    dependencies: exe_deps,
+    dependencies: [ exe_deps, math ],
     install: true,
     install_dir: join_paths(gimpplugindir, 'plug-ins'),
   )

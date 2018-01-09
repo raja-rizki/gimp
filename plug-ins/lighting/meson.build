@@ -14,7 +14,7 @@ lighting = executable('lighting',
   ],
   include_directories: [ rootInclude, include_directories('.'), ],
   dependencies: [
-    gtk2, gegl,
+    gtk2, gegl, math,
   ],
   link_with: [
     libgimp,

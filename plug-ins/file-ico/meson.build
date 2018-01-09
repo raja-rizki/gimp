@@ -9,7 +9,7 @@ file_ico = executable('file-ico',
   ],
   include_directories: [ rootInclude, ],
   dependencies: [
-    gtk2, gegl,
+    gtk2, gegl, libpng,
   ],
   link_with: [
     libgimp,

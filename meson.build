@@ -362,7 +362,7 @@ endif
 bz2 = cc.find_library('bz2', required: false)
 
 # LZma support
-lzma = dependency('liblzma', version: '>=5.0.0', required: false)
+liblzma = dependency('liblzma', version: '>=5.0.0', required: false)
 
 # Ghostscript / Postscript support
 have_ghostscript = false
@@ -397,7 +397,7 @@ endif
 have_libxpm = false
 if get_option('with-xpm')
   have_libxpm = true
-  libpng = dependency('xpm')
+  libxpm = dependency('xpm')
   MIMEtypes += 'image/x-xpixmap'
 endif
 
@@ -457,7 +457,7 @@ endif
 have_wmf = false
 if get_option('with-wmf')
   have_wmf = true
-  wmf = cc.find_library('wmf')
+  wmf = [ cc.find_library('wmf'), cc.find_library('wmflite') ]
   wmf_version = run_command('libwmf-config', '--version').stdout().strip()
   if not wmf_version.version_compare('>=0.2.8')
     error('libwmf version is too old (' + wmf_version + ', 0.2.8 required)')
@@ -856,7 +856,7 @@ subdir('libgimp')
 
 # Executables, plugins
 subdir('modules')
-# subdir('plug-ins')
+subdir('plug-ins')
 subdir('app')
 
 subdir('tools/pdbgen')

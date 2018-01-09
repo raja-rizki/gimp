@@ -8,7 +8,6 @@ file_jpeg = executable('file-jpeg',
     'jpeg-save.c',
     'jpeg-settings.c',
     'jpeg.c',
-    'jpegqual.c',
   ],
   include_directories: [ rootInclude, ],
   dependencies: [

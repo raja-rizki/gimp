@@ -39,7 +39,7 @@ pagecurl = executable('pagecurl',
   plugin_pagecurl_sources,
   include_directories: [ rootInclude, ],
   dependencies: [
-    gtk2, gegl,
+    gtk2, gegl, math,
   ],
   link_with: [
     libgimp,
