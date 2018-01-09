@@ -82,6 +82,11 @@ build() {
   mesonOptions=(
     '--prefix=/usr'
     '--sysconfdir=/etc'
+
+    '--buildtype=release'
+    '--strip'
+    '-Db_lto=true'
+
     '-Denable-mp=true'
     '-Denable-console-bin=true'
     # '-Dwith-gimp-remote=true'
@@ -97,6 +102,7 @@ build() {
     '-Dwith-xvfb-run=false'
   )
 
+  rm -rf   "${builddir}"
   meson    "${builddir}" "${srcdir}/${_gitname}" "${mesonOptions[@]}"
   ninja -C "${builddir}"
 }
