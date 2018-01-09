@@ -62,11 +62,11 @@ app_debug_files = files(
 app_lflags = [
 ]
 app_cflags = [
-  '-DGIMPDIR="'+ gimpdir + '"',
-  '-DGIMP_USER_VERSION="'+ user_version +'"',
+  '-DCC_VERSION="' + cc.version() + '"',
   '-DG_LOG_DOMAIN="Gimp"',
   '-DGIMP_APP_GLUE_COMPILATION',
-  '-DCC_VERSION="' + cc.version() + '"',
+  '-DGIMP_USER_VERSION="'+ user_version +'"',
+  '-DGIMPDIR="'+ gimpdir + '"',
 ]
 
 if platform_win32
@@ -109,11 +109,11 @@ libapp = static_library('app',
 )
 
 
-
-
 # Those subdirs need to link againts the first ones
 subdir('config')
 subdir('tests')
+
+
 
 app_links = [
   libapp,
