@@ -1,7 +1,7 @@
 # Meson build file
 
 # http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
-project('gimp', ['c', 'cpp'], version : '2.9.7',
+project('gimp', ['c', 'cpp'], version : '2.9.9',
   meson_version : '>=0.40.0',
   default_options : [
     'sysconfdir=/etc',
@@ -126,7 +126,7 @@ freetype2         = dependency('freetype2',          version: '>=2.1.7')
 gdk_pixbuf_minver = '>=2.30.8'
 gdk_pixbuf        = dependency('gdk-pixbuf-2.0',     version: gdk_pixbuf_minver)
 
-# gegl_minver       = '>=0.3.22'
+# gegl_minver       = '>=0.3.27'
 gegl_minver       = '>=0.3.20'
 gegl              = dependency('gegl-0.3',           version: gegl_minver)
 
@@ -136,8 +136,8 @@ gio               = dependency('gio-2.0')
 gio_specific_name = 'gio-' + (os_win32 ? 'windows-2.0' : 'unix-2.0')
 gio_specific      = dependency(gio_specific_name)
 
-glib              = dependency('glib-2.0',           version: '>=2.43.0')
-gobject           = dependency('gobject-2.0',        version: '>=2.43.0')
+glib              = dependency('glib-2.0',           version: '>=2.54.2')
+gobject           = dependency('gobject-2.0',        version: '>=2.54.2')
 gmodule           = dependency('gmodule-no-export-2.0')
 
 gtk2_minver       = '>=2.24.10'
@@ -146,6 +146,7 @@ gtk2              = dependency('gtk+-2.0',           version: gtk2_minver)
 harfbuzz          = dependency('harfbuzz',           version: '>=0.9.19')
 lcms              = dependency('lcms2',              version: '>=2.8')
 libmypaint        = dependency('libmypaint-1.3',     version: '>=1.3.0')
+libmypaint_brushes= dependency('mypaint-brushes-1.0')
 pangocairo        = dependency('pangocairo',         version: '>=1.29.4')
 rsvg              = dependency('librsvg-2.0',        version: '>=2.40.6')
 
@@ -447,10 +448,8 @@ if get_option('with-cairo-pdf')
   cairopdf = dependency('cairo-pdf', version: '>=1.12.2')
 endif
 
-# If both poppler and cairo-pdf are enabled then we have complete PDF support
-if have_poppler and have_cairopdf
-  MIMEtypes += 'application/pdf'
-endif
+# PDF import support is a granted feature.
+MIMEtypes += 'application/pdf'
 
 
 # libwmf2
@@ -700,7 +699,10 @@ gimp_mkenums_custom_target_commonargs = [
             '  };\n',
   '--dhead','  static const Gimp@Type@Desc descs[] =\n'+
             '  {',
-  '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },',
+  '--dprod','    { @VALUENAME@, @valuedesc@, @valuehelp@ },@if (\'@valueabbrev@\' ne \'NULL\')@\n'+
+            '    /* Translators: this is an abbreviated version of @valueudesc@.\n'+
+            '       Keep it short. */\n'+
+            '    { @VALUENAME@, @valueabbrev@, NULL },@endif@',
   '--dtail','    { 0, NULL, NULL }\n'+
             '  };\n'+
             '\n'+
@@ -825,6 +827,7 @@ rootInclude = include_directories('.')
 # Tools (need libgimpbase now)
 subdir('libgimpbase')
 subdir('tools')
+subdir('pdb')
 
 # Translations
 subdir('po')
@@ -834,6 +837,7 @@ subdir('po-python')
 subdir('po-script-fu')
 subdir('po-tags')
 subdir('po-tips')
+subdir('po-windows-installer')
 
 # Data / Desktop / xml files
 subdir('cursors')
@@ -859,8 +863,9 @@ subdir('modules')
 subdir('plug-ins')
 subdir('app')
 
-subdir('tools/pdbgen')
-
+# subdir('build/windows/installer')
+# subdir('build/windows/installer/lang')
+# subdir('po-windows-installer')
 # subdir('build')
 # build/windows/gimp-plug-ins.rc
 # build/windows/gimp.rc
@@ -964,7 +969,6 @@ Optional Plug-Ins:
   MNG:                 @0@'''.format(have_libmng) +'''
   OpenEXR:             @0@'''.format(have_openexr) +'''
   WebP:                @0@'''.format(have_webp) +'''
-  PDF (import):        @0@'''.format(have_poppler) +'''
   PDF (export):        @0@'''.format(have_cairopdf) +'''
   Print:               @0@'''.format(have_print) +'''
   Python 2:            @0@'''.format(have_python) +'''

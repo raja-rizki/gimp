@@ -20,13 +20,6 @@ gimpwidgetsmarshal = gnome.genmarshal('gimpwidgetsmarshal',
   install_header: false,
 )
 
-if gtk_mac_integration_ok
-  gimppickbutton = 'gimppickbutton-quartz.c'
-else
-  gimppickbutton = 'gimppickbutton-default.c'
-endif
-
-
 libgimpwidgets_sources = [
   'gimp3migration.c',
   'gimpbrowser.c',
@@ -91,7 +84,6 @@ libgimpwidgets_sources = [
   'gimpzoommodel.c',
   gimpwidgetsenums,
   gimpwidgetsmarshal,
-  gimppickbutton,
   icons_imgs_sources,
 ]
 
@@ -175,6 +167,17 @@ libgimpwidgets_lflags = [
 if os_win32
   libgimpwidgets_lflags += ['-export-symbols', 'gimpwidgets.def']
   libgimpwidgets_lflags += '-lgdi32'
+endif
+
+if gtk_mac_integration_ok
+  libgimpwidgets_sources += [
+    'gimppickbutton-quartz.c',
+  ]
+else
+  libgimpwidgets_sources += [
+    'gimppickbutton-default.c',
+    'gimppickbutton-kwin.c',
+  ]
 endif
 
 

@@ -8,6 +8,7 @@ libapppropgui_sources = [
   'gimppropgui-eval.c',
   'gimppropgui-generic.c',
   'gimppropgui-hue-saturation.c',
+  'gimppropgui-shadows-highlights.c',
   'gimppropgui-spiral.c',
   'gimppropgui-supernova.c',
   'gimppropgui-utils.c',

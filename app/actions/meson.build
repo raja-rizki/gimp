@@ -12,6 +12,8 @@ libappactions_sources = [
   'context-commands.c',
   'cursor-info-actions.c',
   'cursor-info-commands.c',
+  'dashboard-actions.c',
+  'dashboard-commands.c',
   'data-commands.c',
   'data-editor-commands.c',
   'debug-actions.c',

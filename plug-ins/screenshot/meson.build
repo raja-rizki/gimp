@@ -1,10 +1,12 @@
 plugin_screenshot_sources = [
-  'screenshot.c',
+  'screenshot-freedesktop.c',
   'screenshot-gnome-shell.c',
+  'screenshot-kwin.c',
   'screenshot-osx.c',
-  'screenshot-x11.c',
-  # 'screenshot-win32.rc',
   'screenshot-win32.c',
+  # 'screenshot-win32.rc',
+  'screenshot-x11.c',
+  'screenshot.c',
 ]
 
 screenshot = executable('screenshot',

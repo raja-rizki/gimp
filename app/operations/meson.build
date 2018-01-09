@@ -19,6 +19,7 @@ libappoperations_sources = [
   'gimpoperationblend.c',
   'gimpoperationborder.c',
   'gimpoperationbrightnesscontrast.c',
+  'gimpoperationbuffersourcevalidate.c',
   'gimpoperationcagecoefcalc.c',
   'gimpoperationcagetransform.c',
   'gimpoperationcolorbalance.c',
