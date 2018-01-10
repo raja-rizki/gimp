@@ -115,8 +115,8 @@ custom_target('pygimp.interp',
   input : [],
   output: [ 'pygimp.interp' ],
   command: [
-    'echo', 'python=' + pythonmod.find_python().path()
-    + '\n'+ '/usr/bin/python=' + pythonmod.find_python().path()
+    'echo', 'python='          + python2.path()
+    + '\n'+ '/usr/bin/python=' + python2.path()
     + '\n'+ ':Python:E::py::python:'
   ],
   capture: true,
