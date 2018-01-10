@@ -1,6 +1,6 @@
 subdir('common')
 subdir('file-bmp')
-if have_openexr
+if openexr.found()
   subdir('file-exr')
 endif
 subdir('file-faxg3')
@@ -12,7 +12,7 @@ subdir('file-psd')
 subdir('file-raw')
 subdir('file-sgi')
 subdir('file-tiff')
-if have_webp
+if webp.found()
   subdir('file-webp')
 endif
 subdir('flame')
@@ -21,7 +21,7 @@ subdir('gfig')
 subdir('gimpressionist')
 subdir('gradient-flare')
 subdir('help')
-if have_webkit
+if webkit.found()
   subdir('help-browser')
 endif
 subdir('ifs-compose')

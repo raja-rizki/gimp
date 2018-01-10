@@ -1,4 +1,4 @@
-if have_gtk_doc
+if gtkdoc_scan.found()
   # subdir('app')
   # subdir('libgimp')
   # subdir('libgimpbase')

@@ -458,7 +458,7 @@ common_exes_list = [
   ],
 ]
 
-if have_webkit
+if webkit.found()
   common_exes_list += [
     [
       'web-page',

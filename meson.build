@@ -18,6 +18,7 @@ gnome     = import('gnome')
 pythonmod = import('python3')
 
 cc        = meson.get_compiler('c')
+cxx       = meson.get_compiler('cpp')
 prefix    = get_option('prefix')
 buildtype = get_option('buildtype')
 
@@ -109,8 +110,7 @@ math              = cc.find_library('m')
 
 atk               = dependency('atk',                version: '>=2.2.0')
 
-# babl_minver       = '>=0.1.38'
-babl_minver       = '>=0.1.30'
+babl_minver       = '>=0.1.38'
 babl              = dependency('babl',               version: babl_minver)
 
 cairo_minver      = '>=1.12.2'
@@ -155,17 +155,17 @@ rsvg              = dependency('librsvg-2.0',        version: '>=2.40.6')
 ################################################################################
 # Check for GLib Networking
 
-have_glib_networking_run = cc.run(
+glib_networking_works_run = cc.run(
   '''#include <gio/gio.h>
   int main() {
     return !g_tls_backend_supports_tls (g_tls_backend_get_default ());
   }''',
   dependencies: gio,
 )
-have_glib_networking = (have_glib_networking_run.compiled()
-                    and have_glib_networking_run.returncode() == 0)
+glib_networking_works =(glib_networking_works_run.compiled()
+                    and glib_networking_works_run.returncode() == 0)
 
-if not have_glib_networking
+if not glib_networking_works
   error('Test for glib-networking failed. This is required.')
 # TODO check if cross-compiling
 endif
@@ -212,47 +212,24 @@ if platform_win32
 endif
 
 # Check for finite or isfinite
-has_finite  = cc.has_function('finite',   prefix: '#include <math.h>')
-has_isfinite= cc.has_function('isfinite', prefix: '#include <math.h>')
-conf.set('HAVE_FINITE',   has_finite)
-conf.set('HAVE_ISFINITE', has_isfinite)
+conf.set('HAVE_FINITE',   cc.has_function('finite',   prefix: '#include <math.h>'))
+conf.set('HAVE_ISFINITE', cc.has_function('isfinite', prefix: '#include <math.h>'))
 
 # Check for compiler CPU extensions
+cpuext_args = [
+  '-mfpmath=sse',
+  '-mmmx',
+  '-msse',
+  '-msse2',
+  '-msse4.1',
+]
+add_project_arguments(cc .get_supported_arguments(cpuext_args), language: 'c')
+add_project_arguments(cxx.get_supported_arguments(cpuext_args), language: 'cpp')
 
-has_ssem = cc.has_argument('-mfpmath=sse')
-if has_ssem
-  add_project_arguments('-mfpmath=sse',
-    language: ['c', 'cxx'])
-endif
-
-has_mmx  = cc.has_argument('-mmmx') and get_option('enable-mmx')
-if has_mmx
-  add_project_arguments(   '-mmmx',
-    language: ['c', 'cxx'])
-endif
-
-has_sse  = cc.has_argument('-msse') and get_option('enable-sse')
-if has_sse
-  add_project_arguments(   '-msse',
-    language: ['c', 'cxx'])
-endif
-
-has_sse2 = cc.has_argument('-msse2')
-if has_sse2
-  add_project_arguments(   '-msse2',
-    language: ['c', 'cxx'])
-endif
-
-has_sse41= cc.has_argument('-msse4.1')
-if has_sse41
-  add_project_arguments(   '-msse4.1',
-    language: ['c', 'cxx'])
-endif
-
-conf.set10('COMPILE_SSE2_INTRINISICS',   has_sse2)
-conf.set10('COMPILE_SSE4_1_INTRINISICS', has_sse41)
-conf.set10('USE_MMX', has_mmx)
-conf.set10('USE_SSE', has_sse)
+conf.set10('USE_MMX',                   cc.has_argument('-mmmx'))
+conf.set10('USE_SSE',                   cc.has_argument('-msse'))
+conf.set10('COMPILE_SSE2_INTRINISICS',  cc.has_argument('-msse2'))
+conf.set10('COMPILE_SSE4_1_INTRINISICS',cc.has_argument('-msse4.1'))
 
 
 # TODO altivec
@@ -269,47 +246,38 @@ endif
 # TODO shared memory handling
 
 # OpenMP
-conf.set10('ENABLE_MP', get_option('enable-mp'))
-
-screenshot_deps = []
+conf.set10('ENABLE_MP', get_option('enable-openmp'))
 
 # Check if X11
 enable_doc_shooter = false
-have_libxmu = false
-have_libxext = false
 
 if gtk2.get_pkgconfig_variable('target') == 'x11'
+  x11   = dependency('x11')
+  xmu   = dependency('xmu')
+  xt    = dependency('xt')
+  xext  = dependency('xext')
+  xfixes= dependency('xfixes')
+
   enable_doc_shooter = true
 
-  x11 = dependency('x11')
-
-  # Test for Xmu
-  xmu = dependency('xmu')
-  xt  = dependency('xt')
-  if xmu.found() and xt.found()
-    if cc.has_header('X11/Xmu/WinUtil.h', dependencies: xmu)
-      if cc.has_function('XmuClientWindow', dependencies: xmu)
-        have_libxmu = true
-        xmu = [ x11, xmu, xt ]
-      endif
+  x11_headers   = [ 'X11/Xmu/WinUtil.h', 'X11/extensions/shape.h', ]
+  x11_functions = [ 'XmuClientWindow', 'XShapeGetRectangles', ]
+  foreach header : x11_headers
+    if not cc.has_header(header, dependencies: [ xext, xmu ])
+      error('x11 install does not provide required header ' + header)
     endif
-  endif
-
-  # Check for shaped window extension
-  xext = dependency('xext')
-  if xext.found()
-    if cc.has_header('X11/extensions/shape.h', dependencies: xext)
-      if cc.has_function('XShapeGetRectangles', dependencies: xext)
-        have_libxext = true
-        xext = [ x11, xext ]
-      endif
+  endforeach
+  foreach function : x11_functions
+    if not cc.has_function(function, dependencies: [ xext, xmu ])
+      error('x11 install does not provide required function ' + function)
     endif
-  endif
-
-  # check for the XFixes extension
-  xfixes = dependency('xfixes')
-
-
+  endforeach
+else
+  x11    = dependency('', required: false)
+  xmu    = dependency('', required: false)
+  xt     = dependency('', required: false)
+  xext   = dependency('', required: false)
+  xfixes = dependency('', required: false)
 endif
 
 
@@ -341,153 +309,151 @@ MIMEtypes = [
 ]
 
 
-# TIFF support
+
 libtiff = dependency('libtiff-4', required: false)
 if libtiff.found()
   MIMEtypes += 'image/tiff'
 endif
 
-# Jpeg support
+
 libjpeg = dependency('libjpeg', required: false)
 if libjpeg.found()
   MIMEtypes += 'image/jpeg'
 endif
 
-# Zlib support
+
 zlib = dependency('zlib', required: false)
 if zlib.found()
   MIMEtypes += 'image/x-psp'
 endif
 
-# Bz2 support
+
 bz2 = cc.find_library('bz2', required: false)
 
-# LZma support
+
 liblzma = dependency('liblzma', version: '>=5.0.0', required: false)
 
-# Ghostscript / Postscript support
-have_ghostscript = false
-if get_option('with-gs')
-  have_ghostscript = true
+
+if get_option('with-ghostscript')
   ghostscript = cc.find_library('gs')
   MIMEtypes += 'application/postscript'
+else
+  ghostscript = dependency('', required: false)
 endif
 
-# LibPNG
+
 libpng = dependency('libpng', version: '>=1.6.25', required: false)
 if libpng.found()
   MIMEtypes += [ 'image/png', 'image/x-icon']
 endif
 
-# LibMNG
-have_libmng = false
+
 if get_option('with-mng')
-  have_libmng = true
   libmng = cc.find_library('mng')
+else
+  libmng = dependency('', required: false)
 endif
 
-# Libaa
-have_libaa = false
+
 if get_option('with-aa')
-  have_libaa = true
-  liba = cc.find_library('aa')
+  libaa = cc.find_library('aa')
+else
+  libaa = dependency('', required: false)
 endif
 
 
-# Libxpm
-have_libxpm = false
 if get_option('with-xpm')
-  have_libxpm = true
   libxpm = dependency('xpm')
   MIMEtypes += 'image/x-xpixmap'
+else
+  libxpm = dependency('', required: false)
 endif
 
-# OpenEXR
-have_openexr = false
+
 if get_option('with-openexr')
-  have_openexr = true
   openexr = dependency('OpenEXR', version: '>=1.6.1')
   MIMEtypes += 'image/x-exr'
+else
+  openexr = dependency('', required: false)
 endif
 
-# WebP
-have_webp = false
+
 if get_option('with-webp')
-  have_webp = true
-  webp = [
+  webp_deps = [
     dependency('libwebp',     version: '>=0.6.0'),
     dependency('libwebpmux',  version: '>=0.6.0'),
     dependency('libwebpdemux',version: '>=0.6.0'),
   ]
+  webp = declare_dependency(
+    dependencies: webp_deps,
+    version: webp_deps[0].version(),
+  )
   MIMEtypes += 'image/x-webp'
+else
+  webp = dependency('', required: false)
 endif
 
 
-# WebKit
-have_webkit = false
 if get_option('with-webkit')
-  have_webkit = true
   webkit = dependency('webkit-1.0', version: '>=1.6.1')
+else
+  webkit = dependency('', required: false)
 endif
 
 
-# poppler
-have_poppler = false
 if get_option('with-poppler')
-  have_poppler = true
   poppler = [
     dependency('poppler-glib', version: '>=0.44.0'),
     dependency('poppler-data', version: '>=0.4.7'),
   ]
+else
+  poppler = dependency('', required: false)
 endif
 
-# cairo-pdf
-have_cairopdf = false
+
 if get_option('with-cairo-pdf')
-  have_cairopdf = true
   cairopdf = dependency('cairo-pdf', version: '>=1.12.2')
+else
+  cairopdf = dependency('', required: false)
 endif
+
 
 # PDF import support is a granted feature.
 MIMEtypes += 'application/pdf'
 
 
-# libwmf2
-have_wmf = false
 if get_option('with-wmf')
-  have_wmf = true
   wmf = [ cc.find_library('wmf'), cc.find_library('wmflite') ]
-  wmf_version = run_command('libwmf-config', '--version').stdout().strip()
-  if not wmf_version.version_compare('>=0.2.8')
-    error('libwmf version is too old (' + wmf_version + ', 0.2.8 required)')
-  endif
+  wmf = dependency('libwmf', version: '>=0.2.8')
   MIMEtypes += [ 'image/x-wmf', ]
+else
+  wmf = dependency('', required: false)
 endif
 
-# libjasper
-have_jasper = false
+
 if get_option('with-jasper')
-  have_jasper = true
   jasper = cc.find_library('jasper')
   MIMEtypes += [ 'image/jp2', 'image/jpeg2000', 'image/jpx', ]
+else
+  jasper =
 endif
 
-# xcursor / xmc
-have_xmc = false
+
 if get_option('with-xmc')
-  have_xmc = true
   xmc = dependency('xcursor')
   MIMEtypes += [ 'image/x-xcursor', ]
+else
+  dependency('', required: false)
 endif
 
-# alsa
-have_alsa = false
+
 if get_option('with-alsa')
-  have_alsa = true
   alsa = dependency('alsa', version: '>=1.0.0')
+else
+  alsa = dependency('', required: false)
 endif
 
-# Linux-input
+
 have_linuxinput = false
 if get_option('with-linux-input')
   if not cc.has_header('linux/input.h')
@@ -521,21 +487,15 @@ if directx_sdk_path != '' and os_win32
 endif
 
 
-# libgudev
-have_gudev = false
 if get_option('with-gudev')
-  have_gudev = true
-  gudev = dependency('gudev-1.0',version: '>=167')
+  gudev = dependency('gudev-1.0', version: '>=167')
+else
+  guvev = dependency('', required: false)
 endif
 
 
 # sendmail TODO
 have_email = true
-# have_gudev = false
-# if get_option('with-gudev')
-#   have_gudev = true
-#   gudev = dependency('gudev-1.0',version: '>=167')
-# endif
 
 # perl
 perl = find_program('perl5', 'perl', 'perl5.005', 'perl5.004', 'perl')
@@ -595,27 +555,24 @@ have_vector_icons = true
 #   endif
 # endif
 
-# Check for xvfb-run
-have_xvfb_run = false
 if get_option('with-xvfb-run')
   xvfb_run = find_program('xvfb-run')
-  have_xvfb_run = true
+else
+  xvfb_run = find_program('', required: false)
 endif
 
 
-# Check for appstream-util
-have_appstream_util = false
 if get_option('with-appdata-test')
   appstream_util = find_program('appstream-util')
-  have_appstream_util = true
+else
+  appstream_util = find_program('', required: false)
 endif
 
 
-# Check for gtk-doc and docbook-tools
-have_gtk_doc = false
 if get_option('with-gtk-doc')
-  gtk_doc_scan = find_program('gtkdoc-scan', required : true)
-  have_gtk_doc = true
+  gtkdoc_scan = find_program('gtkdoc-scan', required : true)
+else
+  gtkdoc_scan = find_program('', required: false)
 endif
 
 enable_default_bin = get_option('enable-default-bin')
@@ -964,32 +921,32 @@ Optional Features:
   Dr. Mingw (Win32):   @0@'''.format(have_drmingw) +'''
 
 Optional Plug-Ins:
-  Ascii Art:           @0@'''.format(have_libaa) +'''
-  Ghostscript:         @0@'''.format(have_ghostscript) +'''
-  Help Browser:        @0@'''.format(have_webkit) +'''
-  JPEG 2000:           @0@'''.format(have_jasper) +'''
-  MNG:                 @0@'''.format(have_libmng) +'''
-  OpenEXR:             @0@'''.format(have_openexr) +'''
-  WebP:                @0@'''.format(have_webp) +'''
-  PDF (export):        @0@'''.format(have_cairopdf) +'''
+  Ascii Art:           @0@'''.format(libaa.found()) +'''
+  Ghostscript:         @0@'''.format(ghostscript.found()) +'''
+  Help Browser:        @0@'''.format(webkit.found()) +'''
+  JPEG 2000:           @0@'''.format(jasper.found()) +'''
+  MNG:                 @0@'''.format(libmng.found()) +'''
+  OpenEXR:             @0@'''.format(openexr.found()) +'''
+  WebP:                @0@'''.format(webp.found()) +'''
+  PDF (export):        @0@'''.format(cairopdf.found()) +'''
   Print:               @0@'''.format(have_print) +'''
   Python 2:            @0@'''.format(have_python) +'''
   Script-Fu:           @0@'''.format(have_scriptfu) +'''
   TWAIN (Win32):       @0@'''.format(os_win32) +'''
-  Webpage:             @0@'''.format(have_webkit) +'''
-  WMF:                 @0@'''.format(have_wmf) +'''
-  X11 Mouse Cursor:    @0@'''.format(have_xmc) +'''
-  XPM:                 @0@'''.format(have_libxpm) +'''
+  Webpage:             @0@'''.format(webkit.found()) +'''
+  WMF:                 @0@'''.format(wmf.found()) +'''
+  X11 Mouse Cursor:    @0@'''.format(xmc.found()) +'''
+  XPM:                 @0@'''.format(libxpm.found()) +'''
   Email:               @0@'''.format(have_email) +'''
 
 Optional Modules:
-  ALSA (MIDI Input):   @0@'''.format(have_alsa) +'''
-  Linux Input:         @0@'''.format(have_linuxinput) +''' (GUdev support: @0@'''.format(have_gudev) +''')
+  ALSA (MIDI Input):   @0@'''.format(alsa.found()) +'''
+  Linux Input:         @0@'''.format(have_linuxinput) +''' (GUdev support: @0@'''.format(gudev.found()) +''')
   DirectInput (Win32): @0@'''.format(have_directXinput) +'''
 
 Tests:
-  Use xvfb-run         @0@'''.format(have_xvfb_run) +'''
-  Test appdata         @0@'''.format(have_appstream_util) +'''
+  Use xvfb-run         @0@'''.format(xvfb_run.found()) +'''
+  Test appdata         @0@'''.format(appstream_util.found()) +'''
 '''
 )
 
