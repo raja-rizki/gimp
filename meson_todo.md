@@ -1,71 +1,49 @@
 Meson Port
 -----------
 
-* app
-* devel-docs
-  * app
-  * libgimp
-  * libgimpbase
-  * libgimpcolor
-  * libgimpconfig
-  * libgimpmath
-  * libgimpmodule
-  * libgimpthumb
-  * libgimpwidgets
-    * images
-    * tmpl
-  * tools
-* icons
-  * Symbolic-Inverted
-* plug-ins
-  * common
-  * file-bmp
-  * file-exr
-  * file-faxg3
-  * file-fits
-  * file-fli
-  * file-ico
-  * file-jpeg
-  * file-psd
-  * file-raw
-  * file-sgi
-  * file-tiff
-  * file-webp
-  * flame
-  * fractal-explorer
-    * examples
-  * gfig
-    * gfig-examples
-    * images
-  * gimpressionist
-    * Brushes
-    * Paper
-    * Presets
-  * gradient-flare
-    * flares
-  * help
-  * help-browser
-  * ifs-compose
-  * imagemap
-    * images
-  * lighting
-    * images
-  * map-object
-  * metadata
-  * pagecurl
-  * print
-  * pygimp
-    * doc
-    * plug-ins
-  * screenshot
-  * script-fu
-    * ftx
-    * scripts
-      * images
-    * tinyscheme
-  * selection-to-path
-  * twain
+# Changes
+
+## Generate headers instead of .c files.
+* app/core/gimpviewable.c
+```
++#ifdef MESON_BUILD
++#include "icons/Color/gimp-core-pixbufs.h"
++#else
+ #include "icons/Color/gimp-core-pixbufs.c"
++#endif
+```
+
+* libgimpwidgets/gimpicons.c
+```
++#ifdef MESON_BUILD
++#include "icons/Color/gimp-icon-pixbufs.h"
++#else
+ #include "icons/Color/gimp-icon-pixbufs.c"
++#endif
+```
+
+* plug-ins/pagecurl/pagecurl.c
+```
++#ifdef MESON_BUILD
++#include "pagecurl-icons.h"
++#else
+ #include "pagecurl-icons.c"
++#endif
+```
+
+## Encoding fixes
+* app/display/gimpdisplayshell-title.c
+
+## Correctly detect Python2. Fix tab/spaces inconsistency.
+* plug-ins/pygimp/py-compile
+
+
+# TODO
+
+## Windows
+* Windres generator for plugins `*.rc`
+
+
+## Missing
+* icons/Symbolic-Inverted
 * tools/pdbgen
-
-
-Windres generator for plugins *.rc
