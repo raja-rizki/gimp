@@ -34,5 +34,5 @@ install_data([
     'file-darktable-export-on-exit.lua',
     'file-darktable-get-size.lua',
   ],
-  install_dir: join_paths(prefix, gimpplugindir, 'plug-ins'),
+  install_dir: join_paths(prefix, gimpdatadir, 'file-raw'),
 )

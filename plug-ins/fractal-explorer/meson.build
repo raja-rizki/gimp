@@ -1,4 +1,4 @@
-# TODO fractal-explorer.rc.o
+subdir('examples')
 
 fractal_explorer = executable('fractal-explorer',
   [

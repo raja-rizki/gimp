@@ -1,5 +1,5 @@
+subdir('gfig-examples')
 subdir('images')
-# TODO gfig.rc.o
 
 gfig = executable('gfig',
   [

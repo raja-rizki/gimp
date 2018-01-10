@@ -1,4 +1,6 @@
-# TODO gimpressionist.rc.o
+subdir('Brushes')
+subdir('Paper')
+subdir('Presets')
 
 gimpressionist = executable('gimpressionist',
   [
