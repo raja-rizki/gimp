@@ -106,6 +106,18 @@ build() {
 package() {
   DESTDIR="${pkgdir}" ninja -C "${srcdir}/build" install
 
+  # Python compilation (was handled by Autotools, not Meson)
+  "${srcdir}/${_gitname}/plug-ins/pygimp/py-compile" \
+    --basedir "${pkgdir}/usr/lib/gimp/2.0/python" \
+    gimpenums.py  \
+    gimpfu.py     \
+    gimpplugin.py \
+    gimpshelf.py  \
+    gimpui.py
+
+  # Meson does not handle creating empty directories
+  mkdir -p "${pkgdir}/usr/share/gimp/2.0/fonts/"
+
   install -D -m644 "${srcdir}/linux.gpl" "${pkgdir}/usr/share/gimp/2.0/palettes/Linux.gpl"
 
   ln -s gimp-2.9          "${pkgdir}/usr/bin/gimp"
