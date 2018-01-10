@@ -846,7 +846,6 @@ configure_file(
 )
 
 
-# TODO sysconfdir seems not correctly set
 pkgconfig.generate(filebase: 'gimp-' + api_version,
   name: prettyname,
   description: 'GIMP Library',
