@@ -80,6 +80,7 @@ foreach pylib : python_so_libs
     ],
     link_with: pylib[3],
     c_args: [ '-DGETTEXT_PACKAGE="' + gettext_package + '"', ],
+    name_prefix: '',
     install: true,
     install_dir: join_paths(gimpplugindir, 'python'),
   )
