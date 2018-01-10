@@ -1,23 +1,7 @@
 subdir('doc')
 subdir('plug-ins')
 
-
-#
-# .defs.c:
-# 	(cd $(srcdir) \
-# 	 && $(PYGTK_CODEGEN) \
-# 	    --override $*.override \
-# 	    --register $(PYGTK_DEFSDIR)/gdk-types.defs \
-# 	    --register $(PYGTK_DEFSDIR)/gtk-types.defs \
-# 	    --register gimp-types.defs \
-# 	    --register gimpcolor-types.defs \
-# 	    --register gimpenums-types.defs \
-# 	    --prefix $* $*.defs) > gen-$*.c \
-# 	 && cp gen-$*.c $*.c \
-# 	 && rm -f gen-$*.c
-
 pwd = meson.current_source_dir()
-
 pygtk_generator = generator(pygtk2codegen,
   arguments: [
       '--override', join_paths(pwd, '@BASENAME@.override'),
@@ -35,7 +19,8 @@ pygtk_generator = generator(pygtk2codegen,
 
 
 python_so_libs = [
-  [ 'gimp', [
+  [ 'gimp',
+    [
       'gimpmodule.c',
       'pygimp-display.c',
       'pygimp-drawable.c',
@@ -45,55 +30,73 @@ python_so_libs = [
       'pygimp-pdb.c',
       'pygimp-tile.c',
       'pygimp-vectors.c',
-  ], ],
-  [ '_gimpenums', [
-    'gimpenumsmodule.c',
-  ], ],
-  [ '_gimpui',    [
-    'gimpuimodule.c',    pygtk_generator.process('gimpui.defs'),
-  ], ],
-  [ 'gimpcolor',  [
-    'gimpcolormodule.c', 'pygimp-colors.c',
-  ], ],
-  [ 'gimpthumb',  [
-    'gimpthumbmodule.c', pygtk_generator.process('gimpthumb.defs'),
-  ], ],
+    ],
+    [ pycairo, cairo, gtk2, ],
+    [
+      libgimp,
+      libgimpbase,
+      libgimpcolor,
+      libgimpui,
+    ],
+  ],
+  [ '_gimpenums',
+    [ 'gimpenumsmodule.c', ],
+    [ gobject, cairo, gtk2, ],
+    [
+      libgimp,libgimpbase
+    ],
+  ],
+  [ '_gimpui',
+    [ 'gimpuimodule.c',    pygtk_generator.process('gimpui.defs'), ],
+    [ pygtk2, pycairo, gtk2, ],
+    [
+      libgimp,
+      libgimpbase,
+      libgimpcolor,
+      libgimpconfig,
+      libgimpui,
+      libgimpwidgets
+    ],
+  ],
+  [ 'gimpcolor',
+    [ 'gimpcolormodule.c', 'pygimp-colors.c', ],
+    [cairo],
+    [ libgimpcolor, ],
+  ],
+  [ 'gimpthumb',
+    [ 'gimpthumbmodule.c', pygtk_generator.process('gimpthumb.defs'), ],
+    [],
+    [ libgimpthumb, ],
+  ],
 ]
 
 foreach pylib : python_so_libs
   shared_library(pylib[0],
     pylib[1],
     include_directories: [ rootInclude, ],
-    dependencies: [
-      gtk2, gegl,
-      x11, xmu, xext, xfixes,
+    dependencies: pylib[2] + [
+      libpython2, pygobject,
+      gdk_pixbuf, gegl,
     ],
-    link_with: [
-      libgimp,
-      libgimpbase,
-      libgimpcolor,
-      libgimpconfig,
-      libgimpmath,
-      libgimpui,
-      libgimpwidgets,
-    ],
+    link_with: pylib[3],
+    c_args: [ '-DGETTEXT_PACKAGE="' + gettext_package + '"', ],
     install: true,
     install_dir: join_paths(gimpplugindir, 'python'),
   )
 endforeach
 
+
+
 install_data([
-  'gimpenums.py',
-  'gimpfu.py',
-  'gimpplugin.py',
-  'gimpshelf.py',
-  'gimpui.py',
-  'pygimp-logo.png',
+    'gimpenums.py',
+    'gimpfu.py',
+    'gimpplugin.py',
+    'gimpshelf.py',
+    'gimpui.py',
+    'pygimp-logo.png',
   ],
   install_dir: join_paths(gimpplugindir, 'python'),
 )
-
-
 
 path_separator = platform_win32 ? ';' : ':'
 

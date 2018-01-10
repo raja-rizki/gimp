@@ -547,9 +547,10 @@ if get_option('with-python')
   python2 = find_program('python2')
   pygtk2codegen = find_program('pygtk-codegen-2.0')
 
-  libpy2  = dependency('python2',   version: '>=2.5.0')
-  pygtk2  = dependency('pygtk-2.0', version: '>=2.10.4')
-  pycairo = dependency('pycairo',   version: '>=1.0.2')
+  libpython2= dependency('python2',       version: '>=2.5.0')
+  pygobject = dependency('pygobject-2.0', version: '>=2.10.4')
+  pygtk2    = dependency('pygtk-2.0',     version: '>=2.10.4')
+  pycairo   = dependency('pycairo',       version: '>=1.0.2')
 
   pygtk_defsdir = pygtk2.get_pkgconfig_variable('defsdir')
   have_python = true
