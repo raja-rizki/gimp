@@ -16,6 +16,22 @@ subdir('plug-ins')
 # 	 && cp gen-$*.c $*.c \
 # 	 && rm -f gen-$*.c
 
+pwd = meson.current_source_dir()
+
+pygtk_generator = generator(pygtk2codegen,
+  arguments: [
+      '--override', join_paths(pwd, '@BASENAME@.override'),
+      '--register', join_paths(pygtk_defsdir, 'gdk-types.defs'),
+      '--register', join_paths(pygtk_defsdir, 'gtk-types.defs'),
+      '--register', join_paths(pwd, 'gimp-types.defs'),
+      '--register', join_paths(pwd, 'gimpcolor-types.defs'),
+      '--register', join_paths(pwd, 'gimpenums-types.defs'),
+      '--prefix', '@BASENAME@',
+      '@INPUT@',
+  ],
+  output: '@BASENAME@.c',
+  capture: true,
+)
 
 
 python_so_libs = [
@@ -29,12 +45,19 @@ python_so_libs = [
       'pygimp-pdb.c',
       'pygimp-tile.c',
       'pygimp-vectors.c',
-    ],
-  ],
-  [ '_gimpenums', [ 'gimpenumsmodule.c',                    ], ],
-  [ '_gimpui',    [ 'gimpuimodule.c',    'gimpui.c',        ], ],
-  [ 'gimpcolor',  [ 'gimpcolormodule.c', 'pygimp-colors.c', ], ],
-  [ 'gimpthumb',  [ 'gimpthumbmodule.c', 'gimpthumb.c',     ], ],
+  ], ],
+  [ '_gimpenums', [
+    'gimpenumsmodule.c',
+  ], ],
+  [ '_gimpui',    [
+    'gimpuimodule.c',    pygtk_generator.process('gimpui.defs'),
+  ], ],
+  [ 'gimpcolor',  [
+    'gimpcolormodule.c', 'pygimp-colors.c',
+  ], ],
+  [ 'gimpthumb',  [
+    'gimpthumbmodule.c', pygtk_generator.process('gimpthumb.defs'),
+  ], ],
 ]
 
 foreach pylib : python_so_libs
