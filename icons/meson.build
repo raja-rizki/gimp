@@ -1,5 +1,5 @@
 
-icons_scalable = [
+vector_scalable = [
   'scalable/dialog-information.svg',
   'scalable/document-new.svg',
   'scalable/document-open-recent.svg',
@@ -22,45 +22,6 @@ icons_scalable = [
   'scalable/format-justify-fill.svg',
   'scalable/format-justify-left.svg',
   'scalable/format-justify-right.svg',
-  'scalable/go-bottom.svg',
-  'scalable/go-down.svg',
-  'scalable/go-first.svg',
-  'scalable/go-home.svg',
-  'scalable/go-last.svg',
-  'scalable/go-next.svg',
-  'scalable/go-previous.svg',
-  'scalable/go-top.svg',
-  'scalable/go-up.svg',
-  'scalable/help-about.svg',
-  'scalable/list-add.svg',
-  'scalable/list-remove.svg',
-  'scalable/media-floppy.svg',
-  'scalable/media-optical.svg',
-  'scalable/media-playback-pause.svg',
-  'scalable/media-playback-start.svg',
-  'scalable/media-seek-backward.svg',
-  'scalable/media-skip-backward.svg',
-  'scalable/media-skip-forward.svg',
-  'scalable/preferences-system.svg',
-  'scalable/process-stop.svg',
-  'scalable/system-run.svg',
-  'scalable/view-fullscreen.svg',
-  'scalable/view-refresh.svg',
-  'scalable/window-close.svg',
-  'scalable/window-new.svg',
-  'scalable/zoom-fit-best.svg',
-  'scalable/zoom-in.svg',
-  'scalable/zoom-original.svg',
-  'scalable/zoom-out.svg',
-
-  'scalable/gtk-cancel.svg',
-  'scalable/gtk-edit.svg',
-  'scalable/gtk-no.svg',
-  'scalable/gtk-ok.svg',
-  'scalable/gtk-select-color.svg',
-  'scalable/gtk-select-font.svg',
-  'scalable/gtk-yes.svg',
-
   'scalable/gimp-anchor.svg',
   'scalable/gimp-business-card.svg',
   'scalable/gimp-cap-butt.svg',
@@ -103,11 +64,11 @@ icons_scalable = [
   'scalable/gimp-dashboard.svg',
   'scalable/gimp-default-colors.svg',
   'scalable/gimp-device-status.svg',
+  'scalable/gimp-display-filter-clip-warning.svg',
   'scalable/gimp-display-filter-colorblind.svg',
   'scalable/gimp-display-filter-contrast.svg',
   'scalable/gimp-display-filter-gamma.svg',
   'scalable/gimp-display-filter-lcms.svg',
-  'scalable/gimp-display-filter-clip-warning.svg',
   'scalable/gimp-display-filter-proof.svg',
   'scalable/gimp-display-filter.svg',
   'scalable/gimp-display.svg',
@@ -209,9 +170,6 @@ icons_scalable = [
   'scalable/gimp-prefs-image-windows-snapping.svg',
   'scalable/gimp-prefs-image-windows.svg',
   'scalable/gimp-prefs-import-export.svg',
-  'scalable/gimp-tool-color-temperature.svg',
-  'scalable/gimp-tool-exposure.svg',
-  'scalable/gimp-tool-shadows-highlights.svg',
   'scalable/gimp-prefs-input-devices.svg',
   'scalable/gimp-prefs-interface.svg',
   'scalable/gimp-prefs-new-image.svg',
@@ -269,6 +227,7 @@ icons_scalable = [
   'scalable/gimp-tool-clone.svg',
   'scalable/gimp-tool-color-balance.svg',
   'scalable/gimp-tool-color-picker.svg',
+  'scalable/gimp-tool-color-temperature.svg',
   'scalable/gimp-tool-colorize.svg',
   'scalable/gimp-tool-crop.svg',
   'scalable/gimp-tool-curves.svg',
@@ -276,6 +235,7 @@ icons_scalable = [
   'scalable/gimp-tool-dodge.svg',
   'scalable/gimp-tool-ellipse-select.svg',
   'scalable/gimp-tool-eraser.svg',
+  'scalable/gimp-tool-exposure.svg',
   'scalable/gimp-tool-flip.svg',
   'scalable/gimp-tool-foreground-select.svg',
   'scalable/gimp-tool-free-select.svg',
@@ -302,6 +262,7 @@ icons_scalable = [
   'scalable/gimp-tool-rotate.svg',
   'scalable/gimp-tool-scale.svg',
   'scalable/gimp-tool-seamless-clone.svg',
+  'scalable/gimp-tool-shadows-highlights.svg',
   'scalable/gimp-tool-shear.svg',
   'scalable/gimp-tool-smudge.svg',
   'scalable/gimp-tool-text.svg',
@@ -325,15 +286,47 @@ icons_scalable = [
   'scalable/gimp-wilber-outline.svg',
   'scalable/gimp-wilber.svg',
   'scalable/gimp-zoom-follow-window.svg',
+  'scalable/go-bottom.svg',
+  'scalable/go-down.svg',
+  'scalable/go-first.svg',
+  'scalable/go-home.svg',
+  'scalable/go-last.svg',
+  'scalable/go-next.svg',
+  'scalable/go-previous.svg',
+  'scalable/go-top.svg',
+  'scalable/go-up.svg',
+  'scalable/gtk-cancel.svg',
+  'scalable/gtk-edit.svg',
+  'scalable/gtk-no.svg',
+  'scalable/gtk-ok.svg',
+  'scalable/gtk-select-color.svg',
+  'scalable/gtk-select-font.svg',
+  'scalable/gtk-yes.svg',
+  'scalable/help-about.svg',
+  'scalable/list-add.svg',
+  'scalable/list-remove.svg',
+  'scalable/media-floppy.svg',
+  'scalable/media-optical.svg',
+  'scalable/media-playback-pause.svg',
+  'scalable/media-playback-start.svg',
+  'scalable/media-seek-backward.svg',
+  'scalable/media-skip-backward.svg',
+  'scalable/media-skip-forward.svg',
+  'scalable/preferences-system.svg',
+  'scalable/process-stop.svg',
+  'scalable/system-run.svg',
+  'scalable/view-fullscreen.svg',
+  'scalable/view-refresh.svg',
+  'scalable/window-close.svg',
+  'scalable/window-new.svg',
+  'scalable/zoom-fit-best.svg',
+  'scalable/zoom-in.svg',
+  'scalable/zoom-original.svg',
+  'scalable/zoom-out.svg',
 ]
-icons_24vector = [
+vector_24 = [
   '24/dialog-information.svg',
   '24/document-print.svg',
-  '24/media-floppy.svg',
-  '24/media-optical.svg',
-
-  '24/gtk-select-color.svg',
-
   '24/gimp-business-card.svg',
   '24/gimp-center.svg',
   '24/gimp-channel-alpha.svg',
@@ -499,8 +492,11 @@ icons_24vector = [
   '24/gimp-warning.svg',
   '24/gimp-web.svg',
   '24/gimp-wilber.svg',
+  '24/gtk-select-color.svg',
+  '24/media-floppy.svg',
+  '24/media-optical.svg',
 ]
-icons_12 = [
+bitmap_12 = [
   '12/gimp-close.png',
   '12/gimp-default-colors.png',
   '12/gimp-linked.png',
@@ -512,7 +508,7 @@ icons_12 = [
   '12/gimp-visible.png',
   '12/gimp-zoom-follow-window.png',
 ]
-icons_16 = [
+bitmap_16 = [
   '16/dialog-information.png',
   '16/document-new.png',
   '16/document-open-recent.png',
@@ -530,46 +526,6 @@ icons_16 = [
   '16/edit-undo.png',
   '16/folder-new.png',
   '16/folder.png',
-  '16/go-bottom.png',
-  '16/go-down.png',
-  '16/go-first.png',
-  '16/go-home.png',
-  '16/go-last.png',
-  '16/go-next.png',
-  '16/go-previous.png',
-  '16/go-top.png',
-  '16/go-up.png',
-  '16/help-about.png',
-  '16/list-add.png',
-  '16/list-remove.png',
-  '16/media-floppy.png',
-  '16/media-optical.png',
-  '16/media-playback-pause.png',
-  '16/media-playback-start.png',
-  '16/media-seek-backward.png',
-  '16/media-skip-backward.png',
-  '16/media-skip-forward.png',
-  '16/preferences-system.png',
-  '16/process-stop.png',
-  '16/system-run.png',
-  '16/view-fullscreen.png',
-  '16/view-refresh.png',
-  '16/window-close.png',
-  '16/window-new.png',
-  '16/zoom-fit-best.png',
-  '16/zoom-in.png',
-  '16/zoom-original.png',
-  '16/zoom-out.png',
-
-  '16/gtk-cancel.png',
-  '16/gtk-edit.png',
-  '16/gtk-no.png',
-  '16/gtk-ok.png',
-  '16/gtk-select-color.png',
-  '16/gtk-select-font.png',
-  '16/gtk-yes.png',
-
-
   '16/gimp-anchor.png',
   '16/gimp-business-card.png',
   '16/gimp-cap-butt.png',
@@ -783,24 +739,60 @@ icons_16 = [
   '16/gimp-warning.png',
   '16/gimp-web.png',
   '16/gimp-wilber.png',
+  '16/go-bottom.png',
+  '16/go-down.png',
+  '16/go-first.png',
+  '16/go-home.png',
+  '16/go-last.png',
+  '16/go-next.png',
+  '16/go-previous.png',
+  '16/go-top.png',
+  '16/go-up.png',
+  '16/gtk-cancel.png',
+  '16/gtk-edit.png',
+  '16/gtk-no.png',
+  '16/gtk-ok.png',
+  '16/gtk-select-color.png',
+  '16/gtk-select-font.png',
+  '16/gtk-yes.png',
+  '16/help-about.png',
+  '16/list-add.png',
+  '16/list-remove.png',
+  '16/media-floppy.png',
+  '16/media-optical.png',
+  '16/media-playback-pause.png',
+  '16/media-playback-start.png',
+  '16/media-seek-backward.png',
+  '16/media-skip-backward.png',
+  '16/media-skip-forward.png',
+  '16/preferences-system.png',
+  '16/process-stop.png',
+  '16/system-run.png',
+  '16/view-fullscreen.png',
+  '16/view-refresh.png',
+  '16/window-close.png',
+  '16/window-new.png',
+  '16/zoom-fit-best.png',
+  '16/zoom-in.png',
+  '16/zoom-original.png',
+  '16/zoom-out.png',
 ]
-icons_18 = [
+bitmap_18 = [
   '18/gimp-color-picker-black.png',
   '18/gimp-color-picker-gray.png',
   '18/gimp-color-picker-white.png',
 ]
-icons_20 = [
+bitmap_20 = [
   '20/gimp-linked.png',
   '20/gimp-visible.png',
 ]
-icons_22 = [
+bitmap_22 = [
   '22/folder.png',
   '22/format-indent-more.png',
   '22/format-justify-center.png',
   '22/format-justify-fill.png',
   '22/format-justify-left.png',
   '22/format-justify-right.png',
-
   '22/gimp-char-picker.png',
   '22/gimp-dynamics.png',
   '22/gimp-histogram.png',
@@ -853,14 +845,9 @@ icons_22 = [
   '22/gimp-tool-preset.png',
   '22/gimp-wilber.png',
 ]
-icons_24 = [
+bitmap_24 = [
   '24/dialog-information.png',
   '24/document-print.png',
-  '24/media-floppy.png',
-  '24/media-optical.png',
-
-  '24/gtk-select-color.png',
-
   '24/gimp-business-card.png',
   '24/gimp-center.png',
   '24/gimp-channel-alpha.png',
@@ -984,8 +971,11 @@ icons_24 = [
   '24/gimp-video.png',
   '24/gimp-warning.png',
   '24/gimp-web.png',
+  '24/gtk-select-color.png',
+  '24/media-floppy.png',
+  '24/media-optical.png',
 ]
-icons_32 = [
+bitmap_32 = [
   '32/gimp-channel-alpha.png',
   '32/gimp-channel-blue.png',
   '32/gimp-channel-gray.png',
@@ -1001,9 +991,8 @@ icons_32 = [
   '32/gimp-user-manual.png',
   '32/gimp-wilber.png',
 ]
-icons_48 = [
+bitmap_48 = [
   '48/folder.png',
-
   '48/gimp-channel-alpha.png',
   '48/gimp-channel-blue.png',
   '48/gimp-channel-gray.png',
@@ -1020,7 +1009,6 @@ icons_48 = [
   '48/gimp-prefs-default-comment.png',
   '48/gimp-prefs-default-grid.png',
   '48/gimp-prefs-display.png',
-  '48/gimp-prefs-folders.png',
   '48/gimp-prefs-folders-brushes.png',
   '48/gimp-prefs-folders-dynamics.png',
   '48/gimp-prefs-folders-environ.png',
@@ -1038,12 +1026,13 @@ icons_48 = [
   '48/gimp-prefs-folders-tool-plug-ins.png',
   '48/gimp-prefs-folders-tool-presets.png',
   '48/gimp-prefs-folders-tools.png',
+  '48/gimp-prefs-folders.png',
   '48/gimp-prefs-help-system.png',
   '48/gimp-prefs-icon-theme.png',
   '48/gimp-prefs-image-title.png',
-  '48/gimp-prefs-image-windows.png',
   '48/gimp-prefs-image-windows-appearance.png',
   '48/gimp-prefs-image-windows-snapping.png',
+  '48/gimp-prefs-image-windows.png',
   '48/gimp-prefs-import-export.png',
   '48/gimp-prefs-input-devices.png',
   '48/gimp-prefs-interface.png',
@@ -1058,14 +1047,14 @@ icons_48 = [
   '48/gimp-text-layer.png',
   '48/gimp-wilber.png',
 ]
-icons_64 = [
+bitmap_64 = [
   '64/dialog-information.png',
   '64/gimp-user-manual.png',
   '64/gimp-wilber-eek.png',
   '64/gimp-wilber-outline.png',
   '64/gimp-wilber.png',
 ]
-icons_64system = [
+bitmap_64system = [
   '64/gimp-error.png',
   '64/gimp-frame.png',
   '64/gimp-info.png',
@@ -1073,20 +1062,20 @@ icons_64system = [
   '64/gimp-texture.png',
   '64/gimp-warning.png',
 ]
-icons_96 = [
+bitmap_96 = [
   '96/gimp-wilber-outline.png',
   '96/gimp-wilber.png',
 ]
-icons_128 = [
+bitmap_128 = [
   '128/folder.png',
   '128/gimp-wilber-outline.png',
   '128/gimp-wilber.png',
 ]
-icons_192 = [
+bitmap_192 = [
   '192/gimp-wilber-outline.png',
   '192/gimp-wilber.png',
 ]
-icons_256 = [
+bitmap_256 = [
   '256/folder.png',
   '256/gimp-wilber-outline.png',
   '256/gimp-wilber.png',
@@ -1094,25 +1083,25 @@ icons_256 = [
 
 if have_vector_icons
   all_icons = [
-    [ '24x24',    icons_24 ],
-    [ '64x64',    icons_64 ],
-    [ 'scalable', icons_scalable ],
+    [ '24x24',    vector_24 ],
+    [ '64x64',    bitmap_64system ],
+    [ 'scalable', vector_scalable ],
   ]
 else
   all_icons = [
-    [ '12x12',    icons_12 ],
-    [ '16x16',    icons_16 ],
-    [ '18x18',    icons_18 ],
-    [ '20x20',    icons_20 ],
-    [ '22x22',    icons_22 ],
-    [ '24x24',    icons_24 ],
-    [ '32x32',    icons_32 ],
-    [ '48x48',    icons_48 ],
-    [ '64x64',    icons_64 ],
-    [ '96x96',    icons_96 ],
-    [ '128x128',  icons_128 ],
-    [ '192x192',  icons_192 ],
-    [ '256x256',  icons_256 ],
+    [ '12x12',    bitmap_12 ],
+    [ '16x16',    bitmap_16 ],
+    [ '18x18',    bitmap_18 ],
+    [ '20x20',    bitmap_20 ],
+    [ '22x22',    bitmap_22 ],
+    [ '24x24',    bitmap_24 ],
+    [ '32x32',    bitmap_32 ],
+    [ '48x48',    bitmap_48 ],
+    [ '64x64',    bitmap_64 + bitmap_64system ],
+    [ '96x96',    bitmap_96 ],
+    [ '128x128',  bitmap_128 ],
+    [ '192x192',  bitmap_192 ],
+    [ '256x256',  bitmap_256 ],
   ]
 endif
 
