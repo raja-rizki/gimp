@@ -55,7 +55,6 @@ Meson Port
 ## Missing
 * icons/Symbolic-Inverted
 * tools/pdbgen
-* translations in `appdata/*.xml`, `tips/gimp-tips.xml`
 * gtkrc : missing python-fu-console ??
 * man : XDG_CONFIG_HOME are replaced with /usr ??
 
