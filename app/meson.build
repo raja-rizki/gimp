@@ -116,29 +116,19 @@ subdir('tests')
 
 
 app_links = [
-  libapp,
-  libappactions,
   libappconfig,
   libappcore,
-  libappdialogs,
-  libappdialogs,
-  libappdisplay,
   libappfile,
   libappgegl,
-  libappgui,
   libappinternalprocs,
   libapplayermodes,
   libapplayermodeslegacy,
-  libappmenus,
   libappoperations,
   libapppaint,
   libapppdb,
   libappplugin,
-  libapppropgui,
   libapptext,
-  libapptools,
   libappvectors,
-  libappwidgets,
   libappxcf,
   libgimpbase,
   libgimpcolor,
@@ -146,8 +136,20 @@ app_links = [
   libgimpmath,
   libgimpmodule,
   libgimpthumb,
+]
+
+app_gui_links = [
+  libappactions,
+  libappdialogs,
+  libappdisplay,
+  libappgui,
+  libappmenus,
+  libapppropgui,
+  libapptools,
+  libappwidgets,
   libgimpwidgets,
 ]
+
 app_deps = [
   gio, gtk2, pangocairo, gegl, lcms, gexiv2,
 ]
@@ -155,7 +157,7 @@ app_deps = [
 # Executables
 
 gimpconsole_exe = executable('gimp-console-'+app_version,
-  'main.c',
+  libapp_sources + [ 'main.c' ],
   c_args: app_cflags + [ '-DGIMP_CONSOLE_COMPILATION', ],
   include_directories: [ rootInclude, ],
   dependencies: app_deps,
@@ -164,10 +166,10 @@ gimpconsole_exe = executable('gimp-console-'+app_version,
 )
 
 gimpmain_exe = executable('gimp-'+app_version,
-  'main.c',
+  libapp_sources + [ 'main.c' ],
   c_args: app_cflags + [ ],
   include_directories: [ rootInclude, ],
   dependencies: app_deps,
-  link_with: app_links,
+  link_with: app_links + app_gui_links,
   install: true,
 )
