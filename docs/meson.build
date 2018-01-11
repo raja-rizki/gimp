@@ -5,8 +5,9 @@ manconf.set('GIMP_VERSION',   gimp_version)
 manconf.set('gimpdatadir',    join_paths(prefix, gimpdatadir))
 manconf.set('gimplocaledir',  join_paths(prefix, localedir))
 manconf.set('gimpplugindir',  join_paths(prefix, gimpplugindir))
-manconf.set('manpage_gimpdir',join_paths(prefix, gimpmanpagedir))
+manconf.set('manpage_gimpdir', '\fB$XDG_CONFIG_HOME\fP/' + join_paths(gimpdir, user_version))
 manconf.set('gimpsysconfdir', gimpsysconfdir)
+
 
 man_files = [
   configure_file(

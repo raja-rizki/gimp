@@ -49,23 +49,40 @@ desktopfile = custom_target(desktopfilename,
 )
 
 appdatafilename = 'gimp.appdata.xml'
-appdatafile = configure_file(
-  input : appdatafilename+'.in',
-  output: appdatafilename,
-  configuration: desktop_conf,
+appdatafile = custom_target(appdatafilename,
+  input : [ appdatafilename+'.in', ],
+  output: [ appdatafilename, ],
+
+  command: [
+    intltool_merge,
+    '--desktop-style',
+    '--utf8',
+    '--cache='+join_paths('@OUTDIR@', 'intltool-merge-cache'),
+    po_dir,
+    '@INPUT@',
+    '@OUTPUT@',
+  ],
   install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata'),
 )
 
 appdatafilename = 'gimp-data-extras.metainfo.xml'
-appdatafile = configure_file(
-  input : appdatafilename+'.in',
-  output: appdatafilename,
-  configuration: desktop_conf,
+appdatafile = custom_target(appdatafilename,
+  input : [ appdatafilename+'.in', ],
+  output: [ appdatafilename, ],
+
+  command: [
+    intltool_merge,
+    '--desktop-style',
+    '--utf8',
+    '--cache='+join_paths('@OUTDIR@', 'intltool-merge-cache'),
+    po_dir,
+    '@INPUT@',
+    '@OUTPUT@',
+  ],
   install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata'),
 )
-
 
 custom_target('validate-desktop',
   input : [ desktopfile, ],

@@ -868,7 +868,7 @@ pkgconfig.generate(filebase: 'gimp-' + api_version,
     gimp_api_name,
   ],
   variables: [
-    'datarootdir='    +'${prefix}/'+ get_option('datadir')
+    'datarootdir='    +'${prefix}/'+ get_option('datadir'),
     'gimpdatadir='    +'${prefix}/'+ gimpdatadir,
     'gimplibdir='     +'${prefix}/'+ gimpplugindir,
     'gimpsysconfdir=' + gimpsysconfdir,
