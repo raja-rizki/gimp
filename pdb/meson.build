@@ -77,8 +77,8 @@ enum_headers = [
 ]
 
 # Perl environment
-perlsrcdir = join_paths(meson.source_root(), meson.current_source_dir())
-perlbindir = join_paths(meson.build_root(),  meson.current_source_dir())
+perlsrcdir = meson.current_source_dir()
+perlbindir = meson.current_build_dir()
 
 perl_env = [
   'PDBGEN_BACKUP=' + (pdbgen_backup ? '1' : '0'),

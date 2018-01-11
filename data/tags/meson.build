@@ -25,7 +25,7 @@ custom_target('validate-tags',
   command: [
     xmllint,
     '--noout',
-    '--path', join_paths(meson.source_root(), meson.current_source_dir()),
+    '--path', meson.current_source_dir(),
     '--valid', '@INPUT@',
   ],
   build_always: true,

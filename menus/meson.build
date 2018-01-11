@@ -64,7 +64,7 @@ custom_target('validate_menus',
   command: [
     xmllint,
     '--noout',
-    '--path', join_paths(meson.source_root(), meson.current_source_dir()),
+    '--path', meson.current_source_dir(),
     '@INPUT@',
   ],
 )

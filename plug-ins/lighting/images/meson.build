@@ -14,11 +14,7 @@ stock_icons = [
 stock_icons_list = []
 foreach name : stock_icons
   stock_icons_list += name.underscorify()
-  stock_icons_list += join_paths(
-    meson.source_root(),
-    meson.current_source_dir(),
-    name + '.png'
-  )
+  stock_icons_list += join_paths(meson.current_source_dir(), name + '.png')
 endforeach
 
 stock_pixbufs_h = custom_target('stock-pixbufs.h',
