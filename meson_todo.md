@@ -1,7 +1,7 @@
 Meson Port
 -----------
 
-# Changes
+# Changes in existing files
 
 ## Generate headers instead of .c files.
 * app/core/gimpviewable.c
@@ -38,6 +38,14 @@ Meson Port
 * plug-ins/pygimp/py-compile
 
 
+# Changes in installed files
+* gimpversion.h uses #pragma once
+* `*.pc` cleaned up
+  - exec_prefix removed
+  - gimplocaledir, gimpdatadir relative to prefix, not datarootdir
+  - required version added
+
+
 # TODO
 
 ## Windows
@@ -47,3 +55,15 @@ Meson Port
 ## Missing
 * icons/Symbolic-Inverted
 * tools/pdbgen
+* translations in `appdata/*.xml`, `tips/gimp-tips.xml`
+* gtkrc : missing python-fu-console ??
+* man : XDG_CONFIG_HOME are replaced with /usr ??
+
+# Sizes mismatches
+gimp-console 3.0M -> 7.8M
+
+plug-ins -> some have 4k+
+
+gimp-data-extras.metainfo.xml 2.9K -> 608
+gimp.appdata.xml 40K -> 4.4K
+gimp-tips.xml 497K -> 7.5K
