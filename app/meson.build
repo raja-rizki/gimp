@@ -96,6 +96,7 @@ libapp_sources = [
   'unique.c',
   'version.c',
   gitversion_h,
+  gimpdbusservice_gen,
 ]
 
 libapp = static_library('app',
