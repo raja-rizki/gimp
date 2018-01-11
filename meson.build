@@ -1,9 +1,9 @@
 # Meson build file
 
 # http://bugzilla.gnome.org/enter_bug.cgi?product=GIMP
-project('gimp', ['c', 'cpp'], version : '2.9.9',
-  meson_version : '>=0.40.0',
-  default_options : [
+project('gimp', ['c', 'cpp'], version: '2.9.9',
+  meson_version: '>=0.44.0',
+  default_options: [
     'sysconfdir=/etc',
     'localstatedir=/var',
     'sharedstatedir=/var/lib'
@@ -72,7 +72,7 @@ conf.set10('GIMP_UNSTABLE', not stable)
 ################################################################################
 # Host system detection
 
-host_cpu = host_machine.cpu()
+host_cpu = host_machine.cpu().to_lower()
 message('Architecture: ' + host_cpu)
 
 if   host_cpu.startswith('i') and host_cpu.endswith('86')
@@ -94,16 +94,19 @@ else
 endif
 
 
-host_os = host_machine.system()
+host_os = host_machine.system().to_lower()
 message('Host os: ' + host_os)
 
 platform_win32 = (host_os.startswith('mingw') or host_os.startswith('cygwin'))
 # Is this native win32
-os_win32 = host_os.startswith('mingw')
+os_win32 = host_os.startswith('mingw') or host_os.contains('windows')
 
 platform_osx = host_os.startswith('darwin')
 conf.set('PLATFORM_OSX',  platform_osx)
 
+if os_win32
+  windows = import('windows')
+endif
 
 ################################################################################
 # Dependencies
@@ -119,8 +122,8 @@ cairo             = dependency('cairo',              version: cairo_minver)
 
 dbus_glib         = dependency('dbus-glib-1')
 
-fontconfig_minver = os_win32 ? '>=2.11.1' : '>=2.2.0'
-fontconfig_name   = 'fontconfig' + (os_win32 ? '_win32' : '')
+fontconfig_minver = os_win32 ? '>=2.11.1'         : '>=2.2.0'
+fontconfig_name   = os_win32 ? 'fontconfig_win32' : 'fontconfig'
 fontconfig        = dependency(fontconfig_name,      version: fontconfig_minver)
 
 freetype2         = dependency('freetype2',          version: '>=2.1.7')
@@ -134,7 +137,7 @@ gegl              = dependency('gegl-0.3',           version: gegl_minver)
 gexiv2            = dependency('gexiv2',             version: '>=0.10.6')
 
 gio               = dependency('gio-2.0')
-gio_specific_name = 'gio-' + (os_win32 ? 'windows-2.0' : 'unix-2.0')
+gio_specific_name = os_win32 ? 'gio-windows-2.0' : 'gio-unix-2.0'
 gio_specific      = dependency(gio_specific_name)
 
 glib              = dependency('glib-2.0',           version: '>=2.54.2')
