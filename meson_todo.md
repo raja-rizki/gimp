@@ -60,10 +60,4 @@ Meson Port
 * man : XDG_CONFIG_HOME are replaced with /usr ??
 
 # Sizes mismatches
-gimp-console 3.0M -> 7.8M
-
-plug-ins -> some have 4k+
-
-gimp-data-extras.metainfo.xml 2.9K -> 608
-gimp.appdata.xml 40K -> 4.4K
-gimp-tips.xml 497K -> 7.5K
+plug-ins -> some have 4k added
