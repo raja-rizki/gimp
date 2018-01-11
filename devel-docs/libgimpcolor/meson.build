@@ -1,7 +1,7 @@
 module_name = 'libgimpcolor'
 
 version_data = configuration_data()
-version_data.set('GIMP_VERSION', meson.project_version())
+version_data.set('GIMP_VERSION', gimp_version)
 configure_file(
   input : 'version.in',
   output: 'version',

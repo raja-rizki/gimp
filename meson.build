@@ -26,9 +26,7 @@ profiling = get_option('profiling')
 ansi      = get_option('ansi')
 
 ################################################################################
-# Projects infos
-
-# TODO post-merge : simplify the whole version number handling
+# Project info
 
 prettyname = 'GIMP'
 full_name  = 'GNU Image Manipulation Program'
@@ -44,9 +42,19 @@ version = meson.project_version().split('.')
 major_version = version[0].to_int()
 minor_version = version[1].to_int()
 micro_version = version[2].to_int()
+interface_age = 0
+
+api_version   = '@0@.0'  .format(major_version)
+app_version   = '@0@.@1@'.format(major_version, minor_version)
+user_version  = '@0@.@1@'.format(major_version, minor_version)
+gimp_version  = meson.project_version()
+
+gimp_command  = 'gimp-' + app_version
+gimp_api_name = 'gimp-' + api_version
+package_string= prettyname + ' ' + gimp_version
+
 
 # TODO cleanup all this versions mess
-interface_age = 0
 binary_age = 100 * minor_version + micro_version
 
 lt_current = 100 * minor_version + micro_version - interface_age
@@ -57,13 +65,6 @@ lt_current_minus_age = lt_current - lt_age
 
 so_version = '@0@.@1@.@2@'.format(lt_revision, lt_current, lt_current_minus_age)
 
-api_version = '2.0'
-app_version = '2.9'
-user_version= '2.9'
-
-gimp_command = 'gimp-' + app_version
-gimp_api_name = 'gimp-' + api_version
-package_string = prettyname + ' ' + meson.project_version()
 
 stable = (minor_version % 2 == 0)
 conf.set10('GIMP_UNSTABLE', not stable)
@@ -849,7 +850,7 @@ configure_file(
 pkgconfig.generate(filebase: 'gimp-' + api_version,
   name: prettyname,
   description: 'GIMP Library',
-  version: meson.project_version(),
+  version: gimp_version,
   requires: [
     'gdk-pixbuf-2.0 ' + gdk_pixbuf_minver,
     'cairo '          + cairo_minver,
@@ -867,6 +868,7 @@ pkgconfig.generate(filebase: 'gimp-' + api_version,
     gimp_api_name,
   ],
   variables: [
+    'datarootdir='    +'${prefix}/'+ get_option('datadir')
     'gimpdatadir='    +'${prefix}/'+ gimpdatadir,
     'gimplibdir='     +'${prefix}/'+ gimpplugindir,
     'gimpsysconfdir=' + gimpsysconfdir,
@@ -876,7 +878,7 @@ pkgconfig.generate(filebase: 'gimp-' + api_version,
 pkgconfig.generate(filebase: 'gimpthumb-' + api_version,
   name: 'GIMP Thumb',
   description: 'GIMP Thumbnail Library',
-  version: meson.project_version(),
+  version: gimp_version,
   requires: [
     'gdk-pixbuf-2.0 ' + gdk_pixbuf_minver,
   ],
@@ -891,7 +893,7 @@ pkgconfig.generate(filebase: 'gimpthumb-' + api_version,
 pkgconfig.generate(filebase: 'gimpui-' + api_version,
   name: 'GIMP UI',
   description: 'GIMP User Interface Library',
-  version: meson.project_version(),
+  version: gimp_version,
   requires: [
     'gimp-' + api_version + ' >= ' + app_version,
     'gtk+-2.0 ' + gtk2_minver,

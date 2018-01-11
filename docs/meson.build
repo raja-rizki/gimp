@@ -1,7 +1,7 @@
 
 # Configure_file is just here to rename the files
 manconf = configuration_data()
-manconf.set('GIMP_VERSION',   app_version)
+manconf.set('GIMP_VERSION',   gimp_version)
 manconf.set('gimpdatadir',    join_paths(prefix, gimpdatadir))
 manconf.set('gimplocaledir',  join_paths(prefix, localedir))
 manconf.set('gimpplugindir',  join_paths(prefix, gimpplugindir))
