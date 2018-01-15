@@ -14,7 +14,7 @@ if platform_osx
   global_lflags += ['-framework', 'Cocoa']
 endif
 
-if os_win32
+if platform_win32
   # global_lflags += ['-export-symbols', 'gimpmath.def']
 endif
 

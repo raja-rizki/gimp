@@ -97,14 +97,12 @@ endif
 host_os = host_machine.system().to_lower()
 message('Host os: ' + host_os)
 
-platform_win32 = (host_os.startswith('mingw') or host_os.startswith('cygwin'))
-# Is this native win32
-os_win32 = host_os.startswith('mingw') or host_os.contains('windows')
+platform_win32= host_os.contains('mingw') or host_os.contains('cygwin') or host_os.contains('windows')
+platform_osx  = host_os.contains('darwin')
 
-platform_osx = host_os.startswith('darwin')
 conf.set('PLATFORM_OSX',  platform_osx)
 
-if os_win32
+if platform_win32
   windows = import('windows')
 endif
 
@@ -122,8 +120,8 @@ cairo             = dependency('cairo',              version: cairo_minver)
 
 dbus_glib         = dependency('dbus-glib-1')
 
-fontconfig_minver = os_win32 ? '>=2.11.1'         : '>=2.2.0'
-fontconfig_name   = os_win32 ? 'fontconfig_win32' : 'fontconfig'
+fontconfig_minver = platform_win32 ? '>=2.11.1'         : '>=2.2.0'
+fontconfig_name   = platform_win32 ? 'fontconfig_win32' : 'fontconfig'
 fontconfig        = dependency(fontconfig_name,      version: fontconfig_minver)
 
 freetype2         = dependency('freetype2',          version: '>=2.1.7')
@@ -137,7 +135,7 @@ gegl              = dependency('gegl-0.3',           version: gegl_minver)
 gexiv2            = dependency('gexiv2',             version: '>=0.10.6')
 
 gio               = dependency('gio-2.0')
-gio_specific_name = os_win32 ? 'gio-windows-2.0' : 'gio-unix-2.0'
+gio_specific_name = platform_win32 ? 'gio-windows-2.0' : 'gio-unix-2.0'
 gio_specific      = dependency(gio_specific_name)
 
 glib              = dependency('glib-2.0',           version: '>=2.54.2')
@@ -242,7 +240,7 @@ cc.has_argument('-maltivec')
 cc.has_argument('-mabi=altivec')
 
 
-if os_win32
+if platform_win32
   ole32 = cc.find_library('ole32')
 endif
 
@@ -469,7 +467,7 @@ endif
 # DirectX DirectInput
 have_directXinput = false
 directx_sdk_path = get_option('with-directx-sdk')
-if directx_sdk_path != '' and os_win32
+if directx_sdk_path != '' and platform_win32
   if directx_sdk_path.contains(' ')
     message('Warning: The DirectX SDK should be accessible through a path without spaces. Use MSYS mounts.'
         + '\nIgnoring your with-directx-sdk switch.'
@@ -740,7 +738,7 @@ add_project_arguments(
 
 # Ensure MSVC-compatible struct packing convention is used when
 # compiling for Win32 with gcc.
-if os_win32
+if platform_win32
   add_project_arguments(
     cc.first_supported_argument('-fnative-struct', '-mms-bitfields')
 	)
@@ -936,7 +934,7 @@ Optional Plug-Ins:
   Print:               @0@'''.format(have_print) +'''
   Python 2:            @0@'''.format(have_python) +'''
   Script-Fu:           @0@'''.format(have_scriptfu) +'''
-  TWAIN (Win32):       @0@'''.format(os_win32) +'''
+  TWAIN (Win32):       @0@'''.format(platform_win32) +'''
   Webpage:             @0@'''.format(webkit.found()) +'''
   WMF:                 @0@'''.format(wmf.found()) +'''
   X11 Mouse Cursor:    @0@'''.format(xmc.found()) +'''

@@ -93,7 +93,7 @@ libgimpbase_cflags = [
 ]
 libgimpbase_lflags = [ ]
 
-if os_win32
+if platform_win32
   libgimpbase_lflags += '-lole32'
   libgimpbase_lflags += ['-export-symbols', 'gimpbase.def']
 endif

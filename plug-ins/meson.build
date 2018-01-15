@@ -41,7 +41,7 @@ if have_scriptfu
   subdir('script-fu')
 endif
 subdir('selection-to-path')
-if os_win32
+if platform_win32
   subdir('twain')
 endif
 subdir('ui')

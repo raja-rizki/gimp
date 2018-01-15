@@ -79,7 +79,7 @@ if platform_osx
   app_lflags += ['-framework', 'Cocoa']
 endif
 
-if os_win32
+if platform_win32
   app_lflags += [ '-mwindows', '-mexchndl', ]
   # app_lflags += ['-export-symbols', 'gimpwidgets.def']
 endif

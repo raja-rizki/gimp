@@ -164,7 +164,7 @@ libgimpwidgets_lflags = [
   libgimpconfig,
 ]
 
-if os_win32
+if platform_win32
   libgimpwidgets_lflags += ['-export-symbols', 'gimpwidgets.def']
   libgimpwidgets_lflags += '-lgdi32'
 endif

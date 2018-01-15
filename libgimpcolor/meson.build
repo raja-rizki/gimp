@@ -39,7 +39,7 @@ libgimpcolor_lflags = [
   libgimpbase,
 ]
 
-if os_win32
+if platform_win32
   libgimpcolor_lflags += '-lole32'
   libgimpcolor_lflags += ['-export-symbols', 'gimpcolor.def']
 endif

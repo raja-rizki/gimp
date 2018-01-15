@@ -23,7 +23,7 @@ plugin_selection_to_path_deps = [
   gegl, gtk2,
 ]
 plugin_selection_to_path_lflags = []
-if os_win32
+if platform_win32
   plugin_selection_to_path_lflags += '-mwindows'
 else
   plugin_selection_to_path_deps += math
