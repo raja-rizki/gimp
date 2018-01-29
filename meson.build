@@ -121,7 +121,8 @@ cairo             = dependency('cairo',              version: cairo_minver)
 dbus_glib         = dependency('dbus-glib-1')
 
 fontconfig_minver = platform_win32 ? '>=2.11.1'         : '>=2.2.0'
-fontconfig_name   = platform_win32 ? 'fontconfig_win32' : 'fontconfig'
+# fontconfig_name   = platform_win32 ? 'fontconfig_win32' : 'fontconfig'
+fontconfig_name   = 'fontconfig'
 fontconfig        = dependency(fontconfig_name,      version: fontconfig_minver)
 
 freetype2         = dependency('freetype2',          version: '>=2.1.7')
@@ -147,8 +148,10 @@ gtk2              = dependency('gtk+-2.0',           version: gtk2_minver)
 
 harfbuzz          = dependency('harfbuzz',           version: '>=0.9.19')
 lcms              = dependency('lcms2',              version: '>=2.8')
-libmypaint      = [ dependency('libmypaint-1.3',     version: '>=1.3.0'),
-                    dependency('mypaint-brushes-1.0') ]
+
+libmypaint_name   = platform_win32 ? 'libmypaint' : 'libmypaint-1.3'
+libmypaint      = [ dependency(libmypaint_name,     version: '>=1.3.0'),
+                    dependency('mypaint-brushes-1.0', required: false) ]
 pangocairo        = dependency('pangocairo',         version: '>=1.29.4')
 rsvg              = dependency('librsvg-2.0',        version: '>=2.40.6')
 
@@ -740,7 +743,8 @@ add_project_arguments(
 # compiling for Win32 with gcc.
 if platform_win32
   add_project_arguments(
-    cc.first_supported_argument('-fnative-struct', '-mms-bitfields')
+    cc.first_supported_argument('-fnative-struct', '-mms-bitfields'),
+    language: [ 'c', 'cpp' ],
 	)
 endif
 
