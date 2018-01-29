@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 srcdir="$1"
 output="$2"
