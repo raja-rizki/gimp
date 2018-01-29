@@ -56,7 +56,7 @@ libgimpthumb_lflags = [
 ]
 
 if platform_win32
-  libgimpthumb_lflags += ['-export-symbols', 'gimpthumb.def']
+  # libgimpthumb_lflags += ['-export-symbols', 'gimpthumb.def']
 endif
 
 

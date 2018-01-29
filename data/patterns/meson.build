@@ -1,17 +1,17 @@
-patterns = run_command('find',
+patterns = run_command(find,
   meson.current_source_dir(),
   '-maxdepth', '1',
   '-mindepth', '1',
   '-type', 'd',
-  '-printf', '%f\n'
+  '-printf', '%f'+findsep
 ).stdout().strip().split('\n')
 
 foreach pattern : patterns
-  files = run_command('find',
+  files = run_command(find,
     join_paths(meson.current_source_dir(), pattern),
     '-type', 'f',
     '-name', '*.pat',
-    '-printf', pattern + '/%f\n'
+    '-printf', pattern + '/%f'+findsep
   ).stdout().strip().split('\n')
 
 

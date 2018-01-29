@@ -35,13 +35,14 @@ libgimpcolor_cflags = [
   '-DG_LOG_DOMAIN="LibGimpColor"',
   '-DGIMP_COLOR_COMPILATION',
 ]
+libgimpcolor_deps = [ ]
 libgimpcolor_lflags = [
   libgimpbase,
 ]
 
 if platform_win32
-  libgimpcolor_lflags += '-lole32'
-  libgimpcolor_lflags += ['-export-symbols', 'gimpcolor.def']
+  libgimpcolor_deps += ole32
+  # libgimpcolor_lflags += ['-export-symbols', 'gimpcolor.def']
 endif
 
 
@@ -49,7 +50,7 @@ libgimpcolor = library('gimpcolor-' + api_version,
   libgimpcolor_sources,
   include_directories: rootInclude,
   dependencies: [
-    cairo, gdk_pixbuf, gegl, lcms, math,
+    cairo, gdk_pixbuf, gegl, lcms, math, libgimpcolor_deps,
   ],
   c_args:     [ libgimp_cflags, libgimpcolor_cflags, ],
   link_with:  [ libgimp_lflags, libgimpcolor_lflags, ],

@@ -70,17 +70,17 @@ app_cflags = [
 ]
 
 if platform_win32
-  app_cflags += '-no-undefined'
-  app_lflags += '-lgdi32'
+  app_cflags += '-Wl,-no-undefined'
+  # app_lflags += '-lgdi32'
 endif
 
 if platform_osx
   app_cflags += '-xobjective-c'
-  app_lflags += ['-framework', 'Cocoa']
+  #app_lflags += ['-framework', 'Cocoa']
 endif
 
 if platform_win32
-  app_lflags += [ '-mwindows', '-mexchndl', ]
+  # app_lflags += [ '-mwindows', '-mexchndl', ]
   # app_lflags += ['-export-symbols', 'gimpwidgets.def']
 endif
 

@@ -165,8 +165,8 @@ libgimpwidgets_lflags = [
 ]
 
 if platform_win32
-  libgimpwidgets_lflags += ['-export-symbols', 'gimpwidgets.def']
-  libgimpwidgets_lflags += '-lgdi32'
+  # libgimpwidgets_lflags += ['-export-symbols', 'gimpwidgets.def']
+  # libgimpwidgets_lflags += '-lgdi32'
 endif
 
 if gtk_mac_integration_ok

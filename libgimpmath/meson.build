@@ -24,7 +24,7 @@ libgimpmath_lflags = [
 ]
 
 if platform_win32
-  libgimpmath_lflags += ['-export-symbols', 'gimpmath.def']
+  # libgimpmath_lflags += ['-export-symbols', 'gimpmath.def']
 endif
 
 

@@ -17,6 +17,7 @@ depends=(
   'desktop-file-utils'
   'gegl-git>=0.3.15'
   'gtk-doc'
+  'intltool'
   'lcms2>=2.2'
   'libart-lgpl>=2.3.19'
   'libexif>=0.6.15'

@@ -279,8 +279,8 @@ libgimp_top_lflags = [
 ]
 
 if platform_win32
-  libgimp_top_lflags += ['-export-symbols', 'gimp.def']
-  libgimp_top_lflags += '-lexchndl'
+  # libgimp_top_lflags += ['-export-symbols', 'gimp.def']
+  # libgimp_top_lflags += '-lexchndl'
 endif
 
 
@@ -308,8 +308,8 @@ libgimpui_lflags = [
 ]
 
 if platform_win32
-  libgimpui_lflags += ['-export-symbols', 'gimpui.def']
-  libgimpui_lflags += '-lexchndl'
+  # libgimpui_lflags += ['-export-symbols', 'gimpui.def']
+  # libgimpui_lflags += '-lexchndl'
 endif
 
 libgimpui = library('gimpui-'+ api_version,

@@ -86,12 +86,12 @@ imagemap = executable('imagemap',
 )
 
 # TODO flex / bison re-generators
-custom_target('rebuild-parsers',
-  input : [],
-  output: [ 'rebuild-parsers', ],
-  command: [
-
-  ],
-  build_by_default: false,
-  build_always: true,
-)
+# custom_target('rebuild-parsers',
+#  input : [],
+#  output: [ 'rebuild-parsers', ],
+#  command: [
+#
+#  ],
+#  build_by_default: false,
+#  build_always: true,
+#)

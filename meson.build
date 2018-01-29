@@ -106,6 +106,10 @@ if platform_win32
   windows = import('windows')
 endif
 
+# Find utils
+find = find_program('find')
+findsep = platform_win32 ? '\r\n' : '\n'
+
 ################################################################################
 # Dependencies
 math              = cc.find_library('m')
@@ -277,14 +281,25 @@ if gtk2.get_pkgconfig_variable('target') == 'x11'
       error('x11 install does not provide required function ' + function)
     endif
   endforeach
+  have_xlibs = true
 else
   x11    = dependency('', required: false)
   xmu    = dependency('', required: false)
   xt     = dependency('', required: false)
   xext   = dependency('', required: false)
   xfixes = dependency('', required: false)
+  have_xlibs = false
 endif
 
+# Print support
+have_print      = get_option('with-print')
+have_screenshot = get_option('with-screenshot')
+if have_print and not have_xlibs
+  error('Printing requires x libs')
+endif
+if have_screenshot and not have_xlibs
+  error('Screenshot requires x libs')
+endif
 
 ################################################################################
 # MIME types
@@ -448,7 +463,7 @@ if get_option('with-xmc')
   xmc = dependency('xcursor')
   MIMEtypes += [ 'image/x-xcursor', ]
 else
-  dependency('', required: false)
+  xmc = dependency('', required: false)
 endif
 
 
@@ -495,7 +510,7 @@ endif
 if get_option('with-gudev')
   gudev = dependency('gudev-1.0', version: '>=167')
 else
-  guvev = dependency('', required: false)
+  gudev = dependency('', required: false)
 endif
 
 
@@ -524,10 +539,6 @@ endif
 
 # Script-fu
 have_scriptfu = get_option('with-script-fu')
-
-
-# Print support
-have_print = get_option('with-print')
 
 
 # Check for GTK Mac Integration
@@ -563,21 +574,21 @@ have_vector_icons = true
 if get_option('with-xvfb-run')
   xvfb_run = find_program('xvfb-run')
 else
-  xvfb_run = find_program('', required: false)
+  xvfb_run = dependency('', required: false)
 endif
 
 
 if get_option('with-appdata-test')
   appstream_util = find_program('appstream-util')
 else
-  appstream_util = find_program('', required: false)
+  appstream_util = dependency('', required: false)
 endif
 
 
 if get_option('with-gtk-doc')
   gtkdoc_scan = find_program('gtkdoc-scan', required : true)
 else
-  gtkdoc_scan = find_program('', required: false)
+  gtkdoc_scan = dependency('', required: false)
 endif
 
 enable_default_bin = get_option('enable-default-bin')
@@ -696,12 +707,10 @@ conf.set_quoted('GETTEXT_PACKAGE',gettext_package)
 ################################################################################
 # ISO codes
 
-isocodes = dependency('iso-codes', required: false)
-if isocodes.found()
-  isocodes_prefix = isocodes.get_pkgconfig_variable('prefix')
-  isocodes_location = join_paths(isocodes_prefix,get_option('datadir'),'xml','iso-codes')
-  isocodes_localedir= join_paths(isocodes_prefix,get_option('datadir'),'locale')
-endif
+isocodes = dependency('iso-codes')
+isocodes_prefix = isocodes.get_pkgconfig_variable('prefix')
+isocodes_location = join_paths(isocodes_prefix,get_option('datadir'),'xml','iso-codes')
+isocodes_localedir= join_paths(isocodes_prefix,get_option('datadir'),'locale')
 
 
 ################################################################################
@@ -775,7 +784,7 @@ libgimp_cflags = [
 libgimp_lflags = []
 
 if platform_win32
-  libgimp_cflags += '-no-undefined'
+  libgimp_cflags += '-Wl,-no-undefined'
 endif
 
 if platform_osx

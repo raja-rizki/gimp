@@ -1,3 +1,5 @@
+if openexr.found()
+
 # TODO file-exr.rc.o
 
 file_exr = executable('file-exr',
@@ -21,3 +23,5 @@ file_exr = executable('file-exr',
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )
+
+endif

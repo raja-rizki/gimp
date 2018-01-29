@@ -1,3 +1,5 @@
+if platform_win32
+
 # Win32 specific
 plugin_twain_sources = [
   'tw_func.c',
@@ -47,3 +49,5 @@ twain = executable('twain',
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )
+
+endif

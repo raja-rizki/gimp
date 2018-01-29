@@ -1,3 +1,5 @@
+if have_print
+
 plugin_print_sources = [
   'print-draw-page.c',
   'print-page-layout.c',
@@ -13,7 +15,7 @@ print = executable('print',
   include_directories: [ rootInclude, ],
   dependencies: [
     gtk2, gegl,
-    x11, xmu, xext, xfixes,
+    # x11, xmu, xext, xfixes,
   ],
   link_with: [
     libgimp,
@@ -27,3 +29,5 @@ print = executable('print',
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )
+
+endif

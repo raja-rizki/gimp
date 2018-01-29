@@ -57,7 +57,7 @@ libgimpconfig_lflags = [
 ]
 
 if platform_win32
-  libgimpconfig_lflags += ['-export-symbols', 'gimpconfig.def']
+  # libgimpconfig_lflags += ['-export-symbols', 'gimpconfig.def']
 endif
 
 

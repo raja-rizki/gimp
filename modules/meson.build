@@ -6,7 +6,7 @@ global_cflags += [
 ]
 
 if platform_win32
-  global_cflags += '-no-undefined'
+  global_cflags += '-Wl,-no-undefined'
 endif
 
 if platform_osx

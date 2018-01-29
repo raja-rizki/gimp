@@ -1,13 +1,13 @@
-brushes = run_command('find',
+brushes = run_command(find,
   meson.current_source_dir(),
   '-maxdepth', '1',
   '-mindepth', '1',
   '-type', 'd',
-  '-printf', '%f\n'
+  '-printf', '%f'+findsep
 ).stdout().strip().split('\n')
 
 foreach brush : brushes
-  files = run_command('find',
+  files = run_command(find,
     join_paths(meson.current_source_dir(), brush),
     '-type', 'f',
     '(',
@@ -17,7 +17,7 @@ foreach brush : brushes
     '-o',
     '-name', '*.vbr',
     ')',
-    '-printf', brush + '/%f\n'
+    '-printf', brush + '/%f'+findsep
   ).stdout().strip().split('\n')
 
 

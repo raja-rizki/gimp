@@ -1,3 +1,5 @@
+if have_screenshot
+
 plugin_screenshot_sources = [
   'screenshot-freedesktop.c',
   'screenshot-gnome-shell.c',
@@ -28,3 +30,5 @@ screenshot = executable('screenshot',
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )
+
+endif

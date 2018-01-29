@@ -1,3 +1,5 @@
+if have_python
+
 subdir('doc')
 subdir('plug-ins')
 
@@ -123,3 +125,5 @@ custom_target('pygimp.interp',
   install: true,
   install_dir: join_paths(gimpplugindir, 'interpreters'),
 )
+
+endif

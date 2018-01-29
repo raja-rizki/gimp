@@ -1,3 +1,5 @@
+if webp.found()
+
 # TODO file-webp.rc.o
 
 file_webp = executable('file-webp',
@@ -23,3 +25,5 @@ file_webp = executable('file-webp',
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )
+
+endif

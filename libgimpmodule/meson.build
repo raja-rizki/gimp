@@ -21,7 +21,7 @@ libgimpmodule_lflags = [
 ]
 
 if platform_win32
-  libgimpmodule_lflags += ['-export-symbols', 'gimpmodule.def']
+  # libgimpmodule_lflags += ['-export-symbols', 'gimpmodule.def']
 endif
 
 
@@ -41,5 +41,3 @@ install_headers(
   libgimpmodule_headers,
   subdir: join_paths(gimp_api_name, 'libgimpmodule'),
 )
-
-

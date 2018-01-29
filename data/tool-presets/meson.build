@@ -1,17 +1,17 @@
-presets = run_command('find',
+presets = run_command(find,
   meson.current_source_dir(),
   '-maxdepth', '1',
   '-mindepth', '1',
   '-type', 'd',
-  '-printf', '%f\n'
+  '-printf', '%f'+findsep
 ).stdout().strip().split('\n')
 
 foreach preset : presets
-  files = run_command('find',
+  files = run_command(find,
     join_paths(meson.current_source_dir(), preset),
     '-type', 'f',
     '-name', '*.gtp',
-    '-printf', preset + '/%f\n'
+    '-printf', preset + '/%f'+findsep
   ).stdout().strip().split('\n')
 
 

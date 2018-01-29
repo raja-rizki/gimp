@@ -1,3 +1,5 @@
+if webkit.found()
+
 # TODO help-browser.rc.o
 
 help_browser = executable('help-browser',
@@ -24,3 +26,5 @@ help_browser = executable('help-browser',
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )
+
+endif

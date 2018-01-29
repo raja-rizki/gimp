@@ -267,19 +267,9 @@ common_exes_list = [
     [ gtk2, gegl, gdk_pixbuf, ],
   ],
   [
-    'file-wmf',
-    [ 'file-wmf.c', ],
-    [ gtk2, gegl, wmf, ],
-  ],
-  [
     'file-xbm',
     [ 'file-xbm.c', ],
     [ gtk2, gegl, gdk_pixbuf, ],
-  ],
-  [
-    'file-xmc',
-    [ 'file-xmc.c', ],
-    [ gtk2, gegl, xmc, ],
   ],
   [
     'file-xpm',
@@ -457,6 +447,25 @@ common_exes_list = [
     [ gtk2, gegl, gdk_pixbuf, ],
   ],
 ]
+
+if wmf.found()
+  common_exes_list += [
+    [
+      'file-wmf',
+      [ 'file-wmf.c', ],
+      [ gtk2, gegl, wmf, ],
+    ],
+  ]
+endif
+if xmc.found()
+  common_exes_list += [
+    [
+      'file-xmc',
+      [ 'file-xmc.c', ],
+      [ gtk2, gegl, xmc, ],
+    ],
+  ]
+endif
 
 if webkit.found()
   common_exes_list += [
