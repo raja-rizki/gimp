@@ -796,11 +796,11 @@ config_defines = [
   '-DEXEC_PREFIX='          +'"'+ prefix                +'"',
   '-DGIMPDIR='              +'"'+ gimpdir               +'"',
   '-DGIMPSYSCONFDIR='       +'"'+ gimpsysconfdir        +'"',
-  '-DDATADIR='              +'"'+ join_paths(prefix, gimpdatadir)    +'"',
   '-DGIMPDATADIR='          +'"'+ join_paths(prefix, gimpdatadir)    +'"',
   '-DGIMPPLUGINDIR='        +'"'+ join_paths(prefix, gimpplugindir)  +'"',
   '-DPLUGINDIR='            +'"'+ join_paths(prefix, gimpplugindir)  +'"',
   '-DLOCALEDIR='            +'"'+ join_paths(prefix, localedir)      +'"',
+
   '-DLOCALSTATEDIR='        +'"'+ get_option('localstatedir')        +'"',
   '-DSHAREDSTATEDIR='       +'"'+ get_option('sharedstatedir')       +'"', # HUH ? /usr/com
   '-DSYSCONFDIR='           +'"'+ get_option('sysconfdir')           +'"',
