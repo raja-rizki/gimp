@@ -60,11 +60,8 @@ app_debug_files = files(
 
 # Top-level library
 app_cflags = [
-  '-DCC_VERSION="' + cc.version() + '"',
   '-DG_LOG_DOMAIN="Gimp"',
   '-DGIMP_APP_GLUE_COMPILATION',
-  '-DGIMP_USER_VERSION="'+ user_version +'"',
-  '-DGIMPDIR="'+ gimpdir + '"',
 ]
 
 libapp_sources = [

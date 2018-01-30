@@ -14,18 +14,16 @@ libgimpmath_headers = [
 ]
 
 
-libgimpmath_cflags = [
-  '-DG_LOG_DOMAIN="LibGimpMath"',
-  '-DGIMP_MATH_COMPILATION',
-]
-
 libgimpmath = library('gimpmath-' + api_version,
   libgimpmath_sources,
   include_directories: rootInclude,
   dependencies: [
     glib, gobject, math,
   ],
-  c_args:     [ libgimp_cflags, libgimpmath_cflags, ],
+  c_args:     [
+    '-DG_LOG_DOMAIN="LibGimpMath"',
+    '-DGIMP_MATH_COMPILATION',
+  ],
   link_with:  [
     libgimpbase,
   ],

@@ -22,9 +22,6 @@ help = executable('help',
     libgimpui,
     libgimpwidgets,
   ],
-  c_args: [
-    '-DDATADIR="' + join_paths(prefix, gimpdatadir) + '"',
-  ],
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )

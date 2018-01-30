@@ -720,7 +720,7 @@ isocodes_localedir= join_paths(isocodes_prefix,get_option('datadir'),'locale')
 ################################################################################
 # CFlags
 
-if profiling
+if profiling and cc.get_id() == 'gcc'
   add_project_arguments     ('-pg', language: [ 'c', 'cpp', ])
   add_project_link_arguments('-pg', language: [ 'c', 'cpp', ])
 endif
@@ -750,7 +750,7 @@ add_project_arguments(
 
   # '--omg-optimized',
   # '--disable-instructions',
-  language: 'c'
+  language: [ 'c', 'cpp', ],
 )
 
 # Ensure MSVC-compatible struct packing convention is used when
@@ -770,27 +770,66 @@ has_nl_measurement = cc.has_function(
 ################################################################################
 # Set/regroup common CFlags for subdirs
 
-libgimp_cflags = [
+# Global arguments
+# Should be moved into config.h someday
+
+config_defines = [
+  # Compiler
+  '-DCC='                   +'"'+ cc.get_id()           +'"',
+  '-DCC_VERSION='           +'"'+ cc.version()          +'"',
+
+  # Names
   '-DGIMP_PACKAGE='         +'"'+ meson.project_name()  +'"',
   '-DPACKAGE_STRING='       +'"'+ package_string        +'"',
+  '-DGIMP_COMMAND='         +'"'+ gimp_command          +'"',
 
+  # Versions
+  '-DGIMP_APP_VERSION='     +'"'+ app_version           +'"',
   '-DGIMP_DATA_VERSION='    +'"'+ api_version           +'"',
-  '-DGIMP_USER_VERSION='    +'"'+ user_version          +'"',
-  '-DGIMP_SYSCONF_VERSION=' +'"'+ api_version           +'"',
   '-DGIMP_PLUGIN_VERSION='  +'"'+ api_version           +'"',
+  '-DGIMP_SYSCONF_VERSION=' +'"'+ api_version           +'"',
+  '-DGIMP_USER_VERSION='    +'"'+ user_version          +'"',
+  '-DGIMP_APP_VERSION_STRING="' + app_version           +'"',
 
+  # Directories
   '-DPREFIX='               +'"'+ prefix                +'"',
+  '-DEXEC_PREFIX='          +'"'+ prefix                +'"',
   '-DGIMPDIR='              +'"'+ gimpdir               +'"',
+  '-DGIMPSYSCONFDIR='       +'"'+ gimpsysconfdir        +'"',
   '-DDATADIR='              +'"'+ join_paths(prefix, gimpdatadir)    +'"',
-  '-DLOCALEDIR='            +'"'+ join_paths(prefix, localedir)      +'"',
+  '-DGIMPDATADIR='          +'"'+ join_paths(prefix, gimpdatadir)    +'"',
+  '-DGIMPPLUGINDIR='        +'"'+ join_paths(prefix, gimpplugindir)  +'"',
   '-DPLUGINDIR='            +'"'+ join_paths(prefix, gimpplugindir)  +'"',
-  '-DSYSCONFDIR='           +'"'+ gimpsysconfdir        +'"',
+  '-DLOCALEDIR='            +'"'+ join_paths(prefix, localedir)      +'"',
+  '-DLOCALSTATEDIR='        +'"'+ get_option('localstatedir')        +'"',
+  '-DSHAREDSTATEDIR='       +'"'+ get_option('sharedstatedir')       +'"', # HUH ? /usr/com
+  '-DSYSCONFDIR='           +'"'+ get_option('sysconfdir')           +'"',
+  '-DBINDIR='               +'"'+ join_paths(prefix, get_option('bindir'))       +'"',
+  '-DDATAROOTDIR='          +'"'+ join_paths(prefix, get_option('datadir'))      +'"',
+  '-DINFODIR='              +'"'+ join_paths(prefix, get_option('infodir'))      +'"',
+  '-DLIBDIR='               +'"'+ join_paths(prefix, get_option('libdir'))       +'"',
+  '-DLIBEXECDIR='           +'"'+ join_paths(prefix, get_option('libexecdir'))   +'"',
+  '-DMANDIR='               +'"'+ join_paths(prefix, get_option('mandir'))       +'"',
+  '-DSBINDIR='              +'"'+ join_paths(prefix, get_option('sbindir'))      +'"',
+  '-DSYSDATADIR='           +'"'+ join_paths(prefix, get_option('datadir'))      +'"',
+
+  # Third-party/Misc
+  '-DISO_CODES_LOCATION='   +'"'+ isocodes_location  +'"',
+  '-DISO_CODES_LOCALEDIR='  +'"'+ isocodes_localedir +'"',
+
+  '-DHAVE_CONFIG_H',
 ]
+
 
 if platform_osx
   # libgimp_cflags += '-xobjective-c'
   # libgimp_lflags += ['-framework', 'Cocoa']
 endif
+
+add_project_arguments(
+  config_defines,
+  language: [ 'c', 'cpp', ],
+)
 
 rootInclude = include_directories('.')
 

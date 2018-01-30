@@ -10,10 +10,6 @@ libgimpmodule_headers = [
   'gimpmoduletypes.h',
 ]
 
-libgimpmodule_cflags = [
-  '-DG_LOG_DOMAIN="LibGimpModule"',
-  '-DGIMP_MODULE_COMPILATION',
-]
 
 libgimpmodule = library('gimpmodule-' + api_version,
   libgimpmodule_sources,
@@ -21,7 +17,10 @@ libgimpmodule = library('gimpmodule-' + api_version,
   dependencies: [
     gio, glib, gmodule,
   ],
-  c_args:     [ libgimp_cflags, libgimpmodule_cflags, ],
+  c_args:     [
+    '-DG_LOG_DOMAIN="LibGimpModule"',
+    '-DGIMP_MODULE_COMPILATION',
+  ],
   link_with:  [
     libgimpbase,
     libgimpconfig,

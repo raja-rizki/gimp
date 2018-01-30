@@ -563,7 +563,7 @@ gimp_sysconf_directory (void)
                                      GIMP_SYSCONF_VERSION,
                                      NULL);
 
-      gimp_sysconf_dir = gimp_env_get_dir ("GIMP2_SYSCONFDIR", SYSCONFDIR, tmp);
+      gimp_sysconf_dir = gimp_env_get_dir ("GIMP2_SYSCONFDIR", GIMPSYSCONFDIR, tmp);
       g_free (tmp);
     }
 

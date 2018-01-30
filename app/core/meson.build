@@ -221,9 +221,6 @@ libappcore = static_library('appcore',
   include_directories: [ rootInclude, rootAppInclude, ],
   c_args: [
     '-DG_LOG_DOMAIN="Gimp-Core"',
-    '-DGIMPDIR="'+ gimpdir +'"',
-    '-DGIMP_APP_VERSION="'+ app_version +'"',
-    '-DGIMP_USER_VERSION="'+ user_version +'"',
     '-DMESON_BUILD',
   ],
   dependencies: [

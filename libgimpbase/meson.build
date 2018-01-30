@@ -98,7 +98,7 @@ libgimpbase = library('gimpbase-' + api_version,
   dependencies: [
     gexiv2, gio, math,
   ],
-  c_args:     [ libgimp_cflags, libgimpbase_cflags, ],
+  c_args:     [ libgimpbase_cflags, ],
   vs_module_defs: 'gimpbase.def',
   install: true,
   version: so_version,
@@ -117,7 +117,7 @@ executable('test-cpu-accel',
   dependencies: [
     glib,
   ],
-  c_args:     [ libgimp_cflags, libgimpbase_cflags, ],
+  c_args:     [ libgimpbase_cflags, ],
   link_with:  [
     libgimpbase,
   ],

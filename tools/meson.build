@@ -4,33 +4,6 @@ if platform_win32
 endif
 
 
-
-tools_cflags = [
-  '-DGIMP_APP_VERSION='    +'"'+ app_version                                    +'"',
-  '-DGIMP_PLUGIN_VERSION=' +'"'+ api_version                                    +'"',
-
-  '-DCC='                  +'"'+ cc.get_id()                                    +'"',
-
-  '-DPREFIX='              +'"'+ prefix                                         +'"',
-  '-DEXEC_PREFIX='         +'"'+ prefix                                         +'"',
-  '-DBINDIR='              +'"'+ join_paths(prefix, get_option('bindir'))       +'"',
-  '-DDATADIR='             +'"'+ join_paths(prefix, get_option('datadir'))      +'"',
-  '-DDATAROOTDIR='         +'"'+ join_paths(prefix, get_option('datadir'))      +'"',
-  '-DGIMPDATADIR='         +'"'+ join_paths(prefix, gimpdatadir)                +'"',
-  '-DGIMPDIR='             +'"'+ gimpdir                                        +'"',
-  '-DGIMPPLUGINDIR='       +'"'+ join_paths(prefix, gimpplugindir)              +'"',
-  '-DINFODIR='             +'"'+ join_paths(prefix, get_option('infodir'))      +'"',
-  '-DLIBDIR='              +'"'+ join_paths(prefix, get_option('libdir'))       +'"',
-  '-DLIBEXECDIR='          +'"'+ join_paths(prefix, get_option('libexecdir'))   +'"',
-  '-DLOCALEDIR='           +'"'+ join_paths(prefix, localedir)                  +'"',
-  '-DMANDIR='              +'"'+ join_paths(prefix, get_option('mandir'))       +'"',
-  '-DSBINDIR='             +'"'+ join_paths(prefix, get_option('sbindir'))      +'"',
-  '-DLOCALSTATEDIR='       +'"'+ get_option('localstatedir')                    +'"',
-  '-DSHAREDSTATEDIR='      +'"'+ get_option('sharedstatedir')                   +'"', # HUH ? /usr/com
-  '-DSYSCONFDIR='          +'"'+ get_option('sysconfdir')                       +'"',
-]
-
-
 gimptool = executable('gimptool-2.0',
   'gimptool.c',
 
@@ -41,7 +14,6 @@ gimptool = executable('gimptool-2.0',
   link_with: [
     libgimpbase,
   ],
-  c_args: tools_cflags,
   install: true,
 )
 

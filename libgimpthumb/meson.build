@@ -57,7 +57,7 @@ libgimpthumb = library('gimpthumb-'+ api_version,
   dependencies: [
     gdk_pixbuf, glib, gio, gobject,
   ],
-  c_args:     [ libgimp_cflags, libgimpthumb_cflags, ],
+  c_args:     [ libgimpthumb_cflags, ],
   link_with:  [
     libgimpbase,
   ],
@@ -79,7 +79,7 @@ gimp_thumbnail_list = executable('gimp-thumbnail-list',
   dependencies: [
     gdk_pixbuf,
   ],
-  c_args:     [ libgimp_cflags, libgimpthumb_cflags, ],
+  c_args:     [ libgimpthumb_cflags, ],
   link_with:  [
     libgimpbase,
     libgimpthumb,

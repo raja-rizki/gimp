@@ -31,8 +31,6 @@ libappconfig = static_library('appconfig',
   include_directories: [ rootInclude, rootAppInclude, ],
   c_args: [
     '-DG_LOG_DOMAIN="Gimp-Config"',
-    '-DGIMP_APP_VERSION_STRING="'+ app_version +'"',
-    '-DDATADIR="'+ join_paths(prefix, gimpdatadir) +'"',
     mypaint_args,
   ],
   dependencies: [

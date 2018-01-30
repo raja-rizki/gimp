@@ -278,7 +278,7 @@ libgimp = library('gimp-'+ api_version,
   dependencies: [
     gegl, gexiv2, gtk2,
   ],
-  c_args:     [ libgimp_cflags, libgimp_top_cflags, ],
+  c_args:     [ libgimp_top_cflags, ],
   link_with:  [
     libgimpbase,
     libgimpcolor,
@@ -290,16 +290,13 @@ libgimp = library('gimp-'+ api_version,
 )
 
 
-
-libgimpui_cflags = libgimp_top_cflags
-
 libgimpui = library('gimpui-'+ api_version,
   libgimpui_sources,
   include_directories: rootInclude,
   dependencies: [
     gegl, gexiv2, gtk2,
   ],
-  c_args:     [ libgimp_cflags, libgimpui_cflags, ],
+  c_args:     [ libgimp_top_cflags, ],
   link_with:  [
     libgimp,
     libgimpbase,

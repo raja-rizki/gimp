@@ -175,7 +175,7 @@ libgimpwidgets = library('gimpwidgets-'+ api_version,
   dependencies: [
     gegl, gtk2, lcms, math
   ],
-  c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
+  c_args:     [ libgimpwidgets_cflags, ],
   link_with:  [
     libgimpbase,
     libgimpcolor,
@@ -200,7 +200,7 @@ test_preview_area = executable('test-preview-area',
   dependencies: [
     gtk2,
   ],
-  c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
+  c_args:     [ libgimpwidgets_cflags, ],
   link_with:  [ libgimpwidgets, ],
   install: false,
   build_by_default: false,
@@ -212,7 +212,7 @@ test_eevl = executable('test-eevl',
   dependencies: [
     glib, gtk2,
   ],
-  c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
+  c_args:     [ libgimpwidgets_cflags, ],
   link_with:  [ libgimpwidgets, ],
   install: false,
 )

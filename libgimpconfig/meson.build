@@ -44,19 +44,16 @@ libgimpconfig_headers = [
   'gimpscanner.h',
 ]
 
-
-libgimpconfig_cflags = [
-  '-DG_LOG_DOMAIN="'+ 'LibGimpConfig' + '"',
-  '-DGIMP_CONFIG_COMPILATION',
-]
-
 libgimpconfig = library('gimpconfig-' + api_version,
   libgimpconfig_sources,
   include_directories: rootInclude,
   dependencies: [
     cairo, gdk_pixbuf, gegl, gio, gio_specific,
   ],
-  c_args:     [ libgimp_cflags, libgimpconfig_cflags, ],
+  c_args:     [
+    '-DG_LOG_DOMAIN="LibGimpConfig"',
+    '-DGIMP_CONFIG_COMPILATION',
+  ],
   link_with:  [
     libgimpbase,
     libgimpcolor,

@@ -18,9 +18,6 @@ gradient_flare = executable('gradient-flare',
     libgimpui,
     libgimpwidgets,
   ],
-  c_args: [
-    '-DDATADIR="' + join_paths(prefix, gimpdatadir) + '"',
-  ],
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )
