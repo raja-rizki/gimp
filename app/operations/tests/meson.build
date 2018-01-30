@@ -4,7 +4,7 @@ executable('test-operations',
   include_directories: [ rootInclude, rootAppInclude, ],
 
   dependencies: [
-    cairo, gegl, gdk_pixbuf, glib, pangocairo,
+    cairo, gegl, gdk_pixbuf, glib, pangocairo, pangoft2,
   ],
   build_by_default: false,
 )

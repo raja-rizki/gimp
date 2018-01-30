@@ -26,6 +26,10 @@ libappconfig_sources = [
   appconfigenums,
 ]
 
+mypaint_args = libmypaint_brushes.found() ? [] : [
+  '-DMYPAINT_BRUSHES_DIR="@0@"'.format(mypaint_brushes_dir),
+]
+
 libappconfig = static_library('appconfig',
   libappconfig_sources,
   include_directories: [ rootInclude, rootAppInclude, ],

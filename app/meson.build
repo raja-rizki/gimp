@@ -146,7 +146,7 @@ app_gui_links = [
 ]
 
 app_deps = [
-  gio, gtk2, pangocairo, gegl, lcms, gexiv2,
+  gio, gtk2, pangocairo, pangoft2, gegl, lcms, gexiv2,
 ]
 
 # Executables

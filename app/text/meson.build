@@ -33,6 +33,6 @@ libapptext = static_library('apptext',
     '-DG_LOG_DOMAIN="Gimp-Text"',
   ],
   dependencies: [
-    gegl, gdk_pixbuf, harfbuzz, pangocairo,
+    gegl, gdk_pixbuf, harfbuzz, pangocairo, pangoft2,
   ],
 )

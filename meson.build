@@ -154,12 +154,16 @@ harfbuzz          = dependency('harfbuzz',           version: '>=0.9.19')
 lcms              = dependency('lcms2',              version: '>=2.8')
 
 libmypaint_name   = platform_win32 ? 'libmypaint' : 'libmypaint-1.3'
-libmypaint      = [ dependency(libmypaint_name,     version: '>=1.3.0'),
-                    dependency('mypaint-brushes-1.0', required: false) ]
+libmypaint        = dependency(libmypaint_name,      version: '>=1.3.0')
+libmypaint_brushes= dependency('mypaint-brushes-1.0',required: false)
 pangocairo        = dependency('pangocairo',         version: '>=1.29.4')
+pangoft2          = dependency('pangoft2',           version: '>=1.29.4')
 rsvg              = dependency('librsvg-2.0',        version: '>=2.40.6')
 
 # xgettext           = dependency('xgettext',           version: '>=0.19')
+if not libmypaint_brushes.found()
+  mypaint_brushes_dir = '/usr/share/mypaint-data/1.0/brushes'
+endif
 
 ################################################################################
 # Check for GLib Networking
