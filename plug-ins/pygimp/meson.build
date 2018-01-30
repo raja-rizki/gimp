@@ -4,7 +4,7 @@ subdir('doc')
 subdir('plug-ins')
 
 pwd = meson.current_source_dir()
-pygtk_generator = generator(pygtk2codegen,
+pygtk_generator = generator(pygobjectcodegen,
   arguments: [
       '--override', join_paths(pwd, '@BASENAME@.override'),
       '--register', join_paths(pygtk_defsdir, 'gdk-types.defs'),

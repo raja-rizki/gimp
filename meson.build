@@ -519,7 +519,7 @@ perl = find_program('perl5', 'perl', 'perl5.005', 'perl5.004', 'perl')
 have_python = false
 if get_option('with-python')
   python2 = find_program('python2')
-  pygtk2codegen = find_program('pygtk-codegen-2.0')
+  pygobjectcodegen = find_program('pygobject-codegen-2.0')
 
   libpython2= dependency('python2',       version: '>=2.5.0')
   pygobject = dependency('pygobject-2.0', version: '>=2.10.4')
