@@ -1,12 +1,4 @@
 
-global_cflags = []
-global_lflags = []
-
-if platform_osx
-  global_cflags += '-xobjective-c'
-  global_lflags += ['-framework', 'Cocoa']
-endif
-
 modules_deps = [
   gtk2, babl, gegl, math,
 ]

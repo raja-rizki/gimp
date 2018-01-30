@@ -59,8 +59,6 @@ app_debug_files = files(
 )
 
 # Top-level library
-app_lflags = [
-]
 app_cflags = [
   '-DCC_VERSION="' + cc.version() + '"',
   '-DG_LOG_DOMAIN="Gimp"',
@@ -68,15 +66,6 @@ app_cflags = [
   '-DGIMP_USER_VERSION="'+ user_version +'"',
   '-DGIMPDIR="'+ gimpdir + '"',
 ]
-
-if platform_osx
-  app_cflags += '-xobjective-c'
-  #app_lflags += ['-framework', 'Cocoa']
-endif
-
-if platform_win32
-  # app_lflags += [ '-mwindows', '-mexchndl', ]
-endif
 
 libapp_sources = [
   'app.c',
@@ -100,7 +89,6 @@ libapp = static_library('app',
   dependencies: [
     gegl, gdk_pixbuf, gtk2,
   ],
-  link_with: app_lflags,
 )
 
 

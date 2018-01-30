@@ -158,12 +158,6 @@ libgimpwidgets_cflags = [
   '-DMESON_BUILD',
 ]
 
-libgimpwidgets_lflags = [
-  libgimpbase,
-  libgimpcolor,
-  libgimpconfig,
-]
-
 if gtk_mac_integration_ok
   libgimpwidgets_sources += [
     'gimppickbutton-quartz.c',
@@ -182,7 +176,11 @@ libgimpwidgets = library('gimpwidgets-'+ api_version,
     gegl, gtk2, lcms, math
   ],
   c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpwidgets_lflags, ],
+  link_with:  [
+    libgimpbase,
+    libgimpcolor,
+    libgimpconfig,
+  ],
   vs_module_defs: 'gimpwidgets.def',
   install: true,
   version: so_version,
@@ -203,7 +201,7 @@ test_preview_area = executable('test-preview-area',
     gtk2,
   ],
   c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpwidgets_lflags, libgimpwidgets, ],
+  link_with:  [ libgimpwidgets, ],
   install: false,
   build_by_default: false,
 )
@@ -215,6 +213,6 @@ test_eevl = executable('test-eevl',
     glib, gtk2,
   ],
   c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpwidgets_lflags, libgimpwidgets, ],
+  link_with:  [ libgimpwidgets, ],
   install: false,
 )

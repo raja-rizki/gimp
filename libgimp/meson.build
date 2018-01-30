@@ -272,17 +272,6 @@ libgimp_top_cflags = [
   '-DGIMP_COMPILATION',
 ]
 
-libgimp_top_lflags = [
-  libgimpbase,
-  libgimpcolor,
-  libgimpconfig,
-]
-
-if platform_win32
-  # libgimp_top_lflags += '-lexchndl'
-endif
-
-
 libgimp = library('gimp-'+ api_version,
   libgimp_top_sources,
   include_directories: rootInclude,
@@ -290,7 +279,11 @@ libgimp = library('gimp-'+ api_version,
     gegl, gexiv2, gtk2,
   ],
   c_args:     [ libgimp_cflags, libgimp_top_cflags, ],
-  link_with:  [ libgimp_lflags, libgimp_top_lflags, ],
+  link_with:  [
+    libgimpbase,
+    libgimpcolor,
+    libgimpconfig,
+  ],
   vs_module_defs: 'gimp.def',
   install: true,
   version: so_version,
@@ -299,17 +292,6 @@ libgimp = library('gimp-'+ api_version,
 
 
 libgimpui_cflags = libgimp_top_cflags
-libgimpui_lflags = [
-  libgimp,
-  libgimpbase,
-  libgimpcolor,
-  libgimpmodule,
-  libgimpwidgets,
-]
-
-if platform_win32
-  # libgimpui_lflags += '-lexchndl'
-endif
 
 libgimpui = library('gimpui-'+ api_version,
   libgimpui_sources,
@@ -318,7 +300,13 @@ libgimpui = library('gimpui-'+ api_version,
     gegl, gexiv2, gtk2,
   ],
   c_args:     [ libgimp_cflags, libgimpui_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpui_lflags, ],
+  link_with:  [
+    libgimp,
+    libgimpbase,
+    libgimpcolor,
+    libgimpmodule,
+    libgimpwidgets,
+  ],
   vs_module_defs: 'gimpui.def',
   install: true,
   version: so_version,

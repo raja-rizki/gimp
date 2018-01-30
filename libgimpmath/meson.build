@@ -19,10 +19,6 @@ libgimpmath_cflags = [
   '-DGIMP_MATH_COMPILATION',
 ]
 
-libgimpmath_lflags = [
-  libgimpbase,
-]
-
 libgimpmath = library('gimpmath-' + api_version,
   libgimpmath_sources,
   include_directories: rootInclude,
@@ -30,7 +26,9 @@ libgimpmath = library('gimpmath-' + api_version,
     glib, gobject, math,
   ],
   c_args:     [ libgimp_cflags, libgimpmath_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpmath_lflags, ],
+  link_with:  [
+    libgimpbase,
+  ],
   vs_module_defs: 'gimpmath.def',
   install: true,
   version: so_version,

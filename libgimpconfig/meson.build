@@ -50,12 +50,6 @@ libgimpconfig_cflags = [
   '-DGIMP_CONFIG_COMPILATION',
 ]
 
-libgimpconfig_lflags = [
-  libgimpbase,
-  libgimpcolor,
-  libgimpmath,
-]
-
 libgimpconfig = library('gimpconfig-' + api_version,
   libgimpconfig_sources,
   include_directories: rootInclude,
@@ -63,7 +57,11 @@ libgimpconfig = library('gimpconfig-' + api_version,
     cairo, gdk_pixbuf, gegl, gio, gio_specific,
   ],
   c_args:     [ libgimp_cflags, libgimpconfig_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpconfig_lflags, ],
+  link_with:  [
+    libgimpbase,
+    libgimpcolor,
+    libgimpmath,
+  ],
   vs_module_defs: 'gimpconfig.def',
   install: true,
   version: so_version,

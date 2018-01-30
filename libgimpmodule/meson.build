@@ -15,11 +15,6 @@ libgimpmodule_cflags = [
   '-DGIMP_MODULE_COMPILATION',
 ]
 
-libgimpmodule_lflags = [
-  libgimpbase,
-  libgimpconfig,
-]
-
 libgimpmodule = library('gimpmodule-' + api_version,
   libgimpmodule_sources,
   include_directories: rootInclude,
@@ -27,7 +22,10 @@ libgimpmodule = library('gimpmodule-' + api_version,
     gio, glib, gmodule,
   ],
   c_args:     [ libgimp_cflags, libgimpmodule_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpmodule_lflags, ],
+  link_with:  [
+    libgimpbase,
+    libgimpconfig,
+  ],
   vs_module_defs: 'gimpmodule.def',
   install: true,
   version: so_version,

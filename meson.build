@@ -780,11 +780,10 @@ libgimp_cflags = [
   '-DPLUGINDIR='            +'"'+ join_paths(prefix, gimpplugindir)  +'"',
   '-DSYSCONFDIR='           +'"'+ gimpsysconfdir        +'"',
 ]
-libgimp_lflags = []
 
 if platform_osx
-  libgimp_cflags += '-xobjective-c'
-  libgimp_lflags += ['-framework', 'Cocoa']
+  # libgimp_cflags += '-xobjective-c'
+  # libgimp_lflags += ['-framework', 'Cocoa']
 endif
 
 rootInclude = include_directories('.')

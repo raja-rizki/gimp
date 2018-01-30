@@ -20,21 +20,13 @@ plugin_selection_to_path_link = [
   libgimpwidgets,
 ]
 plugin_selection_to_path_deps = [
-  gegl, gtk2,
+  gegl, gtk2, math,
 ]
-plugin_selection_to_path_lflags = []
-if platform_win32
-  plugin_selection_to_path_lflags += '-mwindows'
-else
-  plugin_selection_to_path_deps += math
-endif
-
 
 selection_to_path = executable('selection-to-path',
   plugin_selection_to_path_sources,
   include_directories: [ rootInclude, ],
   link_with:    plugin_selection_to_path_link,
-  link_args:    plugin_selection_to_path_lflags,
   dependencies: plugin_selection_to_path_deps,
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),

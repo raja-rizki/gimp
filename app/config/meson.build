@@ -37,6 +37,7 @@ libappconfig = static_library('appconfig',
     '-DG_LOG_DOMAIN="Gimp-Config"',
     '-DGIMP_APP_VERSION_STRING="'+ app_version +'"',
     '-DDATADIR="'+ join_paths(prefix, gimpdatadir) +'"',
+    mypaint_args,
   ],
   dependencies: [
     cairo, gegl, gdk_pixbuf, gio, gio_specific, gtk2, libmypaint,
