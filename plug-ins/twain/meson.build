@@ -41,11 +41,6 @@ twain = executable('twain',
     libgimpcolor,
     libgimpbase,
   ],
-  link_args: [
-    '-lrt',
-    '-luser32',
-    '-mwindows',
-  ],
   install: true,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )

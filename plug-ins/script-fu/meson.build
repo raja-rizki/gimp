@@ -20,11 +20,13 @@ plugin_scriptfu_sources = [
   'script-fu.c',
 ]
 
+winsock = platform_win32 ? cc.find_library('ws2_32') : []
+
 scriptfu = executable('script-fu',
   plugin_scriptfu_sources,
   include_directories: [ rootInclude, ],
   dependencies: [
-    gegl, gtk2, math,
+    gegl, gtk2, math, winsock,
   ],
   c_args: [
     '-DSTANDALONE=0',
