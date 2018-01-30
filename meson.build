@@ -161,9 +161,15 @@ pangoft2          = dependency('pangoft2',           version: '>=1.29.4')
 rsvg              = dependency('librsvg-2.0',        version: '>=2.40.6')
 
 # xgettext           = dependency('xgettext',           version: '>=0.19')
-if not libmypaint_brushes.found()
-  mypaint_brushes_dir = '/usr/share/mypaint-data/1.0/brushes'
-endif
+
+# Mypaint-brushes not available on MingW
+mypaint_brushes = libmypaint_brushes.found() ? [
+  libmypaint_brushes,
+] : []
+mypaint_args    = libmypaint_brushes.found() ? [] : [
+  '-DMYPAINT_BRUSHES_DIR="/usr/share/mypaint-data/1.0/brushes"',
+]
+
 
 ################################################################################
 # Check for GLib Networking
