@@ -69,11 +69,6 @@ app_cflags = [
   '-DGIMPDIR="'+ gimpdir + '"',
 ]
 
-if platform_win32
-  app_cflags += '-Wl,-no-undefined'
-  # app_lflags += '-lgdi32'
-endif
-
 if platform_osx
   app_cflags += '-xobjective-c'
   #app_lflags += ['-framework', 'Cocoa']
@@ -81,7 +76,6 @@ endif
 
 if platform_win32
   # app_lflags += [ '-mwindows', '-mexchndl', ]
-  # app_lflags += ['-export-symbols', 'gimpwidgets.def']
 endif
 
 libapp_sources = [

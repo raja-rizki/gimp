@@ -35,25 +35,17 @@ libgimpcolor_cflags = [
   '-DG_LOG_DOMAIN="LibGimpColor"',
   '-DGIMP_COLOR_COMPILATION',
 ]
-libgimpcolor_deps = [ ]
-libgimpcolor_lflags = [
-  libgimpbase,
-]
-
-if platform_win32
-  libgimpcolor_deps += ole32
-  # libgimpcolor_lflags += ['-export-symbols', 'gimpcolor.def']
-endif
 
 
 libgimpcolor = library('gimpcolor-' + api_version,
   libgimpcolor_sources,
   include_directories: rootInclude,
   dependencies: [
-    cairo, gdk_pixbuf, gegl, lcms, math, libgimpcolor_deps,
+    cairo, gdk_pixbuf, gegl, lcms, math,
   ],
   c_args:     [ libgimp_cflags, libgimpcolor_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpcolor_lflags, ],
+  link_with:  [ libgimp_lflags, libgimpbase, ],
+  vs_module_defs: 'gimpcolor.def',
   install: true,
   version: so_version,
 )
@@ -74,6 +66,6 @@ executable('test-color-parser',
     # glib,
   ],
   c_args:     [ libgimp_cflags, libgimpcolor_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpcolor_lflags, libgimpcolor, ],
+  link_with:  [ libgimp_lflags, libgimpbase, libgimpcolor, ],
   install: false,
 )

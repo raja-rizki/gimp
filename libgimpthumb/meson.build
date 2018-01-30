@@ -51,16 +51,6 @@ libgimpthumb_cflags = [
   '-DGIMP_THUMB_COMPILATION',
 ]
 
-libgimpthumb_lflags = [
-  libgimpbase,
-]
-
-if platform_win32
-  # libgimpthumb_lflags += ['-export-symbols', 'gimpthumb.def']
-endif
-
-
-
 libgimpthumb = library('gimpthumb-'+ api_version,
   libgimpthumb_sources,
   include_directories: rootInclude,
@@ -68,7 +58,8 @@ libgimpthumb = library('gimpthumb-'+ api_version,
     gdk_pixbuf, glib, gio, gobject,
   ],
   c_args:     [ libgimp_cflags, libgimpthumb_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpthumb_lflags, ],
+  link_with:  [ libgimp_lflags, libgimpbase, ],
+  vs_module_defs: 'gimpthumb.def',
   install: true,
   version: so_version,
 )
@@ -87,6 +78,6 @@ gimp_thumbnail_list = executable('gimp-thumbnail-list',
     gdk_pixbuf,
   ],
   c_args:     [ libgimp_cflags, libgimpthumb_cflags, ],
-  link_with:  [ libgimp_lflags, libgimpthumb_lflags, libgimpthumb, ],
+  link_with:  [ libgimp_lflags, libgimpbase, libgimpthumb, ],
   install: false,
 )

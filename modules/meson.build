@@ -2,20 +2,9 @@
 global_cflags = []
 global_lflags = []
 
-global_cflags += [
-]
-
-if platform_win32
-  global_cflags += '-Wl,-no-undefined'
-endif
-
 if platform_osx
   global_cflags += '-xobjective-c'
   global_lflags += ['-framework', 'Cocoa']
-endif
-
-if platform_win32
-  # global_lflags += ['-export-symbols', 'gimpmath.def']
 endif
 
 modules_deps = [

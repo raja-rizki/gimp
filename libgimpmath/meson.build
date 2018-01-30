@@ -23,11 +23,6 @@ libgimpmath_lflags = [
   libgimpbase,
 ]
 
-if platform_win32
-  # libgimpmath_lflags += ['-export-symbols', 'gimpmath.def']
-endif
-
-
 libgimpmath = library('gimpmath-' + api_version,
   libgimpmath_sources,
   include_directories: rootInclude,
@@ -36,6 +31,7 @@ libgimpmath = library('gimpmath-' + api_version,
   ],
   c_args:     [ libgimp_cflags, libgimpmath_cflags, ],
   link_with:  [ libgimp_lflags, libgimpmath_lflags, ],
+  vs_module_defs: 'gimpmath.def',
   install: true,
   version: so_version,
 )

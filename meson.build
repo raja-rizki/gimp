@@ -246,12 +246,6 @@ has_altivec = cc.has_argument('-faltivec')
 cc.has_argument('-maltivec')
 cc.has_argument('-mabi=altivec')
 
-
-if platform_win32
-  ole32 = cc.find_library('ole32')
-endif
-
-
 # TODO shared memory handling
 
 # OpenMP
@@ -717,7 +711,8 @@ isocodes_localedir= join_paths(isocodes_prefix,get_option('datadir'),'locale')
 # CFlags
 
 if profiling
-  add_project_arguments('-pg', language: 'c')
+  add_project_arguments     ('-pg', language: [ 'c', 'cpp', ])
+  add_project_link_arguments('-pg', language: [ 'c', 'cpp', ])
 endif
 
 if ansi
@@ -782,10 +777,6 @@ libgimp_cflags = [
   '-DSYSCONFDIR='           +'"'+ gimpsysconfdir        +'"',
 ]
 libgimp_lflags = []
-
-if platform_win32
-  libgimp_cflags += '-Wl,-no-undefined'
-endif
 
 if platform_osx
   libgimp_cflags += '-xobjective-c'

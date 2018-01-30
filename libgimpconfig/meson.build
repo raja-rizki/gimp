@@ -56,12 +56,6 @@ libgimpconfig_lflags = [
   libgimpmath,
 ]
 
-if platform_win32
-  # libgimpconfig_lflags += ['-export-symbols', 'gimpconfig.def']
-endif
-
-
-
 libgimpconfig = library('gimpconfig-' + api_version,
   libgimpconfig_sources,
   include_directories: rootInclude,
@@ -70,6 +64,7 @@ libgimpconfig = library('gimpconfig-' + api_version,
   ],
   c_args:     [ libgimp_cflags, libgimpconfig_cflags, ],
   link_with:  [ libgimp_lflags, libgimpconfig_lflags, ],
+  vs_module_defs: 'gimpconfig.def',
   install: true,
   version: so_version,
 )

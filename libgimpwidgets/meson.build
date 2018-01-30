@@ -164,11 +164,6 @@ libgimpwidgets_lflags = [
   libgimpconfig,
 ]
 
-if platform_win32
-  # libgimpwidgets_lflags += ['-export-symbols', 'gimpwidgets.def']
-  # libgimpwidgets_lflags += '-lgdi32'
-endif
-
 if gtk_mac_integration_ok
   libgimpwidgets_sources += [
     'gimppickbutton-quartz.c',
@@ -180,7 +175,6 @@ else
   ]
 endif
 
-
 libgimpwidgets = library('gimpwidgets-'+ api_version,
   libgimpwidgets_sources,
   include_directories: rootInclude,
@@ -189,6 +183,7 @@ libgimpwidgets = library('gimpwidgets-'+ api_version,
   ],
   c_args:     [ libgimp_cflags, libgimpwidgets_cflags, ],
   link_with:  [ libgimp_lflags, libgimpwidgets_lflags, ],
+  vs_module_defs: 'gimpwidgets.def',
   install: true,
   version: so_version,
 )

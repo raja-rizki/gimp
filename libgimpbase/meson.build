@@ -91,26 +91,16 @@ libgimpbase_cflags = [
   '-DG_LOG_DOMAIN="LibGimpBase"',
   '-DGIMP_BASE_COMPILATION',
 ]
-libgimpbase_deps = [
-  gexiv2, gio, math,
-]
-libgimpbase_lflags = [ ]
-
-if platform_win32
-  libgimpbase_deps += ole32
-  libgimpbase_lflags += ['-export-symbols', 'gimpbase.def']
-endif
-
 
 libgimpbase = library('gimpbase-' + api_version,
   libgimpbase_sources,
   include_directories: rootInclude,
   dependencies: [
-    libgimpbase_deps,
+    gexiv2, gio, math,
   ],
   c_args:     [ libgimp_cflags, libgimpbase_cflags, ],
   link_with:  [ libgimp_lflags, ],
-  link_args:  [ libgimpbase_lflags, ],
+  vs_module_defs: 'gimpbase.def',
   install: true,
   version: so_version,
 )
@@ -130,6 +120,5 @@ executable('test-cpu-accel',
   ],
   c_args:     [ libgimp_cflags, libgimpbase_cflags, ],
   link_with:  [ libgimp_lflags, libgimpbase, ],
-  link_args:  [ libgimpbase_lflags, ],
   install: false,
 )

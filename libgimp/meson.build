@@ -279,7 +279,6 @@ libgimp_top_lflags = [
 ]
 
 if platform_win32
-  # libgimp_top_lflags += ['-export-symbols', 'gimp.def']
   # libgimp_top_lflags += '-lexchndl'
 endif
 
@@ -292,6 +291,7 @@ libgimp = library('gimp-'+ api_version,
   ],
   c_args:     [ libgimp_cflags, libgimp_top_cflags, ],
   link_with:  [ libgimp_lflags, libgimp_top_lflags, ],
+  vs_module_defs: 'gimp.def',
   install: true,
   version: so_version,
 )
@@ -308,7 +308,6 @@ libgimpui_lflags = [
 ]
 
 if platform_win32
-  # libgimpui_lflags += ['-export-symbols', 'gimpui.def']
   # libgimpui_lflags += '-lexchndl'
 endif
 
@@ -320,6 +319,7 @@ libgimpui = library('gimpui-'+ api_version,
   ],
   c_args:     [ libgimp_cflags, libgimpui_cflags, ],
   link_with:  [ libgimp_lflags, libgimpui_lflags, ],
+  vs_module_defs: 'gimpui.def',
   install: true,
   version: so_version,
 )
