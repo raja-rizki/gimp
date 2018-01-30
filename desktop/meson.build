@@ -87,6 +87,6 @@ custom_target('validate-desktop',
   command: [
     desktop_validate, '@INPUT@',
   ],
-  build_always: true,
+  build_always: false,
   build_by_default: false,
 )
