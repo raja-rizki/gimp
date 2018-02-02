@@ -23,6 +23,7 @@ executable('kernelgen',
   include_directories: rootInclude,
   install: false,
 )
+
 executable('test-clipboard',
   'test-clipboard.c',
   include_directories: rootInclude,
@@ -33,12 +34,11 @@ executable('test-clipboard',
 )
 
 if have_vector_icons
-  invert_svg_exe = executable('invert-svg',
-    'invert-svg.c',
-    dependencies: gio,
-  )
   invert_svg = generator(
-    invert_svg_exe,
+    executable('invert-svg',
+      'invert-svg.c',
+      dependencies: gio,
+    ),
     output: '@BASENAME@',
     arguments: [ '@INPUT@', '@OUTPUT@' ],
   )
