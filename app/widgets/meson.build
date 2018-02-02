@@ -57,6 +57,7 @@ libappwidgets_sources = [
   'gimpcontrollermouse.c',
   'gimpcontrollers.c',
   'gimpcontrollerwheel.c',
+  'gimpcriticaldialog.c',
   'gimpcursor.c',
   'gimpcurveview.c',
   'gimpdashboard.c',

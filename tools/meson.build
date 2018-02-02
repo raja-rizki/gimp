@@ -1,14 +1,34 @@
 
 if platform_win32
-  gimp_debug_resume = executable('gimp-debug-resume', 'gimp-debug-resume.c')
+  gimp_debug_resume = executable('gimp-debug-resume',
+    'gimp-debug-resume.c',
+  )
 endif
 
 
-gimptool = executable('gimptool-2.0',
+gimptool = executable('gimptool-' + api_version,
   'gimptool.c',
-
   include_directories: rootInclude,
   dependencies: [
+    gtk2,
+  ],
+  link_with: [
+    libgimpbase,
+  ],
+  install: true,
+)
+
+gimpdebug = executable('gimpdebug-' + api_version,
+  [
+    '../app/gimp-version.c',
+    '../app/widgets/gimpcriticaldialog.c',
+    'gimpdebug.c',
+  ],
+  include_directories: [ rootInclude, appInclude, ],
+  dependencies: [
+    fontconfig,
+    gegl,
+    gio,
     gtk2,
   ],
   link_with: [

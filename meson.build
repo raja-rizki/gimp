@@ -120,7 +120,7 @@ math              = cc.find_library('m')
 
 atk               = dependency('atk',                version: '>=2.2.0')
 
-babl_minver       = '>=0.1.38'
+babl_minver       = '>=0.1.42'
 babl              = dependency('babl',               version: babl_minver)
 
 cairo_minver      = '>=1.12.2'
@@ -138,7 +138,7 @@ freetype2         = dependency('freetype2',          version: '>=2.1.7')
 gdk_pixbuf_minver = '>=2.30.8'
 gdk_pixbuf        = dependency('gdk-pixbuf-2.0',     version: gdk_pixbuf_minver)
 
-gegl_minver       = '>=0.3.27'
+gegl_minver       = '>=0.3.29'
 gegl              = dependency('gegl-0.3',           version: gegl_minver)
 
 gexiv2            = dependency('gexiv2',             version: '>=0.10.6')
@@ -309,6 +309,9 @@ if have_screenshot and not have_xlibs
   error('Screenshot requires x libs')
 endif
 
+if not cc.has_header('execinfo.h')
+  error('The compiler does not provide required header "execinfo.h"')
+endif
 ################################################################################
 # MIME types
 # The list of MIME types that are supported by plug-ins
@@ -430,6 +433,8 @@ endif
 
 
 if get_option('with-poppler')
+  # All modern distributions have at least this version and CJK/Cyrillic
+  # support should not be considered as "second-zone citizen".
   poppler = [
     dependency('poppler-glib', version: '>=0.44.0'),
     dependency('poppler-data', version: '>=0.4.7'),
@@ -837,6 +842,29 @@ add_project_arguments(
 
 rootInclude = include_directories('.')
 appInclude  = include_directories('app')
+
+
+gitversion_h1 = vcs_tag(
+  input : 'app/git-version.h.in',
+  output: 'git-version.h.in.1',
+  command: [ 'git', 'describe', '--always', ],
+  replace_string: '@GIMP_GIT_VERSION@',
+  fallback: '',
+)
+gitversion_h2 = vcs_tag(
+  input : gitversion_h1,
+  output: 'git-version.h.in.2',
+  command: [ 'git', 'rev-parse', '--short', 'HEAD', ],
+  replace_string: '@GIMP_GIT_VERSION_ABBREV@',
+  fallback: '',
+)
+gitversion_h = vcs_tag(
+  input : gitversion_h2,
+  output: 'git-version.h',
+  command: [ 'git', 'log', '-n1', '--date=format:%Y', '--pretty=%cd', ],
+  replace_string: '@GIMP_GIT_LAST_COMMIT_YEAR@',
+  fallback: '',
+)
 
 ################################################################################
 # Subdirs

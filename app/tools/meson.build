@@ -48,6 +48,7 @@ libapptools_sources = [
   'gimpfreeselecttool.c',
   'gimpfuzzyselecttool.c',
   'gimpgegltool.c',
+  'gimpgenerictransformtool.c',
   'gimpguidetool.c',
   'gimphandletransformoptions.c',
   'gimphandletransformtool.c',

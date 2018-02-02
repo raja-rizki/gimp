@@ -47,9 +47,9 @@ desktopfile = custom_target(desktopfilename,
   install_dir: join_paths(get_option('datadir'), 'applications'),
 )
 
-appdatafilename = 'gimp.appdata.xml'
+appdatafilename = 'org.gimp.GIMP.appdata.xml'
 appdatafile = custom_target(appdatafilename,
-  input : [ appdatafilename+'.in', ],
+  input : [ appdatafilename+'.in.in', ],
   output: [ appdatafilename, ],
   command: [
     intltool_merge,
@@ -89,4 +89,11 @@ custom_target('validate-desktop',
   ],
   build_always: false,
   build_by_default: false,
+)
+
+test('test_appdata',
+  find_program('test-appdata.sh'),
+  env: [
+    'GIMP_TESTING_ABS_TOP_BUILDDIR=' + meson.build_root(),
+  ],
 )
