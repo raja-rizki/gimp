@@ -1,27 +1,22 @@
-brushes = run_command(find,
-  meson.current_source_dir(),
-  '-maxdepth', '1',
-  '-mindepth', '1',
-  '-type', 'd',
-  '-printf', '%f'+findsep
-).stdout().strip().split('\n')
+brushes_types = [
+  'Basic',
+  'gimp-obsolete-files',
+  'Legacy',
+  'Media',
+  'Sketch',
+  'Splatters',
+  'Texture',
+]
 
-foreach brush : brushes
-  files = run_command(find,
-    join_paths(meson.current_source_dir(), brush),
-    '-type', 'f',
-    '(',
-    '-name', '*.gbr',
-    '-o',
-    '-name', '*.gih',
-    '-o',
-    '-name', '*.vbr',
-    ')',
-    '-printf', brush + '/%f'+findsep
-  ).stdout().strip().split('\n')
+foreach brushes_type : brushes_types
 
-
-  install_data(files,
-    install_dir: join_paths(gimpdatadir, 'brushes', brush)
+  install_subdir(brushes_type,
+    install_dir: join_paths(gimpdatadir, 'brushes'),
+    exclude_files: [
+      '.gitignore',
+      'Makefile.am',
+      'Makefile.in',
+    ],
   )
+
 endforeach

@@ -1,21 +1,25 @@
-patterns = run_command(find,
-  meson.current_source_dir(),
-  '-maxdepth', '1',
-  '-mindepth', '1',
-  '-type', 'd',
-  '-printf', '%f'+findsep
-).stdout().strip().split('\n')
+patterns_types = [
+  'Animal',
+  'Fabric',
+  'Food',
+  'Legacy',
+  'Paper',
+  'Plant',
+  'Sky',
+  'Stone',
+  'Water',
+  'Wood',
+]
 
-foreach pattern : patterns
-  files = run_command(find,
-    join_paths(meson.current_source_dir(), pattern),
-    '-type', 'f',
-    '-name', '*.pat',
-    '-printf', pattern + '/%f'+findsep
-  ).stdout().strip().split('\n')
+foreach patterns_type : patterns_types
 
-
-  install_data(files,
-    install_dir: join_paths(gimpdatadir, 'patterns', pattern)
+  install_subdir(patterns_type,
+    install_dir: join_paths(gimpdatadir, 'patterns'),
+    exclude_files: [
+      '.gitignore',
+      'Makefile.am',
+      'Makefile.in',
+    ],
   )
+
 endforeach

@@ -1,21 +1,20 @@
-presets = run_command(find,
-  meson.current_source_dir(),
-  '-maxdepth', '1',
-  '-mindepth', '1',
-  '-type', 'd',
-  '-printf', '%f'+findsep
-).stdout().strip().split('\n')
+tools_presets_types = [
+  'Crop',
+  'FX',
+  'Paint',
+  'Selection',
+  'Sketch',
+]
 
-foreach preset : presets
-  files = run_command(find,
-    join_paths(meson.current_source_dir(), preset),
-    '-type', 'f',
-    '-name', '*.gtp',
-    '-printf', preset + '/%f'+findsep
-  ).stdout().strip().split('\n')
+foreach tools_presets_type : tools_presets_types
 
-
-  install_data(files,
-    install_dir: join_paths(gimpdatadir, 'tool-presets', preset)
+  install_subdir(tools_presets_type,
+    install_dir: join_paths(gimpdatadir, 'tools-presets'),
+    exclude_files: [
+      '.gitignore',
+      'Makefile.am',
+      'Makefile.in',
+    ],
   )
+
 endforeach

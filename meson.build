@@ -106,10 +106,6 @@ if platform_win32
   windows = import('windows')
 endif
 
-# Find utils
-find = find_program('find')
-findsep = platform_win32 ? '\r\n' : '\n'
-
 ################################################################################
 # Dependencies
 math              = cc.find_library('m')
