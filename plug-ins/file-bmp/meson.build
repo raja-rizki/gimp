@@ -1,10 +1,20 @@
-# TODO file-bmp.rc.o
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_plugins_rc,
+  args: [
+
+  ],
+  include_directories: [
+
+  ],
+) : []
+
 
 file_bmp = executable('file-bmp',
   [
     'bmp-load.c',
     'bmp-save.c',
     'bmp.c',
+    rc_file,
   ],
   include_directories: [ rootInclude, ],
   dependencies: [

@@ -69,6 +69,14 @@ so_version = '@0@.@1@.@2@'.format(lt_revision, lt_current, lt_current_minus_age)
 stable = (minor_version % 2 == 0)
 conf.set10('GIMP_UNSTABLE', not stable)
 
+versionconfig = configuration_data()
+versionconfig.set('GIMP_FULL_NAME',     full_name)
+versionconfig.set('GIMP_MAJOR_VERSION', major_version)
+versionconfig.set('GIMP_MINOR_VERSION', minor_version)
+versionconfig.set('GIMP_MICRO_VERSION', micro_version)
+versionconfig.set('GIMP_VERSION',       gimp_version)
+versionconfig.set('GIMP_API_VERSION',   api_version)
+
 ################################################################################
 # Host system detection
 
@@ -831,6 +839,7 @@ rootInclude = include_directories('.')
 
 ################################################################################
 # Subdirs
+subdir('build/windows')
 
 # Tools (need libgimpbase now)
 subdir('libgimpbase')
@@ -873,11 +882,7 @@ subdir('app')
 subdir('pdb')
 
 # subdir('build/windows/installer')
-# subdir('build/windows/installer/lang')
 # subdir('po-windows-installer')
-# subdir('build')
-# build/windows/gimp-plug-ins.rc
-# build/windows/gimp.rc
 
 # Docs
 subdir('devel-docs')

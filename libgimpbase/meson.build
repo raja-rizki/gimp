@@ -1,10 +1,4 @@
 
-versionconfig = configuration_data()
-versionconfig.set('GIMP_MAJOR_VERSION', major_version)
-versionconfig.set('GIMP_MINOR_VERSION', minor_version)
-versionconfig.set('GIMP_MICRO_VERSION', micro_version)
-versionconfig.set('GIMP_VERSION',       gimp_version)
-versionconfig.set('GIMP_API_VERSION',   api_version)
 gimpversion = configure_file(
   input : 'gimpversion.h.in',
   output: 'gimpversion.h',
