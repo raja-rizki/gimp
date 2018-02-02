@@ -99,13 +99,61 @@ executable(plugin_name,
   install_dir: join_paths(gimpplugindir, 'plug-ins'),
 )
 
-# TODO flex / bison re-generators
-# custom_target('rebuild-parsers',
-#  input : [],
-#  output: [ 'rebuild-parsers', ],
-#  command: [
-#
-#  ],
-#  build_by_default: false,
-#  build_always: true,
-#)
+
+
+flex  = find_program('flex',  required: false)
+bison = find_program('bison', required: false)
+
+if flex.found() and bison.found()
+
+  syntaxes = [
+    'cern',
+    'csim',
+    'ncsa',
+  ]
+
+  foreach syntax : syntaxes
+
+    prefix =  syntax + '_'
+    imapname = 'imap_' + syntax
+
+    custom_target(
+              imapname + '_lex.c',
+      input : imapname + '.l'    ,
+      output: imapname + '_lex.c',
+      command: [
+        flex,
+        '--case-insensitive',
+        '--prefix', prefix,
+        '--outfile', '@OUTPUT@',
+        '@INPUT@',
+      ],
+    )
+
+    custom_target(
+              imapname + '_parse.c',
+      input : imapname + '.y'      ,
+      output: imapname + '_parse.c',
+      command: [
+        bison, '--yacc',
+        '-d',
+        '--name-prefix', prefix,
+        '@INPUT@'
+      ],
+    )
+
+    custom_target(
+              imapname + '_parse.h',
+      input : imapname + '.y'      ,
+      output: imapname + '_parse.h',
+      command: [
+        bison, '--yacc',
+        '-d',
+        '--name-prefix', prefix,
+        '--output', '@OUTPUT@',
+        '@INPUT@'
+      ],
+    )
+
+  endforeach
+endif
