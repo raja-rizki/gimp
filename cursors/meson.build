@@ -77,13 +77,14 @@ tool_cursors = [
   'tool-zoom.png',
 ]
 
-color_picker_cursors = [ 'cursor-color-picker.png', ]
+color_picker_cursors = [
+  'cursor-color-picker.png',
+]
 
 # Build xml files, in source dir, at Meson-runtime
 # TODO : versionning, or write in build dir
 
 cursors_resourcename = 'gimp-tool-cursors'
-cursors_xml = cursors_resourcename + '.gresource.xml'
 cursors_xml_content  = '<?xml version="1.0" encoding="UTF-8"?>\n'
 cursors_xml_content += '<gresources>\n'
 cursors_xml_content += '  <gresource prefix="/org/gimp/tool-cursors">\n'
@@ -93,14 +94,14 @@ endforeach
 cursors_xml_content += '  </gresource>\n'
 cursors_xml_content += '</gresources>\n'
 
-run_command('bash', '-c',
-  'cat <<EOS > '+ join_paths(meson.current_source_dir(), cursors_xml) +'\n'
-  + cursors_xml_content + '\nEOS',
+cursors_xml = configure_file(
+  output: cursors_resourcename + '.gresource.xml',
+  command: [ 'echo', cursors_xml_content ],
+  capture: true,
 )
 
 
 pickers_resourcename = 'gimp-color-picker-cursors'
-pickers_xml = pickers_resourcename + '.gresource.xml'
 pickers_xml_content  = '<?xml version="1.0" encoding="UTF-8"?>\n'
 pickers_xml_content += '<gresources>\n'
 pickers_xml_content += '  <gresource prefix="/org/gimp/color-picker-cursors">\n'
@@ -115,11 +116,11 @@ endforeach
 pickers_xml_content += '  </gresource>\n'
 pickers_xml_content += '</gresources>\n'
 
-run_command('bash', '-c',
-  'cat <<EOS >'+ join_paths(meson.current_source_dir(), pickers_xml) +'\n'
-  + pickers_xml_content + '\nEOS',
+pickers_xml = configure_file(
+  output: pickers_resourcename + '.gresource.xml',
+  command: [ 'echo', pickers_xml_content ],
+  capture: true,
 )
-
 
 cursors_sources = gnome.compile_resources(
   cursors_resourcename,

@@ -513,7 +513,6 @@ icons_core = [ '64/gimp-question.png', ]
 icons_imgs = [ '64/gimp-wilber-eek.png', ]
 
 resourcename = 'gimp-core-pixbufs'
-xml_filename = resourcename + '.gresource.xml'
 xml_content  = '<?xml version="1.0" encoding="UTF-8"?>\n'
 xml_content += '<gresources>\n'
 xml_content += '  <gresource prefix="/org/gimp/icons">\n'
@@ -522,19 +521,20 @@ foreach file : icons_core
 endforeach
 xml_content += '  </gresource>\n'
 xml_content += '</gresources>\n'
-run_command('bash', '-c',
-  'cat <<EOS > '+ join_paths(meson.current_source_dir(), xml_filename) +'\n'
-  + xml_content + '\nEOS',
+
+xml_file = configure_file(
+  output: resourcename + '.gresource.xml',
+  command: [ 'echo', xml_content ],
+  capture: true,
 )
 # icons_core_sources = gnome.compile_resources(
 #   resourcename,
-#   xml_filename,
+#   xml_file,
 #   c_name: resourcename.underscorify(),
 # )
 
 
 resourcename = 'gimp-icon-pixbufs'
-xml_filename = resourcename + '.gresource.xml'
 xml_content  = '<?xml version="1.0" encoding="UTF-8"?>\n'
 xml_content += '<gresources>\n'
 xml_content += '  <gresource prefix="/org/gimp/icons">\n'
@@ -543,12 +543,14 @@ foreach file : icons_imgs
 endforeach
 xml_content += '  </gresource>\n'
 xml_content += '</gresources>\n'
-run_command('bash', '-c',
-  'cat <<EOS > '+ join_paths(meson.current_source_dir(), xml_filename) +'\n'
-  + xml_content + '\nEOS',
+
+xml_file = configure_file(
+  output: resourcename + '.gresource.xml',
+  command: [ 'echo', xml_content ],
+  capture: true,
 )
 # icons_imgs_sources = gnome.compile_resources(
 #   resourcename,
-#   xml_filename,
+#   xml_file,
 #   c_name: resourcename.underscorify(),
 # )
