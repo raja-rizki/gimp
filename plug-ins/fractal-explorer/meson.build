@@ -1,9 +1,24 @@
 subdir('examples')
 
-fractal_explorer = executable('fractal-explorer',
+plugin_name = 'fractal-explorer'
+
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_plugins_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
+
+executable(plugin_name,
   [
     'fractal-explorer-dialogs.c',
     'fractal-explorer.c',
+    rc_file,
   ],
   include_directories: [ rootInclude, ],
   dependencies: [

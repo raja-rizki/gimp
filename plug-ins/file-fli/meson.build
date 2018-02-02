@@ -1,9 +1,22 @@
-# TODO file-fli.rc.o
+plugin_name = 'file-fli'
 
-file_fli = executable('file-fli',
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_plugins_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
+
+executable(plugin_name,
   [
     'fli-gimp.c',
     'fli.c',
+    rc_file,
   ],
   include_directories: [ rootInclude, ],
   dependencies: [

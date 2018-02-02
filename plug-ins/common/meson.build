@@ -1,4 +1,3 @@
-# TODO common.rc.o
 
 common_exes_list = [
   [
@@ -481,8 +480,22 @@ foreach exe : common_exes_list
   exe_sources = exe[1]
   exe_deps = exe[2]
 
+  plugin_name = 'file-exr'
+
+  rc_file = platform_win32 ? windows.compile_resources(
+    gimp_plugins_rc,
+    args: [
+      '--define', 'ORIGINALFILENAME_STR="@0@"'.format(exe_name+'.exe'),
+      '--define', 'INTERNALNAME_STR="@0@"'    .format(exe_name),
+      '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+    ],
+    include_directories: [
+      appInclude,
+    ],
+  ) : []
+
   executable(exe_name,
-    exe_sources,
+    [ exe_sources, rc_file ],
     include_directories: [ rootInclude, ],
     link_with : [
       libgimp,

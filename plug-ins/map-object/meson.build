@@ -1,6 +1,18 @@
-# TODO map-object.rc.o
+plugin_name = 'map-object'
 
-map_object = executable('map-object',
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_plugins_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
+
+executable(plugin_name,
   [
     'arcball.c',
     'map-object-apply.c',
@@ -10,6 +22,7 @@ map_object = executable('map-object',
     'map-object-shade.c',
     'map-object-stock.c',
     'map-object-ui.c',
+    rc_file,
   ],
   include_directories: [ rootInclude, ],
   dependencies: [

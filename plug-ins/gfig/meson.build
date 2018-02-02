@@ -1,7 +1,21 @@
 subdir('gfig-examples')
 subdir('images')
 
-gfig = executable('gfig',
+plugin_name = 'gfig'
+
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_plugins_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
+
+executable(plugin_name,
   [
     'gfig-arc.c',
     'gfig-bezier.c',
@@ -20,6 +34,7 @@ gfig = executable('gfig',
     'gfig-style.c',
     'gfig.c',
     stock_pixbufs_h,
+    rc_file,
   ],
   include_directories: [ rootInclude, ],
   dependencies: [

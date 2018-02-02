@@ -1,36 +1,29 @@
 if platform_win32
 
+plugin_name = 'twain'
+
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_plugins_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
+
 # Win32 specific
 plugin_twain_sources = [
   'tw_func.c',
   'tw_util.c',
   'tw_win.c',
   'twain.c',
+  rc_file,
 ]
-# if HAVE_WINDRES
-#   GIMPPLUGINRC = $(top_builddir)/build/windows/gimp-plug-ins.rc
-#
-#   # `windres` seems a very stupid tool and it breaks with double shlashes
-#   # in parameter paths. Strengthen the rule a little.
-#
-#   twain_rc_name = 'twain.rc'
-#   twain_rc = custom_target(twain_rc_name + '.o',
-#     input : [],
-#     output: [ twain_rc_name + '.o', ],
-#     command: [
-#       '$(WINDRES)',
-#       '--define', 'ORIGINALFILENAME_STR="$*$(EXEEXT)"'
-#       '--define', 'INTERNALNAME_STR="$*"'
-#       '--define', 'TOP_SRCDIR="`echo $(top_srcdir) | sed 's*//*/*'`"'
-#       '-I"`echo', '$(top_srcdir)/app | sed 's%/\+%/%'`"'
-#       '-I"`echo', '$(top_builddir)/app | sed 's%/\+%/%'`"'
-#       '$(GIMPPLUGINRC) $@
-#     ],
-#   )
-#
-# endif
 
-twain = executable('twain',
+twain = executable(plugin_name,
   plugin_twain_sources,
   include_directories: [ rootInclude, ],
   dependencies: [

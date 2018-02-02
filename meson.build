@@ -836,6 +836,7 @@ add_project_arguments(
 )
 
 rootInclude = include_directories('.')
+appInclude  = include_directories('app')
 
 ################################################################################
 # Subdirs

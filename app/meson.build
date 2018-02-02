@@ -136,8 +136,21 @@ app_deps = [
 
 # Executables
 
+rc_name = 'gimp-'+ app_version
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_app_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(rc_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(rc_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
+
 gimpconsole_exe = executable('gimp-console-'+app_version,
-  libapp_sources + [ 'main.c' ],
+  libapp_sources + [ 'main.c', rc_file, ],
   c_args: app_cflags + [ '-DGIMP_CONSOLE_COMPILATION', ],
   include_directories: [ rootInclude, ],
   dependencies: app_deps,
@@ -145,8 +158,21 @@ gimpconsole_exe = executable('gimp-console-'+app_version,
   install: true,
 )
 
+rc_name = 'gimp-console-'+ app_version
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_app_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(rc_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(rc_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
+
 gimpmain_exe = executable('gimp-'+app_version,
-  libapp_sources + [ 'main.c' ],
+  libapp_sources + [ 'main.c', rc_file, ],
   c_args: app_cflags + [ ],
   include_directories: [ rootInclude, ],
   dependencies: app_deps,

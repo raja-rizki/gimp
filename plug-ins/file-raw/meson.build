@@ -1,4 +1,3 @@
-# TODO file-raw.rc.o
 
 file_raw_exes = [
   'file-darktable',
@@ -6,11 +5,25 @@ file_raw_exes = [
   'file-rawtherapee',
 ]
 
-foreach file_raw_exename : file_raw_exes
-  file_raw = executable(file_raw_exename,
+foreach plugin_name : file_raw_exes
+
+  rc_file = platform_win32 ? windows.compile_resources(
+    gimp_plugins_rc,
+    args: [
+      '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+      '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+      '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+    ],
+    include_directories: [
+      appInclude,
+    ],
+  ) : []
+
+  executable(plugin_name,
     [
-      file_raw_exename +'.c',
+      plugin_name +'.c',
       'file-raw-utils.c',
+      rc_file,
     ],
     include_directories: [ rootInclude, ],
     dependencies: [

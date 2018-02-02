@@ -6,9 +6,9 @@ plugin_screenshot_sources = [
   'screenshot-kwin.c',
   'screenshot-osx.c',
   'screenshot-win32.c',
-  # 'screenshot-win32.rc',
   'screenshot-x11.c',
   'screenshot.c',
+  platform_win32 ? windows.compile_resources('screenshot-win32.rc') : [],
 ]
 
 screenshot = executable('screenshot',

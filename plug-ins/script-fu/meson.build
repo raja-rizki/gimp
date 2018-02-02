@@ -6,6 +6,20 @@ subdir('tinyscheme')
 subdir('ftx')
 subdir('scripts')
 
+plugin_name = 'script-fu'
+
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_plugins_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
+
 plugin_scriptfu_sources = [
   'scheme-wrapper.c',
   'script-fu-console.c',
@@ -18,11 +32,12 @@ plugin_scriptfu_sources = [
   'script-fu-text-console.c',
   'script-fu-utils.c',
   'script-fu.c',
+  rc_file,
 ]
 
 winsock = platform_win32 ? cc.find_library('ws2_32') : []
 
-scriptfu = executable('script-fu',
+executable(plugin_name,
   plugin_scriptfu_sources,
   include_directories: [ rootInclude, ],
   dependencies: [

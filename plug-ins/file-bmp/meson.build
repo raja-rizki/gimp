@@ -1,15 +1,18 @@
+plugin_name = 'file-bmp'
+
 rc_file = platform_win32 ? windows.compile_resources(
   gimp_plugins_rc,
   args: [
-
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
   ],
   include_directories: [
-
+    appInclude,
   ],
 ) : []
 
-
-file_bmp = executable('file-bmp',
+executable(plugin_name,
   [
     'bmp-load.c',
     'bmp-save.c',

@@ -1,3 +1,16 @@
+plugin_name = 'selection-to-path'
+
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_plugins_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
 
 plugin_selection_to_path_sources = [
   'curve.c',
@@ -9,6 +22,7 @@ plugin_selection_to_path_sources = [
   'selection-to-path.c',
   'spline.c',
   'vector.c',
+  rc_file
 ]
 plugin_selection_to_path_link = [
   libgimp,
@@ -23,7 +37,7 @@ plugin_selection_to_path_deps = [
   gegl, gtk2, math,
 ]
 
-selection_to_path = executable('selection-to-path',
+selection_to_path = executable(plugin_name,
   plugin_selection_to_path_sources,
   include_directories: [ rootInclude, ],
   link_with:    plugin_selection_to_path_link,

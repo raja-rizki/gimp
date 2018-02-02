@@ -1,10 +1,23 @@
-# TODO ifs-compose.rc.o
+plugin_name = 'ifs-compose'
 
-ifs_compose = executable('ifs-compose',
+rc_file = platform_win32 ? windows.compile_resources(
+  gimp_plugins_rc,
+  args: [
+    '--define', 'ORIGINALFILENAME_STR="@0@"'.format(plugin_name+'.exe'),
+    '--define', 'INTERNALNAME_STR="@0@"'    .format(plugin_name),
+    '--define', 'TOP_SRCDIR="@0@"'          .format(meson.source_root()),
+  ],
+  include_directories: [
+    appInclude,
+  ],
+) : []
+
+executable(plugin_name,
   [
     'ifs-compose-storage.c',
     'ifs-compose-utils.c',
     'ifs-compose.c',
+    rc_file,
   ],
   include_directories: [ rootInclude, ],
   dependencies: [
